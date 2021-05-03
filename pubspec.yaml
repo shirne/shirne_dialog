@@ -1,8 +1,8 @@
-name: easy_dialog
+name: shirne_dialog
 description: A alert package to use alert and toast within one line code.
 version: 0.0.1
 author: shirne <shirne@126.com>
-homepage: https://github.com/shirne/easy_dialog
+homepage: https://github.com/shirne/shirne_dialog
 
 environment:
   sdk: ">=2.0.0-dev.40.0 <3.0.0"

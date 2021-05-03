@@ -8,10 +8,10 @@ import 'progress.dart';
 import 'snack.dart';
 import 'toast.dart';
 
-class EasyDialog {
+class MyDialog {
   BuildContext context;
 
-  EasyDialog.of(this.context);
+  MyDialog.of(this.context);
 
   static const alignTop = const Alignment(0.0, -0.7);
   static const alignBottom = const Alignment(0.0, 0.7);

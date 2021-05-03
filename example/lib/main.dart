@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:easy_dialog/easy_dialog.dart';
+import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    EasyDialog.of(context).toast('提示信息');
+                    MyDialog.of(context).toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
@@ -54,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    EasyDialog.of(context)
-                        .toast('提示信息', align: EasyDialog.alignBottom);
+                    MyDialog.of(context)
+                        .toast('提示信息', align: MyDialog.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 )
@@ -63,20 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                EasyDialog.of(context).alert(Text('提示信息'));
+                MyDialog.of(context).alert(Text('提示信息'));
               },
               child: Text('Alert'),
             ),
             ElevatedButton(
               onPressed: () {
-                var controller = EasyDialog.of(context).confirm(Text('是否确认'));
+                var controller = MyDialog.of(context).confirm(Text('是否确认'));
                 controller.result.then((v) {
                   if (v) {
-                    EasyDialog.of(context).toast('好的');
+                    MyDialog.of(context).toast('好的');
                     controller.close();
                   } else {
-                    EasyDialog.of(context)
-                        .toast('em...', align: EasyDialog.alignBottom);
+                    MyDialog.of(context)
+                        .toast('em...', align: MyDialog.alignBottom);
                   }
                 });
               },
@@ -84,14 +84,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                EasyDialog.of(context).popup(Text('提示信息'));
+                MyDialog.of(context).popup(Text('提示信息'));
               },
               child: Text('Popup'),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
-                  EasyDialog.of(context).snack('提示信息');
+                  MyDialog.of(context).snack('提示信息');
                 },
                 child: Text('Snack'),
               ),
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   var controller;
-                  controller = EasyDialog.of(context).snack(
+                  controller = MyDialog.of(context).snack(
                     '提示信息',
                     action: TextButton(
                       onPressed: () {
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   var controller;
-                  controller = EasyDialog.of(context).snack(
+                  controller = MyDialog.of(context).snack(
                     '多个操作',
                     action:
                         ListBody(
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                             ElevatedButton(
                               onPressed: () {
-                                EasyDialog.of(context).toast('好的好的');
+                                MyDialog.of(context).toast('好的好的');
                               },
                               child: Text('确认', style: TextStyle(color: Colors.white),
                               ),
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    EasyDialog.of(context).loading('加载中');
+                    MyDialog.of(context).loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    var controller = EasyDialog.of(context)
+                    var controller = MyDialog.of(context)
                         .loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
                       controller.update(20);

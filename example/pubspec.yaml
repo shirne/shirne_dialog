@@ -27,7 +27,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  easy_dialog:
+  shirne_dialog:
     path: ../
 
 dev_dependencies:
