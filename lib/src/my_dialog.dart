@@ -16,7 +16,7 @@ class MyDialog {
   static const alignTop = const Alignment(0.0, -0.7);
   static const alignBottom = const Alignment(0.0, 0.7);
 
-  DialogController confirm(message,
+  Future<bool> confirm(message,
       {String buttonText = 'OK',
       String title = '',
       String cancelText = 'Cancel'}) {
@@ -39,6 +39,7 @@ class MyDialog {
             child: Text(cancelText)),
         ElevatedButton(
             onPressed: () {
+              controller.close();
               completer.complete(true);
             },
             child: Text(buttonText)),
@@ -47,12 +48,13 @@ class MyDialog {
     );
     controller.result = completer.future;
 
-    return controller;
+    return controller.result;
   }
 
-  DialogController alert(message,
+  Future<void> alert(message,
       {String buttonText = 'OK', String title = ''}) {
     ModalController controller;
+    Completer completer = Completer<bool>();
     controller = modal(
       message is Widget
           ? message
@@ -65,6 +67,7 @@ class MyDialog {
         ElevatedButton(
           onPressed: () {
             controller.close();
+            completer.complete();
           },
           child: Text(buttonText),
         ),
@@ -72,7 +75,7 @@ class MyDialog {
       title: title,
     );
 
-    return controller;
+    return completer.future;
   }
 
   DialogController modal(Widget body, List<Widget> buttons,

@@ -106,6 +106,7 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
               color: Colors.transparent,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       widget.message,

@@ -69,11 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                var controller = MyDialog.of(context).confirm(Text('是否确认'));
-                controller.result.then((v) {
+                MyDialog.of(context).confirm(Text('是否确认')).then((v) {
                   if (v) {
                     MyDialog.of(context).toast('好的');
-                    controller.close();
                   } else {
                     MyDialog.of(context)
                         .toast('em...', align: MyDialog.alignBottom);
