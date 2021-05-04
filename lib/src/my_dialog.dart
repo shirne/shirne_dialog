@@ -25,11 +25,11 @@ class MyDialog {
     controller = modal(
       message is Widget
           ? message
-          : message
+          : ListBody(children: message
               .toString()
               .split('\n')
               .map<Widget>((item) => Text(item))
-              .toList(),
+              .toList()),
       [
         TextButton(
             onPressed: () {
@@ -58,11 +58,11 @@ class MyDialog {
     controller = modal(
       message is Widget
           ? message
-          : message
+          : ListBody(children: message
               .toString()
               .split('\n')
               .map<Widget>((item) => Text(item))
-              .toList(),
+              .toList()),
       [
         ElevatedButton(
           onPressed: () {
