@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 class ToastWidget extends StatefulWidget {
   final String message;
   final int duration;
+  final Icon icon;
   final Alignment alignment;
 
-  const ToastWidget(this.message, {Key key, this.alignment = Alignment.center, this.duration = 3})
+  const ToastWidget(this.message, {Key key, this.alignment = Alignment.center, this.duration = 3, this.icon})
       : super(key: key);
 
   @override
@@ -17,7 +18,6 @@ class ToastWidget extends StatefulWidget {
 class _ToastWidgetState extends State<ToastWidget> {
   static ValueNotifier<int> instanceCount = ValueNotifier(0);
   int instanceIndex = 0;
-
 
   Alignment alignment;
   bool isMarginTop = true;
@@ -95,9 +95,18 @@ class _ToastWidgetState extends State<ToastWidget> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Material(
               color: Colors.transparent,
-              child: Text(
+              child: widget.icon == null ? Text(
                 widget.message,
                 style: TextStyle(color: Colors.white),
+              ) : Row(
+                children: [
+                  widget.icon,
+                  SizedBox(width: 15,),
+                  Text(
+                    widget.message,
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
               ),
             ),
           ),

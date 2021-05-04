@@ -17,7 +17,7 @@ class SnackWidget extends StatefulWidget {
   const SnackWidget(this.message,
       {Key key,
       this.duration = 4,
-      this.alignment = const Alignment(0, 0.7),
+      this.alignment = const Alignment(0, 0.8),
       this.action, this.notifier, this.controller, this.maxWidth = 0.7})
       : super(key: key);
 
@@ -100,7 +100,7 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
               borderRadius: BorderRadius.circular(5),
             ),
             padding: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 5),
-            height: 40,
+            height: 45,
             width: width * widget.maxWidth,
             child: Material(
               color: Colors.transparent,

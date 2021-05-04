@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
@@ -15,6 +16,11 @@ class MyDialog {
 
   static const alignTop = const Alignment(0.0, -0.7);
   static const alignBottom = const Alignment(0.0, 0.7);
+
+  static const iconSuccess = const Icon(CupertinoIcons.checkmark_circle_fill, color: Colors.green,);
+  static const iconError = const Icon(CupertinoIcons.multiply_circle_fill, color: Colors.red);
+  static const iconWarning = const Icon(CupertinoIcons.exclamationmark_triangle_fill, color: Colors.deepOrangeAccent);
+  static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill, color: Colors.blue);
 
   Future<bool> confirm(message,
       {String buttonText = 'OK',
@@ -139,10 +145,11 @@ class MyDialog {
   }
 
   void toast(String message,
-      {int duration = 2, AlignmentGeometry align = alignTop}) {
+      {int duration = 2, AlignmentGeometry align = alignTop, Icon icon}) {
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
+        icon: icon,
         alignment: align,
         duration: duration,
       );
@@ -159,7 +166,7 @@ class MyDialog {
       {Widget action,
       int duration = 3,
       AlignmentGeometry align = alignBottom,
-      double width = 0.6}) {
+      double width = 0.7}) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
     EntryController controller = EntryController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {

@@ -58,6 +58,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         .toast('提示信息', align: MyDialog.alignBottom);
                   },
                   child: Text('Toast Bottom'),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.of(context)
+                        .toast('操作成功', icon: MyDialog.iconSuccess);
+                  },
+                  child: Text('Toast with Icon'),
                 )
               ],
             ),
