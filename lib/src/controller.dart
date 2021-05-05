@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 abstract class DialogController<T>{
-  ValueNotifier<T> notifier;
-  Future<dynamic> result;
+  ValueNotifier<T>? notifier;
+  Future<dynamic>? result;
 
   BuildContext context;
   DialogController.of(this.context, this.notifier);
@@ -16,31 +16,31 @@ abstract class DialogController<T>{
 }
 
 class ProgressController extends DialogController<int> {
-  OverlayEntry entry;
+  OverlayEntry? entry;
   ProgressController(BuildContext context, ValueNotifier<int> notifier, [this.entry]) : super.of(context, notifier);
 
   open() {
-    Overlay.of(context).insert(entry);
+    Overlay.of(context)!.insert(entry!);
   }
 
   update(int value) {
-    notifier.value = value;
+    notifier!.value = value;
   }
 
   close() {
-    notifier.value = 101;
+    notifier!.value = 101;
   }
 
   remove() {
     if(entry != null) {
-      entry.remove();
+      entry!.remove();
     }
   }
 }
 
 class ModalController extends DialogController<int> {
 
-  ModalController(BuildContext context, [ValueNotifier<int> notifier]) : super.of(context, notifier);
+  ModalController(BuildContext context, [ValueNotifier<int>? notifier]) : super.of(context, notifier);
 
   open() {
 
@@ -58,25 +58,25 @@ class ModalController extends DialogController<int> {
 }
 
 class EntryController extends DialogController<int> {
-  OverlayEntry entry;
+  OverlayEntry? entry;
 
-  EntryController(BuildContext context, [ValueNotifier<int> notifier, this.entry])
+  EntryController(BuildContext context, [ValueNotifier<int>? notifier, this.entry])
       : super.of(context, notifier);
 
   open() {
-    Overlay.of(context).insert(entry);
+    Overlay.of(context)!.insert(entry!);
   }
 
   update(int value) {}
 
   close() {
-    if(notifier != null)notifier.value = 101;
+    if(notifier != null)notifier!.value = 101;
     else{
       remove();
     }
   }
 
   remove() {
-    entry.remove();
+    entry!.remove();
   }
 }

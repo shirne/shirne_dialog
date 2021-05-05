@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 
 class PopupWidget extends StatefulWidget {
-  final Widget child;
-  final double height;
+  final Widget? child;
+  final double? height;
   final double alpha;
-  final DialogController controller;
+  final DialogController? controller;
 
   const PopupWidget(
-      {Key key, this.child, this.height, this.controller, this.alpha = 0.6})
+      {Key? key, this.child, this.height, this.controller, this.alpha = 0.6})
       : super(key: key);
 
   @override
@@ -18,13 +18,13 @@ class PopupWidget extends StatefulWidget {
 
 class _PopupWidgetState extends State<PopupWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _aniController;
-  double height = 0;
+  late AnimationController _aniController;
+  double? height = 0;
   double curAlpha = 0;
   Matrix4 transform = Matrix4.translationValues(0, 0, 0);
 
   bool isShown = false;
-  DragStartDetails dragStart;
+  DragStartDetails? dragStart;
 
   @override
   void initState() {
@@ -35,8 +35,8 @@ class _PopupWidgetState extends State<PopupWidget>
     _aniController.addListener(_onAnimation);
     if (widget.height != null) height = widget.height;
 
-    widget.controller.notifier.addListener(_onController);
-    if (height > 0) {
+    widget.controller!.notifier!.addListener(_onController);
+    if (height! > 0) {
       startShow();
     }
   }
@@ -53,31 +53,31 @@ class _PopupWidgetState extends State<PopupWidget>
     if (isShown) return;
     isShown = true;
     setState(() {
-      _aniController.value = height;
-      transform = Matrix4.translationValues(0, height, 0);
+      _aniController.value = height!;
+      transform = Matrix4.translationValues(0, height!, 0);
     });
 
     _aniController.animateTo(0, curve: Curves.easeOutQuart);
   }
 
   void _onController() {
-    if (widget.controller.notifier.value == 101) {
+    if (widget.controller!.notifier!.value == 101) {
       print('will close');
       _close();
     }
   }
 
   void _close() {
-    _aniController.animateTo(height, curve: Curves.easeOutQuart)
+    _aniController.animateTo(height!, curve: Curves.easeOutQuart)
       ..whenComplete(() {
-        widget.controller.notifier.removeListener(_onController);
-        widget.controller.remove();
+        widget.controller!.notifier!.removeListener(_onController);
+        widget.controller!.remove();
       });
   }
 
   void _onAnimation() {
     setState(() {
-      curAlpha = (1 - _aniController.value / height) * widget.alpha;
+      curAlpha = (1 - _aniController.value / height!) * widget.alpha;
       transform = Matrix4.translationValues(0, _aniController.value, 0);
     });
   }
@@ -85,7 +85,7 @@ class _PopupWidgetState extends State<PopupWidget>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    if (height == null || height <= 0) {
+    if (height == null || height! <= 0) {
       height = size.height * 0.8;
       startShow();
     }
@@ -107,9 +107,9 @@ class _PopupWidgetState extends State<PopupWidget>
               //print(detail);
               if (dragStart == null) return;
               var offset =
-                  detail.globalPosition.dy - dragStart.globalPosition.dy;
+                  detail.globalPosition.dy - dragStart!.globalPosition.dy;
               if (offset < 0) offset = 0;
-              _aniController.value = offset > height ? height : offset;
+              _aniController.value = offset > height! ? height! : offset;
               _onAnimation();
             },
             onHorizontalDragStart: (detail) {

@@ -9,13 +9,13 @@ class SnackWidget extends StatefulWidget {
   final String message;
   final int duration;
   final Alignment alignment;
-  final Widget action;
-  final ValueNotifier notifier;
-  final DialogController controller;
+  final Widget? action;
+  final ValueNotifier? notifier;
+  final DialogController? controller;
   final double maxWidth;
 
   const SnackWidget(this.message,
-      {Key key,
+      {Key? key,
       this.duration = 4,
       this.alignment = const Alignment(0, 0.8),
       this.action, this.notifier, this.controller, this.maxWidth = 0.7})
@@ -26,10 +26,10 @@ class SnackWidget extends StatefulWidget {
 }
 
 class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStateMixin {
-  Alignment alignment;
+  late Alignment alignment;
   double alignY = 1.2;
   double opacity = 1;
-  AnimationController _aniController;
+  late AnimationController _aniController;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
     _aniController.value = 0;
     _aniController.addListener(_onAnimation);
 
-    widget.notifier.addListener(_onStateChange);
+    widget.notifier!.addListener(_onStateChange);
 
     _aniController.animateTo(100);
   }
@@ -57,9 +57,9 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
   }
 
   void _onStateChange() {
-    if(widget.notifier.value >= 100){
+    if(widget.notifier!.value >= 100){
       _aniController.animateTo(0)..whenComplete(() {
-        widget.controller.remove();
+        widget.controller!.remove();
       });
     }
   }

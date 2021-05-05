@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 
 class ProgressWidget extends StatefulWidget {
-  final ValueNotifier<int> notifier;
+  final ValueNotifier<int>? notifier;
   final bool showProgress;
   final bool showOverlay;
-  final String message;
-  final DialogController controller;
+  final String? message;
+  final DialogController? controller;
 
   const ProgressWidget(
-      {Key key, this.notifier, this.showProgress = false, this.message, this.controller, this.showOverlay = true})
+      {Key? key, this.notifier, this.showProgress = false, this.message, this.controller, this.showOverlay = true})
       : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class ProgressWidget extends StatefulWidget {
 
 class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProviderStateMixin {
   int progress = 0;
-  AnimationController _aniController;
+  AnimationController? _aniController;
 
   @override
   void initState() {
@@ -29,13 +29,13 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
 
 
     if (widget.notifier != null) {
-      widget.notifier.addListener(_onValueChange);
+      widget.notifier!.addListener(_onValueChange);
 
       if(widget.showProgress){
         _aniController = AnimationController.unbounded(
             vsync: this, duration: Duration(milliseconds: 400));
-        _aniController.value = progress/100.0;
-        _aniController.addListener(_onAnimation);
+        _aniController!.value = progress/100.0;
+        _aniController!.addListener(_onAnimation);
       }
     }
   }
@@ -43,10 +43,10 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
   @override
   void dispose() {
     if (widget.notifier != null ) {
-      widget.notifier.removeListener(_onValueChange);
+      widget.notifier!.removeListener(_onValueChange);
       if(_aniController != null){
-        _aniController.removeListener(_onAnimation);
-        _aniController.dispose();
+        _aniController!.removeListener(_onAnimation);
+        _aniController!.dispose();
       }
     }
     super.dispose();
@@ -67,12 +67,12 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CircularProgressIndicator(
-              value: widget.showProgress ? _aniController.value : null,
+              value: widget.showProgress ? _aniController!.value : null,
               backgroundColor: Colors.white,
             ),
             SizedBox(height: 10),
             Text(
-              widget.message,
+              widget.message!,
               style: TextStyle(
                   color: Colors.white,
                   decoration: TextDecoration.none,
@@ -87,19 +87,19 @@ class _ProgressWidgetState extends State<ProgressWidget> with SingleTickerProvid
   void _onValueChange() {
     if (!mounted) return;
     setState(() {
-      progress = widget.notifier.value;
+      progress = widget.notifier!.value;
     });
     if(_aniController != null) {
-      _aniController.animateTo(progress / 100.0, curve: Curves.easeOutQuart)
+      _aniController!.animateTo(progress / 100.0, curve: Curves.easeOutQuart)
         ..whenComplete(() {
           if (progress >= 100) {
-            widget.controller.remove();
+            widget.controller!.remove();
           }
         });
     }else{
       if (progress >= 100) {
       Future.delayed(Duration(milliseconds: 200)).then((v){
-          widget.controller.remove();
+          widget.controller!.remove();
       });
       }
     }

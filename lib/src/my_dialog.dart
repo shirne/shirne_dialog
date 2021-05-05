@@ -17,25 +17,33 @@ class MyDialog {
   static const alignTop = const Alignment(0.0, -0.7);
   static const alignBottom = const Alignment(0.0, 0.7);
 
-  static const iconSuccess = const Icon(CupertinoIcons.checkmark_circle_fill, color: Colors.green,);
-  static const iconError = const Icon(CupertinoIcons.multiply_circle_fill, color: Colors.red);
-  static const iconWarning = const Icon(CupertinoIcons.exclamationmark_triangle_fill, color: Colors.deepOrangeAccent);
-  static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill, color: Colors.blue);
+  static const iconSuccess = const Icon(
+    CupertinoIcons.checkmark_circle_fill,
+    color: Colors.green,
+  );
+  static const iconError =
+      const Icon(CupertinoIcons.multiply_circle_fill, color: Colors.red);
+  static const iconWarning = const Icon(
+      CupertinoIcons.exclamationmark_triangle_fill,
+      color: Colors.deepOrangeAccent);
+  static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill,
+      color: Colors.blue);
 
-  Future<bool> confirm(message,
+  Future<bool?>? confirm(message,
       {String buttonText = 'OK',
       String title = '',
       String cancelText = 'Cancel'}) {
-    ModalController controller;
+    late ModalController controller;
     Completer completer = Completer<bool>();
     controller = modal(
       message is Widget
           ? message
-          : ListBody(children: message
-              .toString()
-              .split('\n')
-              .map<Widget>((item) => Text(item))
-              .toList()),
+          : ListBody(
+              children: message
+                  .toString()
+                  .split('\n')
+                  .map<Widget>((item) => Text(item))
+                  .toList()),
       [
         TextButton(
             onPressed: () {
@@ -51,24 +59,24 @@ class MyDialog {
             child: Text(buttonText)),
       ],
       title: title,
-    );
+    ) as ModalController;
     controller.result = completer.future;
 
-    return controller.result;
+    return controller.result as Future<bool?>?;
   }
 
-  Future<void> alert(message,
-      {String buttonText = 'OK', String title = ''}) {
-    ModalController controller;
+  Future<void> alert(message, {String buttonText = 'OK', String title = ''}) {
+    late ModalController controller;
     Completer completer = Completer<bool>();
     controller = modal(
       message is Widget
           ? message
-          : ListBody(children: message
-              .toString()
-              .split('\n')
-              .map<Widget>((item) => Text(item))
-              .toList()),
+          : ListBody(
+              children: message
+                  .toString()
+                  .split('\n')
+                  .map<Widget>((item) => Text(item))
+                  .toList()),
       [
         ElevatedButton(
           onPressed: () {
@@ -79,7 +87,7 @@ class MyDialog {
         ),
       ],
       title: title,
-    );
+    ) as ModalController;
 
     return completer.future;
   }
@@ -145,7 +153,7 @@ class MyDialog {
   }
 
   void toast(String message,
-      {int duration = 2, AlignmentGeometry align = alignTop, Icon icon}) {
+      {int duration = 2, Alignment align = alignTop, Icon? icon}) {
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
@@ -155,7 +163,7 @@ class MyDialog {
       );
     });
 
-    Overlay.of(context).insert(entry);
+    Overlay.of(context)!.insert(entry);
     Future.delayed(Duration(seconds: duration ?? 2)).then((value) {
       // 移除层可以通过调用OverlayEntry的remove方法。
       entry.remove();
@@ -163,9 +171,9 @@ class MyDialog {
   }
 
   EntryController snack(String message,
-      {Widget action,
+      {Widget? action,
       int duration = 3,
-      AlignmentGeometry align = alignBottom,
+      Alignment align = alignBottom,
       double width = 0.7}) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
     EntryController controller = EntryController(context, progressNotify);
