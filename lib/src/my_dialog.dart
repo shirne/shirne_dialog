@@ -164,7 +164,7 @@ class MyDialog {
     });
 
     Overlay.of(context)!.insert(entry);
-    Future.delayed(Duration(seconds: duration ?? 2)).then((value) {
+    Future.delayed(Duration(seconds: duration)).then((value) {
       // 移除层可以通过调用OverlayEntry的remove方法。
       entry.remove();
     });
@@ -190,7 +190,7 @@ class MyDialog {
     });
 
     controller.open();
-    Future.delayed(Duration(seconds: duration ?? 3)).then((value) {
+    Future.delayed(Duration(seconds: duration)).then((value) {
       controller.close();
     });
 
