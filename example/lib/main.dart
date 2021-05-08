@@ -90,12 +90,39 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text('Confirm'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                MyDialog.of(context).popup(Text('提示信息'));
-              },
-              child: Text('Popup'),
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                onPressed: () {
+                  MyDialog.of(context).popup(Text('弹出窗内容'));
+                },
+                child: Text('Popup'),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  MyDialog.of(context).popup(Text('弹出窗内容'), height: 100);
+                },
+                child: Text('Popup height 100'),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  MyDialog.of(context).popup(
+                      SingleChildScrollView(
+                        child: ListBody(
+                          children: List.generate(
+                              50, (index) => Text('This is row $index')),
+                        ),
+                      ),
+                      isScrollControlled: true);
+                },
+                child: Text('Popup with scroll'),
+              ),
+            ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
@@ -115,7 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         controller.close();
                       },
-                      child: Text('确认', style: TextStyle(color: Colors.white),),
+                      child: Text(
+                        '确认',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   );
                 },
@@ -127,29 +157,30 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   var controller;
-                  controller = MyDialog.of(context).snack(
-                    '多个操作',
-                    action:
-                        ListBody(
-                          mainAxis: Axis.horizontal,
-                          children: [
+                  controller = MyDialog.of(context).snack('多个操作',
+                      action: ListBody(
+                        mainAxis: Axis.horizontal,
+                        children: [
                           TextButton(
                             onPressed: () {
                               controller.close();
                             },
-                            child: Text('取消', style: TextStyle(color: Colors.white),
+                            child: Text(
+                              '取消',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-                            ElevatedButton(
-                              onPressed: () {
-                                MyDialog.of(context).toast('好的好的');
-                              },
-                              child: Text('确认', style: TextStyle(color: Colors.white),
-                              ),
+                          ElevatedButton(
+                            onPressed: () {
+                              MyDialog.of(context).toast('好的好的');
+                            },
+                            child: Text(
+                              '确认',
+                              style: TextStyle(color: Colors.white),
                             ),
-                        ],)
-
-                  );
+                          ),
+                        ],
+                      ));
                 },
                 child: Text('Snack with Actions'),
               ),

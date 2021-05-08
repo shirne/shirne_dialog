@@ -95,7 +95,7 @@ class MyDialog {
   DialogController modal(Widget body, List<Widget> buttons,
       {String title = '', barrierDismissible = false}) {
     ModalController controller = ModalController(context);
-    controller.result = showDialog<void>(
+    controller.result = showDialog<dynamic>(
       context: context,
       barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
@@ -111,19 +111,40 @@ class MyDialog {
     return controller;
   }
 
-  DialogController popup(Widget child, [bool isOpen = true]) {
-    ValueNotifier<int> notifier = ValueNotifier<int>(0);
-    EntryController controller = EntryController(context, notifier);
-    controller.entry = OverlayEntry(builder: (context) {
-      return PopupWidget(
-        child: child,
-        controller: controller,
-      );
-    });
-
-    if (isOpen) {
-      controller.open();
-    }
+  DialogController popup(Widget body, {
+    barrierDismissible = false,
+    double height = 0,
+    double borderRound = 10,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
+    Color barrierColor: const Color.fromRGBO(0, 0, 0, .6),
+    Color backgroundColor: Colors.white,
+    bool isDismissible: true,
+    bool isScrollControlled: false,
+    double? elevation,
+    bool showClose = true,
+    Widget closeButton = const Icon(Icons.cancel, color: Colors.black38,)
+  }) {
+    ModalController controller = ModalController(context);
+    controller.result = showModalBottomSheet<dynamic>(
+      backgroundColor: Colors.transparent,
+      barrierColor: barrierColor,
+      context: context,
+      elevation: elevation,
+      isDismissible: isDismissible,
+      isScrollControlled: isScrollControlled,
+      builder: (BuildContext context) {
+        return PopupWidget(
+          child: body,
+          height:height,
+          borderRound:borderRound,
+          backgroundColor:backgroundColor,
+          padding: padding,
+          controller: controller,
+          showClose: showClose,
+          closeButton: closeButton,
+        );
+      },
+    );
 
     return controller;
   }
