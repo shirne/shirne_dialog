@@ -1,7 +1,10 @@
+library shirne_dialog;
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// a light weight message tip Widget
 class ToastWidget extends StatefulWidget {
   final String message;
   final int duration;
@@ -29,7 +32,6 @@ class _ToastWidgetState extends State<ToastWidget> {
     instanceCount.value++;
     instanceCount.addListener(onCreateInstance);
 
-    //print(['init aligment',widget.alignment.y]);
     if (widget.alignment != null && widget.alignment.y > 0) {
       alignment = Alignment.bottomCenter;
       isMarginTop = false;

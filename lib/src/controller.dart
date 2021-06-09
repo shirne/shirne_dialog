@@ -1,3 +1,5 @@
+library shirne_dialog.controller;
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ abstract class DialogController<T>{
   void remove();
 }
 
+/// controller of [ProgressWidget]
 class ProgressController extends DialogController<int> {
   OverlayEntry? entry;
   ProgressController(BuildContext context, ValueNotifier<int> notifier, [this.entry]) : super.of(context, notifier);
@@ -38,6 +41,7 @@ class ProgressController extends DialogController<int> {
   }
 }
 
+/// controller of [MyDialog.modal]
 class ModalController extends DialogController<int> {
 
   ModalController(BuildContext context, [ValueNotifier<int>? notifier]) : super.of(context, notifier);
@@ -57,6 +61,7 @@ class ModalController extends DialogController<int> {
   }
 }
 
+/// controller of any popup use [Overlay] exp. [MyDialog.snack]
 class EntryController extends DialogController<int> {
   OverlayEntry? entry;
 

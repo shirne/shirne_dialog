@@ -1,3 +1,4 @@
+library shirne_dialog;
 
 import 'dart:math' as math;
 
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'controller.dart';
 
+/// a [SnickBar] like Widget
 class SnackWidget extends StatefulWidget {
   final String message;
   final int duration;

@@ -1,3 +1,5 @@
+library shirne_dialog;
+
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -29,6 +31,8 @@ class MyDialog {
   static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill,
       color: Colors.blue);
 
+  /// show a confirm Modal box.
+  /// the `message` may be a [Widget] or [String]
   Future<bool?>? confirm(message,
       {String buttonText = 'OK',
       String title = '',
@@ -65,6 +69,8 @@ class MyDialog {
     return controller.result as Future<bool?>?;
   }
 
+  /// show a small modal with one button which text is `buttonText`.
+  /// the `message` may be a [Widget] or [String]
   Future<void> alert(message, {String buttonText = 'OK', String title = ''}) {
     late ModalController controller;
     Completer completer = Completer<bool>();
@@ -92,6 +98,8 @@ class MyDialog {
     return completer.future;
   }
 
+  /// show a modal witch content is `body`,with any `buttons`.
+  /// The modal title will be hidden if `title` isEmpty
   DialogController modal(Widget body, List<Widget> buttons,
       {String title = '', barrierDismissible = false}) {
     ModalController controller = ModalController(context);
@@ -111,6 +119,7 @@ class MyDialog {
     return controller;
   }
 
+  /// show a modal popup with `body` witch width will fill the screen
   DialogController popup(Widget body, {
     barrierDismissible = false,
     double height = 0,
@@ -149,6 +158,8 @@ class MyDialog {
     return controller;
   }
 
+  /// show a loading progress within an [OverlayEntry].
+  /// keep in `time` seconds or manual control it's status by pass 0 to `time`
   DialogController loading(String message,
       {showProgress = false, showOverlay = true, double time = 3}) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
@@ -173,6 +184,7 @@ class MyDialog {
     return controller;
   }
 
+  /// show a light weight tip with in `message`, an `icon` is optional.
   void toast(String message,
       {int duration = 2, Alignment align = alignTop, Icon? icon}) {
     OverlayEntry entry = OverlayEntry(builder: (context) {
@@ -191,6 +203,7 @@ class MyDialog {
     });
   }
 
+  /// show a [SnackBar] like Widget but use a diy Widget with [OverlayEntry]
   EntryController snack(String message,
       {Widget? action,
       int duration = 3,

@@ -1,7 +1,10 @@
+library shirne_dialog;
+
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
 
+/// A popup Widget wrapper
 class PopupWidget extends StatefulWidget {
   final Widget? child;
   final double? height;

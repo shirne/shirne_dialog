@@ -9,4 +9,20 @@
 
 A package for flutter to use alert and toast within one line code.
 
+## usage
+
+```
+MyDialog.of(context).toast('tip message');
+
+MyDialog.of(context).alert(Text('alert message'));
+
+MyDialog.of(context).confirm(Text('alert message')).then((v){
+
+});
+
+MyDialog.of(context).popup(Text('popup contents'));
+
+MyDialog.of(context).snack('tip');
+```
+
 [Demo](https://www.shirne.com/demo/easydialog/)

@@ -1,9 +1,13 @@
+library shirne_dialog;
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
 
+
+/// a progress Widget
 class ProgressWidget extends StatefulWidget {
   final ValueNotifier<int>? notifier;
   final bool showProgress;
