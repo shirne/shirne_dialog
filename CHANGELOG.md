@@ -1,3 +1,6 @@
+## [1.2.1]
+    * package & comments
+
 ## [1.2.0]
     * popup重构
 
