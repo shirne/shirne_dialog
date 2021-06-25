@@ -1,3 +1,7 @@
+## [1.2.2]
+    * add MyDialog.getAlignment for get Alignment from string
+    * add comments
+
 ## [1.2.1]
     * package & comments
 

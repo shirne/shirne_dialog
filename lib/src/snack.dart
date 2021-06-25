@@ -20,14 +20,18 @@ class SnackWidget extends StatefulWidget {
       {Key? key,
       this.duration = 4,
       this.alignment = const Alignment(0, 0.8),
-      this.action, this.notifier, this.controller, this.maxWidth = 0.7})
+      this.action,
+      this.notifier,
+      this.controller,
+      this.maxWidth = 0.7})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SnackWidgetState();
 }
 
-class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStateMixin {
+class _SnackWidgetState extends State<SnackWidget>
+    with SingleTickerProviderStateMixin {
   late Alignment alignment;
   double alignY = 1.2;
   double opacity = 1;
@@ -59,23 +63,24 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
   }
 
   void _onStateChange() {
-    if(widget.notifier!.value >= 100){
-      _aniController.animateTo(0)..whenComplete(() {
-        widget.controller!.remove();
-      });
+    if (widget.notifier!.value >= 100) {
+      _aniController.animateTo(0)
+        ..whenComplete(() {
+          widget.controller!.remove();
+        });
     }
   }
 
   void _onAnimation() {
     setState(() {
-      alignment = Alignment(0, alignY + (widget.alignment.y - alignY)*_aniController.value/100);
-      opacity = _aniController.value/100;
+      alignment = Alignment(0,
+          alignY + (widget.alignment.y - alignY) * _aniController.value / 100);
+      opacity = _aniController.value / 100;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    const aDuration = Duration(milliseconds: 300);
     var width = MediaQuery.of(context).size.width;
 
     return Align(
@@ -87,13 +92,13 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
             decoration: BoxDecoration(
               color: Color.fromRGBO(0, 0, 0, 0.8),
               gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(54, 54, 54, 1),
-                    Color.fromRGBO(16, 16, 16, 1),
-                    Colors.black
-                  ],
-                  stops: [0,0.6,1],
-                  transform: GradientRotation(math.pi * 0.47),
+                colors: [
+                  Color.fromRGBO(54, 54, 54, 1),
+                  Color.fromRGBO(16, 16, 16, 1),
+                  Colors.black
+                ],
+                stops: [0, 0.6, 1],
+                transform: GradientRotation(math.pi * 0.47),
               ),
               shape: BoxShape.rectangle,
               boxShadow: [
@@ -107,15 +112,15 @@ class _SnackWidgetState extends State<SnackWidget> with SingleTickerProviderStat
             child: Material(
               color: Colors.transparent,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      widget.message,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    widget.action ?? Text('')
-                  ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    widget.message,
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  widget.action ?? Text('')
+                ],
               ),
             ),
           ),

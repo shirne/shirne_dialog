@@ -15,24 +15,23 @@ class PopupWidget extends StatefulWidget {
   final Widget closeButton;
   final Color backgroundColor;
 
-  const PopupWidget(
-      {Key? key,
-  this.child,
-  this.height,
-  this.controller,
-  this.borderRound = 10,
-  this.padding = const EdgeInsets.all(10),
-  this.backgroundColor = Colors.white,
-  this.showClose = true,
-  this.closeButton = const Icon(Icons.cancel),
-  })
-      : super(key: key);
+  const PopupWidget({
+    Key? key,
+    this.child,
+    this.height,
+    this.controller,
+    this.borderRound = 10,
+    this.padding = const EdgeInsets.all(10),
+    this.backgroundColor = Colors.white,
+    this.showClose = true,
+    this.closeButton = const Icon(Icons.cancel),
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PopupWidgetState();
 }
 
-class _PopupWidgetState extends State<PopupWidget>{
+class _PopupWidgetState extends State<PopupWidget> {
   double height = 0;
 
   @override
@@ -40,12 +39,10 @@ class _PopupWidgetState extends State<PopupWidget>{
     super.initState();
     if (widget.height != null) height = widget.height!;
 
-    if(widget.controller!.notifier != null) {
+    if (widget.controller!.notifier != null) {
       widget.controller!.notifier!.addListener(_onController);
     }
   }
-
-
 
   void _onController() {
     if (widget.controller!.notifier!.value == 101) {
@@ -55,7 +52,7 @@ class _PopupWidgetState extends State<PopupWidget>{
   }
 
   void _close() {
-    if(widget.controller!.notifier != null) {
+    if (widget.controller!.notifier != null) {
       widget.controller!.notifier!.removeListener(_onController);
     }
     widget.controller!.remove();
@@ -68,7 +65,7 @@ class _PopupWidgetState extends State<PopupWidget>{
     if (height <= 0) {
       // 按具体高度
       height = size.height * 0.8;
-    }else if(height < 1){
+    } else if (height < 1) {
       // 按屏高百分比
       height = size.height * height;
     }
@@ -91,15 +88,17 @@ class _PopupWidgetState extends State<PopupWidget>{
           ),
           Align(
             alignment: Alignment.topRight,
-            child: widget.showClose ? GestureDetector(
-              onTap: () {
-                _close();
-              },
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: widget.closeButton,
-              ),
-            ) : null,
+            child: widget.showClose
+                ? GestureDetector(
+                    onTap: () {
+                      _close();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: widget.closeButton,
+                    ),
+                  )
+                : null,
           )
         ],
       ),

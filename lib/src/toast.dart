@@ -11,7 +11,11 @@ class ToastWidget extends StatefulWidget {
   final Icon? icon;
   final Alignment alignment;
 
-  const ToastWidget(this.message, {Key? key, this.alignment = Alignment.center, this.duration = 3, this.icon})
+  const ToastWidget(this.message,
+      {Key? key,
+      this.alignment = Alignment.center,
+      this.duration = 3,
+      this.icon})
       : super(key: key);
 
   @override
@@ -32,7 +36,7 @@ class _ToastWidgetState extends State<ToastWidget> {
     instanceCount.value++;
     instanceCount.addListener(onCreateInstance);
 
-    if (widget.alignment != null && widget.alignment.y > 0) {
+    if (widget.alignment.y > 0) {
       alignment = Alignment.bottomCenter;
       isMarginTop = false;
     } else {
@@ -97,19 +101,23 @@ class _ToastWidgetState extends State<ToastWidget> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Material(
               color: Colors.transparent,
-              child: widget.icon == null ? Text(
-                widget.message,
-                style: TextStyle(color: Colors.white),
-              ) : Row(
-                children: [
-                  widget.icon!,
-                  SizedBox(width: 15,),
-                  Text(
-                    widget.message,
-                    style: TextStyle(color: Colors.white),
-                  )
-                ],
-              ),
+              child: widget.icon == null
+                  ? Text(
+                      widget.message,
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : Row(
+                      children: [
+                        widget.icon!,
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          widget.message,
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
             ),
           ),
         ),

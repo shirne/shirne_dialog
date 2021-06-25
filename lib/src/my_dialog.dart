@@ -11,29 +11,54 @@ import 'progress.dart';
 import 'snack.dart';
 import 'toast.dart';
 
+/// static class to call alert, confirm, toast etc.
 class MyDialog {
   BuildContext context;
 
+  /// construct with a [BuildContext]
   MyDialog.of(this.context);
 
+  /// detault top position for [toast]
   static const alignTop = const Alignment(0.0, -0.7);
+
+  /// default bottom position for [toast]
   static const alignBottom = const Alignment(0.0, 0.7);
 
+  /// transform string to [Alignment] that use for [toast]
+  static Alignment getAlignment(String align) {
+    switch (align.toLowerCase()) {
+      case "top":
+      case "topcenter":
+        return alignTop;
+      case "center":
+        return Alignment.center;
+      default:
+        return alignBottom;
+    }
+  }
+
+  /// success icon for [toast]
   static const iconSuccess = const Icon(
     CupertinoIcons.checkmark_circle_fill,
     color: Colors.green,
   );
+
+  /// error icon for [toast]
   static const iconError =
       const Icon(CupertinoIcons.multiply_circle_fill, color: Colors.red);
+
+  /// warning icon for [toast]
   static const iconWarning = const Icon(
       CupertinoIcons.exclamationmark_triangle_fill,
       color: Colors.deepOrangeAccent);
+
+  /// info icon for [toast]
   static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill,
       color: Colors.blue);
 
   /// show a confirm Modal box.
-  /// the `message` may be a [Widget] or [String]
-  Future<bool?>? confirm(message,
+  /// the [message] may be a [Widget] or [String]
+  Future<bool?>? confirm(dynamic message,
       {String buttonText = 'OK',
       String title = '',
       String cancelText = 'Cancel'}) {
@@ -120,19 +145,21 @@ class MyDialog {
   }
 
   /// show a modal popup with `body` witch width will fill the screen
-  DialogController popup(Widget body, {
-    barrierDismissible = false,
-    double height = 0,
-    double borderRound = 10,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
-    Color barrierColor: const Color.fromRGBO(0, 0, 0, .6),
-    Color backgroundColor: Colors.white,
-    bool isDismissible: true,
-    bool isScrollControlled: false,
-    double? elevation,
-    bool showClose = true,
-    Widget closeButton = const Icon(Icons.cancel, color: Colors.black38,)
-  }) {
+  DialogController popup(Widget body,
+      {barrierDismissible = false,
+      double height = 0,
+      double borderRound = 10,
+      EdgeInsetsGeometry padding = const EdgeInsets.all(10),
+      Color barrierColor: const Color.fromRGBO(0, 0, 0, .6),
+      Color backgroundColor: Colors.white,
+      bool isDismissible: true,
+      bool isScrollControlled: false,
+      double? elevation,
+      bool showClose = true,
+      Widget closeButton = const Icon(
+        Icons.cancel,
+        color: Colors.black38,
+      )}) {
     ModalController controller = ModalController(context);
     controller.result = showModalBottomSheet<dynamic>(
       backgroundColor: Colors.transparent,
@@ -144,9 +171,9 @@ class MyDialog {
       builder: (BuildContext context) {
         return PopupWidget(
           child: body,
-          height:height,
-          borderRound:borderRound,
-          backgroundColor:backgroundColor,
+          height: height,
+          borderRound: borderRound,
+          backgroundColor: backgroundColor,
           padding: padding,
           controller: controller,
           showClose: showClose,
