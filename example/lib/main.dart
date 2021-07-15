@@ -11,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Easy Dialog Demo',
+      title: 'Shirne Dialog Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Easy Dialog Demo'),
+      home: MyHomePage(title: 'Shirne Dialog Demo'),
     );
   }
 }

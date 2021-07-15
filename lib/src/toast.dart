@@ -96,8 +96,9 @@ class _ToastWidgetState extends State<ToastWidget> {
               borderRadius: BorderRadius.circular(5),
             ),
             margin: EdgeInsets.only(
-                top: isMarginTop ? instanceIndex * 60.0 : 0,
-                bottom: isMarginTop ? 0 : instanceIndex * 60.0),
+              top: isMarginTop ? instanceIndex * 60.0 : 0,
+              bottom: isMarginTop ? 0 : instanceIndex * 60.0,
+            ),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Material(
               color: Colors.transparent,

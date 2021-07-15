@@ -12,16 +12,28 @@ class ProgressWidget extends StatefulWidget {
   final bool showProgress;
   final bool showOverlay;
   final String? message;
+  final BoxDecoration? decoration;
+  final EdgeInsetsGeometry padding;
+  final double strokeWidth;
   final DialogController? controller;
+  final Animation<Color?>? valueColor;
+  final Color? color;
+  final Color? backgroundColor;
 
-  const ProgressWidget(
-      {Key? key,
-      this.notifier,
-      this.showProgress = false,
-      this.message,
-      this.controller,
-      this.showOverlay = true})
-      : super(key: key);
+  const ProgressWidget({
+    Key? key,
+    this.notifier,
+    this.showProgress = false,
+    this.message,
+    this.controller,
+    this.showOverlay = true,
+    this.decoration,
+    this.padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+    this.strokeWidth = 4,
+    this.valueColor,
+    this.backgroundColor,
+    this.color,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProgressWidgetState();
@@ -69,22 +81,37 @@ class _ProgressWidgetState extends State<ProgressWidget>
     return Container(
       color: Color.fromRGBO(0, 0, 0, widget.showOverlay ? 0.4 : 0),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(
-              value: widget.showProgress ? _aniController!.value : null,
-              backgroundColor: Colors.white,
-            ),
-            SizedBox(height: 10),
-            Text(
-              widget.message!,
-              style: TextStyle(
-                  color: Colors.white,
+        child: Container(
+          padding: widget.padding,
+          decoration: widget.decoration ??
+              BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CircularProgressIndicator.adaptive(
+                value: widget.showProgress ? _aniController!.value : null,
+                backgroundColor: widget.backgroundColor,
+                valueColor: widget.valueColor ??
+                    AlwaysStoppedAnimation<Color>(
+                      widget.color ?? Theme.of(context).primaryColor,
+                    ),
+                strokeWidth: widget.strokeWidth,
+              ),
+              SizedBox(height: 10),
+              Text(
+                widget.message!,
+                style: TextStyle(
+                  color: Colors.black54,
                   decoration: TextDecoration.none,
-                  fontSize: 14),
-            )
-          ],
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
