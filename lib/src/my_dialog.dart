@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
+import 'image_preview.dart';
 import 'popup.dart';
 import 'progress.dart';
 import 'snack.dart';
@@ -126,11 +127,14 @@ class MyDialog {
   /// show a modal witch content is `body`,with any `buttons`.
   /// The modal title will be hidden if `title` isEmpty
   DialogController modal(Widget body, List<Widget> buttons,
-      {String title = '', barrierDismissible = false}) {
+      {String title = '',
+      barrierDismissible = false,
+      Color? barrierColor = Colors.black54}) {
     ModalController controller = ModalController(context);
     controller.result = showDialog<dynamic>(
       context: context,
       barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
       builder: (BuildContext context) {
         return AlertDialog(
           title: title.isEmpty ? null : Text(title),
@@ -138,6 +142,25 @@ class MyDialog {
             child: body,
           ),
           actions: buttons,
+        );
+      },
+    );
+    return controller;
+  }
+
+  DialogController imagePreview(List<String> images,
+      {String? currentImage,
+      barrierDismissible = true,
+      Color? barrierColor = Colors.black54}) {
+    ModalController controller = ModalController(context);
+    controller.result = showDialog<dynamic>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      builder: (BuildContext context) {
+        return ImagePreviewWidget(
+          imageUrls: images,
+          currentImage: currentImage,
         );
       },
     );
