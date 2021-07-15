@@ -1,3 +1,7 @@
+## [1.3.0]
+    * add imagePreview
+    * add color settings on progress widget
+
 ## [1.2.2]
     * add MyDialog.getAlignment for get Alignment from string
     * add comments

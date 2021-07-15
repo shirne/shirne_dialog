@@ -9,6 +9,17 @@
 
 A package for flutter to use alert and toast within one line code.
 
+## function
+
+* toast
+* alert
+* confirm
+* modal
+* popup
+* imagePreview
+* snack
+* progress
+
 ## usage
 
 ```
