@@ -1,3 +1,6 @@
+## [1.4.0]
+    * 返回值优化
+
 ## [1.3.0]
     * add imagePreview
     * add color settings on progress widget

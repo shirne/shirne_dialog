@@ -59,13 +59,15 @@ class MyDialog {
 
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
-  Future<bool?>? confirm(dynamic message,
-      {String buttonText = 'OK',
-      String title = '',
-      String cancelText = 'Cancel'}) {
-    late ModalController controller;
-    Completer completer = Completer<bool>();
-    controller = modal(
+  Future<bool?> confirm(
+    dynamic message, {
+    String buttonText = 'OK',
+    String title = '',
+    String cancelText = 'Cancel',
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    return modal<bool>(
       message is Widget
           ? message
           : ListBody(
@@ -77,30 +79,31 @@ class MyDialog {
       [
         TextButton(
             onPressed: () {
-              controller.close();
-              completer.complete(false);
+              Navigator.pop(context, false);
             },
             child: Text(cancelText)),
         ElevatedButton(
             onPressed: () {
-              controller.close();
-              completer.complete(true);
+              Navigator.pop(context, true);
             },
             child: Text(buttonText)),
       ],
       title: title,
-    ) as ModalController;
-    controller.result = completer.future;
-
-    return controller.result as Future<bool?>?;
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
   }
 
   /// show a small modal with one button which text is `buttonText`.
   /// the `message` may be a [Widget] or [String]
-  Future<void> alert(message, {String buttonText = 'OK', String title = ''}) {
-    late ModalController controller;
-    Completer completer = Completer<bool>();
-    controller = modal(
+  Future<bool?> alert(
+    message, {
+    String buttonText = 'OK',
+    String title = '',
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    return modal<bool>(
       message is Widget
           ? message
           : ListBody(
@@ -112,26 +115,27 @@ class MyDialog {
       [
         ElevatedButton(
           onPressed: () {
-            controller.close();
-            completer.complete();
+            Navigator.pop(context, true);
           },
           child: Text(buttonText),
         ),
       ],
       title: title,
-    ) as ModalController;
-
-    return completer.future;
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
   }
 
   /// show a modal witch content is `body`,with any `buttons`.
   /// The modal title will be hidden if `title` isEmpty
-  DialogController modal(Widget body, List<Widget> buttons,
-      {String title = '',
-      barrierDismissible = false,
-      Color? barrierColor = Colors.black54}) {
-    ModalController controller = ModalController(context);
-    controller.result = showDialog<dynamic>(
+  Future<T?> modal<T>(
+    Widget body,
+    List<Widget> buttons, {
+    String title = '',
+    bool barrierDismissible = false,
+    Color? barrierColor = Colors.black54,
+  }) {
+    return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -145,15 +149,15 @@ class MyDialog {
         );
       },
     );
-    return controller;
   }
 
-  DialogController imagePreview(List<String> images,
-      {String? currentImage,
-      barrierDismissible = true,
-      Color? barrierColor = Colors.black54}) {
-    ModalController controller = ModalController(context);
-    controller.result = showDialog<dynamic>(
+  Future<dynamic> imagePreview(
+    List<String> images, {
+    String? currentImage,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    return showDialog<dynamic>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -164,11 +168,10 @@ class MyDialog {
         );
       },
     );
-    return controller;
   }
 
   /// show a modal popup with `body` witch width will fill the screen
-  DialogController popup(Widget body,
+  Future<T?> popup<T>(Widget body,
       {barrierDismissible = false,
       double height = 0,
       double borderRound = 10,
@@ -183,8 +186,7 @@ class MyDialog {
         Icons.cancel,
         color: Colors.black38,
       )}) {
-    ModalController controller = ModalController(context);
-    controller.result = showModalBottomSheet<dynamic>(
+    return showModalBottomSheet<T>(
       backgroundColor: Colors.transparent,
       barrierColor: barrierColor,
       context: context,
@@ -198,14 +200,11 @@ class MyDialog {
           borderRound: borderRound,
           backgroundColor: backgroundColor,
           padding: padding,
-          controller: controller,
           showClose: showClose,
           closeButton: closeButton,
         );
       },
     );
-
-    return controller;
   }
 
   /// show a loading progress within an [OverlayEntry].

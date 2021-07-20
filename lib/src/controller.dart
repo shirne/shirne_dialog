@@ -44,24 +44,6 @@ class ProgressController extends DialogController<int> {
   }
 }
 
-/// controller of [MyDialog.modal]
-class ModalController extends DialogController<int> {
-  ModalController(BuildContext context, [ValueNotifier<int>? notifier])
-      : super.of(context, notifier);
-
-  open() {}
-
-  update(int value) {}
-
-  close() {
-    remove();
-  }
-
-  remove() {
-    Navigator.pop(context);
-  }
-}
-
 /// controller of any popup use [Overlay] exp. [MyDialog.snack]
 class EntryController extends DialogController<int> {
   OverlayEntry? entry;

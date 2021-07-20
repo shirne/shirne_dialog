@@ -2,15 +2,12 @@ library shirne_dialog;
 
 import 'package:flutter/material.dart';
 
-import 'controller.dart';
-
 /// A popup Widget wrapper
 class PopupWidget extends StatefulWidget {
   final Widget? child;
   final double? height;
   final double borderRound;
   final EdgeInsetsGeometry padding;
-  final DialogController? controller;
   final bool showClose;
   final Widget closeButton;
   final Color backgroundColor;
@@ -19,7 +16,6 @@ class PopupWidget extends StatefulWidget {
     Key? key,
     this.child,
     this.height,
-    this.controller,
     this.borderRound = 10,
     this.padding = const EdgeInsets.all(10),
     this.backgroundColor = Colors.white,
@@ -38,30 +34,12 @@ class _PopupWidgetState extends State<PopupWidget> {
   void initState() {
     super.initState();
     if (widget.height != null) height = widget.height!;
-
-    if (widget.controller!.notifier != null) {
-      widget.controller!.notifier!.addListener(_onController);
-    }
-  }
-
-  void _onController() {
-    if (widget.controller!.notifier!.value == 101) {
-      print('will close');
-      _close();
-    }
-  }
-
-  void _close() {
-    if (widget.controller!.notifier != null) {
-      widget.controller!.notifier!.removeListener(_onController);
-    }
-    widget.controller!.remove();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    print(size);
+
     if (height <= 0) {
       // 按具体高度
       height = size.height * 0.8;
@@ -91,7 +69,7 @@ class _PopupWidgetState extends State<PopupWidget> {
             child: widget.showClose
                 ? GestureDetector(
                     onTap: () {
-                      _close();
+                      Navigator.pop(context);
                     },
                     child: Padding(
                       padding: EdgeInsets.all(8),
