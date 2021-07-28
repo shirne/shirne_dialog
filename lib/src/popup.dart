@@ -10,7 +10,7 @@ class PopupWidget extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final bool showClose;
   final Widget closeButton;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   const PopupWidget({
     Key? key,
@@ -18,7 +18,7 @@ class PopupWidget extends StatefulWidget {
     this.height,
     this.borderRound = 10,
     this.padding = const EdgeInsets.all(10),
-    this.backgroundColor = Colors.white,
+    this.backgroundColor,
     this.showClose = true,
     this.closeButton = const Icon(Icons.cancel),
   }) : super(key: key);
@@ -51,7 +51,7 @@ class _PopupWidgetState extends State<PopupWidget> {
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color: widget.backgroundColor,
+        color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(widget.borderRound),
           topRight: Radius.circular(widget.borderRound),

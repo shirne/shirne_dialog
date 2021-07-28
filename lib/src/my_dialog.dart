@@ -171,21 +171,23 @@ class MyDialog {
   }
 
   /// show a modal popup with `body` witch width will fill the screen
-  Future<T?> popup<T>(Widget body,
-      {barrierDismissible = false,
-      double height = 0,
-      double borderRound = 10,
-      EdgeInsetsGeometry padding = const EdgeInsets.all(10),
-      Color barrierColor: const Color.fromRGBO(0, 0, 0, .6),
-      Color backgroundColor: Colors.white,
-      bool isDismissible: true,
-      bool isScrollControlled: false,
-      double? elevation,
-      bool showClose = true,
-      Widget closeButton = const Icon(
-        Icons.cancel,
-        color: Colors.black38,
-      )}) {
+  Future<T?> popup<T>(
+    Widget body, {
+    barrierDismissible = false,
+    double height = 0,
+    double borderRound = 10,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
+    Color barrierColor: Colors.black54,
+    Color? backgroundColor,
+    bool isDismissible: true,
+    bool isScrollControlled: false,
+    double? elevation,
+    bool showClose = true,
+    Widget closeButton = const Icon(
+      Icons.cancel,
+      color: Colors.black38,
+    ),
+  }) {
     return showModalBottomSheet<T>(
       backgroundColor: Colors.transparent,
       barrierColor: barrierColor,

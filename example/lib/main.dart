@@ -7,14 +7,25 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  ThemeData theme = ThemeData.light();
+
+  setTheme(ThemeData newTheme) {
+    setState(() {
+      theme = newTheme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shirne Dialog Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: theme,
       home: MyHomePage(title: 'Shirne Dialog Demo'),
     );
   }
@@ -30,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isDark = false;
   List<String> images = [
     'https://img.shirne.com/website-mapp/1.png',
     'https://img.shirne.com/website-mapp/2.png',
@@ -43,6 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          Switch(
+              value: isDark,
+              onChanged: (bool newValue) {
+                isDark = newValue;
+                final appState = context.findAncestorStateOfType<MyAppState>();
+                if (appState != null) {
+                  appState
+                      .setTheme(isDark ? ThemeData.dark() : ThemeData.light());
+                }
+              })
+        ],
       ),
       body: Center(
         child: Column(

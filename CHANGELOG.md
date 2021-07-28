@@ -1,3 +1,6 @@
+## [1.4.1]
+    * popup默认背景色采用colorScheme.surface
+
 ## [1.4.0]
     * 返回值优化
 
