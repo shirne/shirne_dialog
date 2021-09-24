@@ -272,7 +272,7 @@ class MyDialog {
     String message, {
     int duration = 2,
     Alignment? align,
-    @Deprecated('use iconType insted.') Icon? icon,
+    @Deprecated('use iconType insted.') Widget? icon,
     IconType iconType = IconType.none,
   }) {
     OverlayEntry entry = OverlayEntry(builder: (context) {

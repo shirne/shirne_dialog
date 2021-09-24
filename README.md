@@ -18,7 +18,7 @@ A package for flutter to use alert and toast within one line code.
 * popup
 * imagePreview
 * snack
-* progress
+* loading
 
 ## usage
 
