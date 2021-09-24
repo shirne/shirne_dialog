@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 /// Provide unified parameter settings for various dialogs
-class Setting {
+class MyDialogSetting {
   /// detault top position for [MyDialog.toast]
   final Alignment alignTop;
 
@@ -28,7 +28,7 @@ class Setting {
   /// detault button text for [MyDialog.confirm]
   final String buttonTextCancel;
 
-  const Setting({
+  const MyDialogSetting({
     this.alignTop = const Alignment(0.0, -0.7),
     this.alignBottom = const Alignment(0.0, 0.7),
     this.iconSuccess = const Icon(

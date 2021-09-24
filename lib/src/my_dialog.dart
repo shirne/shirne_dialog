@@ -25,8 +25,8 @@ enum IconType {
 class MyDialog {
   BuildContext context;
 
-  static Setting globalSetting = const Setting();
-  final Setting? setting;
+  static MyDialogSetting globalSetting = const MyDialogSetting();
+  final MyDialogSetting? setting;
 
   /// construct with a [BuildContext]
   MyDialog.of(this.context, [this.setting]);
@@ -68,7 +68,7 @@ class MyDialog {
   @Deprecated('use globalSetting/setting insted.')
   static Widget get iconInfo => globalSetting.iconInfo;
 
-  static Widget? getIcon(IconType iconType, [Setting? setting]) {
+  static Widget? getIcon(IconType iconType, [MyDialogSetting? setting]) {
     switch (iconType) {
       case IconType.error:
         return setting?.iconError ?? globalSetting.iconError;
@@ -268,11 +268,13 @@ class MyDialog {
   }
 
   /// show a light weight tip with in `message`, an `icon` is optional.
-  void toast(String message,
-      {int duration = 2,
-      Alignment? align,
-      Icon? icon,
-      IconType iconType = IconType.none}) {
+  void toast(
+    String message, {
+    int duration = 2,
+    Alignment? align,
+    @Deprecated('use iconType insted.') Icon? icon,
+    IconType iconType = IconType.none,
+  }) {
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,

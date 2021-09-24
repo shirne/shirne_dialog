@@ -42,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isDark = false;
-  List<String> images = [
+  final images = <String>[
     'https://img.shirne.com/website-mapp/1.png',
     'https://img.shirne.com/website-mapp/2.png',
     'https://img.shirne.com/website-mapp/3.png',
@@ -50,6 +50,16 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://img.shirne.com/website-mapp/5.png',
     'https://img.shirne.com/website-mapp/6.png',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    MyDialog.globalSetting = MyDialogSetting(
+      buttonTextOK: '确定',
+      buttonTextCancel: '取消',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
-                        .toast('操作成功', icon: MyDialog.iconSuccess);
+                        .toast('操作成功', iconType: IconType.success);
                   },
                   child: Text('Toast with Icon'),
                 ),

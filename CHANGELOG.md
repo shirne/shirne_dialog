@@ -1,3 +1,6 @@
+## [1.5.0]
+    * 增加setting设置，为所有弹窗提供统一的参数配置
+
 ## [1.4.1]
     * popup默认背景色采用colorScheme.surface
 
