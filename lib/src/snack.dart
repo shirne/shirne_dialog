@@ -64,10 +64,9 @@ class _SnackWidgetState extends State<SnackWidget>
 
   void _onStateChange() {
     if (widget.notifier!.value >= 100) {
-      _aniController.animateTo(0)
-        ..whenComplete(() {
-          widget.controller!.remove();
-        });
+      _aniController.animateTo(0).whenComplete(() {
+        widget.controller!.remove();
+      });
     }
   }
 
@@ -90,8 +89,8 @@ class _SnackWidgetState extends State<SnackWidget>
           opacity: opacity,
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(0, 0, 0, 0.8),
-              gradient: LinearGradient(
+              color: const Color.fromRGBO(0, 0, 0, 0.8),
+              gradient: const LinearGradient(
                 colors: [
                   Color.fromRGBO(54, 54, 54, 1),
                   Color.fromRGBO(16, 16, 16, 1),
@@ -101,12 +100,13 @@ class _SnackWidgetState extends State<SnackWidget>
                 transform: GradientRotation(math.pi * 0.47),
               ),
               shape: BoxShape.rectangle,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(color: Colors.black38, blurRadius: 3, spreadRadius: 2)
               ],
               borderRadius: BorderRadius.circular(5),
             ),
-            padding: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 5),
+            padding:
+                const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 5),
             height: 45,
             width: width * widget.maxWidth,
             child: Material(
@@ -117,9 +117,9 @@ class _SnackWidgetState extends State<SnackWidget>
                 children: <Widget>[
                   Text(
                     widget.message,
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  widget.action ?? Text('')
+                  widget.action ?? const Text('')
                 ],
               ),
             ),

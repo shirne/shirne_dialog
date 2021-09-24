@@ -53,7 +53,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
 
       if (widget.showProgress) {
         _aniController = AnimationController.unbounded(
-            vsync: this, duration: Duration(milliseconds: 400));
+            vsync: this, duration: const Duration(milliseconds: 400));
         _aniController!.value = progress / 100.0;
         _aniController!.addListener(_onAnimation);
       }
@@ -123,12 +123,13 @@ class _ProgressWidgetState extends State<ProgressWidget>
       progress = widget.notifier!.value;
     });
     if (_aniController != null) {
-      _aniController!.animateTo(progress / 100.0, curve: Curves.easeOutQuart)
-        ..whenComplete(() {
-          if (progress >= 100) {
-            widget.controller!.remove();
-          }
-        });
+      _aniController!
+          .animateTo(progress / 100.0, curve: Curves.easeOutQuart)
+          .whenComplete(() {
+        if (progress >= 100) {
+          widget.controller!.remove();
+        }
+      });
     } else {
       if (progress >= 100) {
         Future.delayed(Duration(milliseconds: 200)).then((v) {

@@ -72,7 +72,7 @@ class _PopupWidgetState extends State<PopupWidget> {
                       Navigator.pop(context);
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: widget.closeButton,
                     ),
                   )

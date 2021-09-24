@@ -52,11 +52,9 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      floatingActionButton: Container(
-        child: Text(
-          "${_currentImage + 1}/${widget.imageUrls.length}",
-          style: TextStyle(color: Colors.white),
-        ),
+      floatingActionButton: Text(
+        "${_currentImage + 1}/${widget.imageUrls.length}",
+        style: const TextStyle(color: Colors.white),
       ),
       body: PageView(
         scrollDirection: Axis.horizontal,

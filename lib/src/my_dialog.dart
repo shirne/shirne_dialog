@@ -9,61 +9,87 @@ import 'controller.dart';
 import 'image_preview.dart';
 import 'popup.dart';
 import 'progress.dart';
+import 'setting.dart';
 import 'snack.dart';
 import 'toast.dart';
+
+enum IconType {
+  none,
+  success,
+  error,
+  warning,
+  info,
+}
 
 /// static class to call alert, confirm, toast etc.
 class MyDialog {
   BuildContext context;
 
+  static Setting globalSetting = const Setting();
+  final Setting? setting;
+
   /// construct with a [BuildContext]
-  MyDialog.of(this.context);
+  MyDialog.of(this.context, [this.setting]);
 
   /// detault top position for [toast]
-  static const alignTop = const Alignment(0.0, -0.7);
+  @Deprecated('use globalSetting/setting insted.')
+  static Alignment get alignTop => globalSetting.alignTop;
 
   /// default bottom position for [toast]
-  static const alignBottom = const Alignment(0.0, 0.7);
+  @Deprecated('use globalSetting/setting insted.')
+  static Alignment get alignBottom => globalSetting.alignBottom;
 
   /// transform string to [Alignment] that use for [toast]
   static Alignment getAlignment(String align) {
     switch (align.toLowerCase()) {
       case "top":
       case "topcenter":
-        return alignTop;
+        return globalSetting.alignTop;
       case "center":
         return Alignment.center;
       default:
-        return alignBottom;
+        return globalSetting.alignBottom;
     }
   }
 
   /// success icon for [toast]
-  static const iconSuccess = const Icon(
-    CupertinoIcons.checkmark_circle_fill,
-    color: Colors.green,
-  );
+  @Deprecated('use globalSetting/setting insted.')
+  static Widget get iconSuccess => globalSetting.iconSuccess;
 
   /// error icon for [toast]
-  static const iconError =
-      const Icon(CupertinoIcons.multiply_circle_fill, color: Colors.red);
+  @Deprecated('use globalSetting/setting insted.')
+  static Widget get iconError => globalSetting.iconError;
 
   /// warning icon for [toast]
-  static const iconWarning = const Icon(
-      CupertinoIcons.exclamationmark_triangle_fill,
-      color: Colors.deepOrangeAccent);
+  @Deprecated('use globalSetting/setting insted.')
+  static Widget get iconWarning => globalSetting.iconWarning;
 
   /// info icon for [toast]
-  static const iconInfo = const Icon(CupertinoIcons.exclamationmark_circle_fill,
-      color: Colors.blue);
+  @Deprecated('use globalSetting/setting insted.')
+  static Widget get iconInfo => globalSetting.iconInfo;
+
+  static Widget? getIcon(IconType iconType, [Setting? setting]) {
+    switch (iconType) {
+      case IconType.error:
+        return setting?.iconError ?? globalSetting.iconError;
+      case IconType.success:
+        return setting?.iconSuccess ?? globalSetting.iconSuccess;
+      case IconType.warning:
+        return setting?.iconWarning ?? globalSetting.iconWarning;
+      case IconType.info:
+        return setting?.iconInfo ?? globalSetting.iconInfo;
+      default:
+        return null;
+    }
+  }
 
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
   Future<bool?> confirm(
     dynamic message, {
-    String buttonText = 'OK',
+    String? buttonText,
     String title = '',
-    String cancelText = 'Cancel',
+    String? cancelText,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
@@ -81,12 +107,16 @@ class MyDialog {
             onPressed: () {
               Navigator.pop(context, false);
             },
-            child: Text(cancelText)),
+            child: Text(cancelText ??
+                setting?.buttonTextCancel ??
+                globalSetting.buttonTextCancel)),
         ElevatedButton(
             onPressed: () {
               Navigator.pop(context, true);
             },
-            child: Text(buttonText)),
+            child: Text(buttonText ??
+                setting?.buttonTextOK ??
+                globalSetting.buttonTextOK)),
       ],
       title: title,
       barrierDismissible: barrierDismissible,
@@ -98,7 +128,7 @@ class MyDialog {
   /// the `message` may be a [Widget] or [String]
   Future<bool?> alert(
     message, {
-    String buttonText = 'OK',
+    String? buttonText,
     String title = '',
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
@@ -117,7 +147,9 @@ class MyDialog {
           onPressed: () {
             Navigator.pop(context, true);
           },
-          child: Text(buttonText),
+          child: Text(buttonText ??
+              setting?.buttonTextOK ??
+              globalSetting.buttonTextOK),
         ),
       ],
       title: title,
@@ -177,10 +209,10 @@ class MyDialog {
     double height = 0,
     double borderRound = 10,
     EdgeInsetsGeometry padding = const EdgeInsets.all(10),
-    Color barrierColor: Colors.black54,
+    Color barrierColor = Colors.black54,
     Color? backgroundColor,
-    bool isDismissible: true,
-    bool isScrollControlled: false,
+    bool isDismissible = true,
+    bool isScrollControlled = false,
     double? elevation,
     bool showClose = true,
     Widget closeButton = const Icon(
@@ -237,12 +269,15 @@ class MyDialog {
 
   /// show a light weight tip with in `message`, an `icon` is optional.
   void toast(String message,
-      {int duration = 2, Alignment align = alignTop, Icon? icon}) {
+      {int duration = 2,
+      Alignment? align,
+      Icon? icon,
+      IconType iconType = IconType.none}) {
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
-        icon: icon,
-        alignment: align,
+        icon: icon ?? getIcon(iconType, setting),
+        alignment: align ?? setting?.alignTop ?? globalSetting.alignTop,
         duration: duration,
       );
     });
@@ -258,14 +293,14 @@ class MyDialog {
   EntryController snack(String message,
       {Widget? action,
       int duration = 3,
-      Alignment align = alignBottom,
+      Alignment? align,
       double width = 0.7}) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
     EntryController controller = EntryController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(
         message,
-        alignment: align,
+        alignment: align ?? setting?.alignBottom ?? globalSetting.alignBottom,
         action: action,
         duration: duration,
         notifier: progressNotify,

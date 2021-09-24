@@ -13,7 +13,7 @@ abstract class DialogController<T> {
   DialogController.of(this.context, this.notifier);
 
   void open();
-  void update(T _value);
+  void update(T value);
   void close();
   void remove();
 }
@@ -25,18 +25,22 @@ class ProgressController extends DialogController<int> {
       [this.entry])
       : super.of(context, notifier);
 
+  @override
   open() {
     Overlay.of(context)!.insert(entry!);
   }
 
+  @override
   update(int value) {
     notifier!.value = value;
   }
 
+  @override
   close() {
     notifier!.value = 101;
   }
 
+  @override
   remove() {
     if (entry != null) {
       entry!.remove();
@@ -52,20 +56,24 @@ class EntryController extends DialogController<int> {
       [ValueNotifier<int>? notifier, this.entry])
       : super.of(context, notifier);
 
+  @override
   open() {
     Overlay.of(context)!.insert(entry!);
   }
 
+  @override
   update(int value) {}
 
+  @override
   close() {
-    if (notifier != null)
+    if (notifier != null) {
       notifier!.value = 101;
-    else {
+    } else {
       remove();
     }
   }
 
+  @override
   remove() {
     entry!.remove();
   }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class ToastWidget extends StatefulWidget {
   final String message;
   final int duration;
-  final Icon? icon;
+  final Widget? icon;
   final Alignment alignment;
 
   const ToastWidget(this.message,
@@ -42,7 +42,7 @@ class _ToastWidgetState extends State<ToastWidget> {
     } else {
       alignment = Alignment.topCenter;
     }
-    Future.delayed(Duration(milliseconds: 10), () {
+    Future.delayed(const Duration(milliseconds: 10), () {
       if (!mounted) return;
       setState(() {
         alignment = widget.alignment;
@@ -67,7 +67,7 @@ class _ToastWidgetState extends State<ToastWidget> {
   onCreateInstance() {
     if (!mounted) return;
     //使用异步,防止触发时在initState中执行
-    Future.delayed(Duration(milliseconds: 10), () {
+    Future.delayed(const Duration(milliseconds: 10), () {
       if (!mounted) return;
       setState(() {
         instanceIndex++;
@@ -91,7 +91,7 @@ class _ToastWidgetState extends State<ToastWidget> {
             duration: aDuration,
             curve: Curves.easeOut,
             decoration: BoxDecoration(
-              color: Color.fromRGBO(0, 0, 0, 0.5),
+              color: const Color.fromRGBO(0, 0, 0, 0.5),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5),
             ),
@@ -105,17 +105,15 @@ class _ToastWidgetState extends State<ToastWidget> {
               child: widget.icon == null
                   ? Text(
                       widget.message,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     )
                   : Row(
                       children: [
                         widget.icon!,
-                        SizedBox(
-                          width: 15,
-                        ),
+                        const SizedBox(width: 15),
                         Text(
                           widget.message,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         )
                       ],
                     ),
