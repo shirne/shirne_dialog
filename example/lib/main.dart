@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,21 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Shirne Dialog Demo',
       theme: theme,
+      scrollBehavior: MyCustomScrollBehavior(),
       home: MyHomePage(title: 'Shirne Dialog Demo'),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.invertedStylus,
+      };
 }
 
 class MyHomePage extends StatefulWidget {
