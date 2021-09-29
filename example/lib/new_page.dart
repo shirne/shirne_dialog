@@ -1,61 +1,18 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:example/new_page.dart';
-import 'package:example/sub_page.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shirne_dialog/shirne_dialog.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  ThemeData theme = ThemeData.light();
-
-  setTheme(ThemeData newTheme) {
-    setState(() {
-      theme = newTheme;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shirne Dialog Demo',
-      theme: theme,
-      scrollBehavior: MyCustomScrollBehavior(),
-      home: MyHomePage(title: 'Shirne Dialog Demo'),
-    );
-  }
-}
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.invertedStylus,
-      };
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class NewPage extends StatefulWidget {
+  NewPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NewPageState createState() => _NewPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NewPageState extends State<NewPage> {
   bool isDark = false;
   final images = <String>[
     'https://img.shirne.com/website-mapp/1.png',
@@ -67,50 +24,19 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    MyDialog.initialize(
-      context,
-      MyDialogSetting(
-        buttonTextOK: '确定',
-        buttonTextCancel: '取消',
-        primaryButtonStyle: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
-          ),
-        ),
-        cancelButtonStyle: OutlinedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
-          ),
-        ),
-        modalSetting: ModalSetting(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-          ),
-        ),
-      ),
+  void initState() {
+    super.initState();
+    MyDialog.setting = MyDialogSetting(
+      buttonTextOK: '确定',
+      buttonTextCancel: '取消',
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [
-          Switch(
-              value: isDark,
-              onChanged: (bool newValue) {
-                isDark = newValue;
-                final appState = context.findAncestorStateOfType<MyAppState>();
-                if (appState != null) {
-                  appState
-                      .setTheme(isDark ? ThemeData.dark() : ThemeData.light());
-                }
-              })
-        ],
       ),
       body: Center(
         child: Column(
@@ -125,26 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return SubPage(title: 'sub page');
+                          return NewPage(title: 'sub page');
                         },
                       ),
                     );
                   },
                   child: Text('子页'),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return NewPage(title: '动态调用示例');
-                        },
-                      ),
-                    );
-                  },
-                  child: Text('动态调用示例'),
                 ),
               ],
             ),
@@ -153,21 +65,23 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息');
+                    MyDialog.of(context).toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息', align: MyDialog.alignBottom);
+                    MyDialog.of(context)
+                        .toast('提示信息', align: MyDialog.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('操作成功', iconType: IconType.success);
+                    MyDialog.of(context)
+                        .toast('操作成功', iconType: IconType.success);
                   },
                   child: Text('Toast with Icon'),
                 ),
@@ -178,18 +92,19 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.alert(Text('提示信息'));
+                    MyDialog.of(context).alert(Text('提示信息'));
                   },
                   child: Text('Alert'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.confirm(Text('是否确认')).then((v) {
+                    MyDialog.of(context).confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.toast('好的');
+                        MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.toast('em...', align: MyDialog.alignBottom);
+                        MyDialog.of(context)
+                            .toast('em...', align: MyDialog.alignBottom);
                       }
                     });
                   },
@@ -204,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 (index) => index % 2 == 0
                     ? GestureDetector(
                         onTap: () {
-                          MyDialog.imagePreview(
+                          MyDialog.of(context).imagePreview(
                             images,
                             currentImage: images[index ~/ 2],
                           );
@@ -222,21 +137,21 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(Text('弹出窗内容'));
+                  MyDialog.of(context).popup(Text('弹出窗内容'));
                 },
                 child: Text('Popup'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(Text('弹出窗内容'), height: 100);
+                  MyDialog.of(context).popup(Text('弹出窗内容'), height: 100);
                 },
                 child: Text('Popup height 100'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(
+                  MyDialog.of(context).popup(
                       SingleChildScrollView(
                         child: ListBody(
                           children: List.generate(
@@ -253,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.snack('提示信息');
+                    MyDialog.of(context).snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -261,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack(
+                    controller = MyDialog.of(context).snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -280,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack('多个操作',
+                    controller = MyDialog.of(context).snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -295,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.toast('好的好的');
+                                MyDialog.of(context).toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -314,15 +229,15 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.loading('加载中');
+                    MyDialog.of(context).loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller =
-                        MyDialog.loading('加载中', showProgress: true, time: 0);
+                    var controller = MyDialog.of(context)
+                        .loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
                       controller.update(20);
                       Timer(Duration(milliseconds: 1000), () {

@@ -38,13 +38,13 @@ MyDialog.of(context).snack('tip');
 
 Or 
 ```
-// initialize in mainApp
+// initialize in mainApp's first page
 MyDialog.initialize(context,MyDialogSetting());
 
 // call in anywhere
-MyDialog.confirm('');
-
-MyDialog.alert('');
+MyDialog.confirm('aaa');
+MyDialog.alert('test');
+MyDialog.toase('test');
 
 ```
 

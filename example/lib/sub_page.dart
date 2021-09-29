@@ -1,61 +1,20 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:example/new_page.dart';
-import 'package:example/sub_page.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shirne_dialog/shirne_dialog.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'new_page.dart';
 
-class MyApp extends StatefulWidget {
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  ThemeData theme = ThemeData.light();
-
-  setTheme(ThemeData newTheme) {
-    setState(() {
-      theme = newTheme;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shirne Dialog Demo',
-      theme: theme,
-      scrollBehavior: MyCustomScrollBehavior(),
-      home: MyHomePage(title: 'Shirne Dialog Demo'),
-    );
-  }
-}
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.invertedStylus,
-      };
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class SubPage extends StatefulWidget {
+  SubPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _SubPageState createState() => _SubPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SubPageState extends State<SubPage> {
   bool isDark = false;
   final images = <String>[
     'https://img.shirne.com/website-mapp/1.png',
@@ -68,49 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    MyDialog.initialize(
-      context,
-      MyDialogSetting(
-        buttonTextOK: '确定',
-        buttonTextCancel: '取消',
-        primaryButtonStyle: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
-          ),
-        ),
-        cancelButtonStyle: OutlinedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
-          ),
-        ),
-        modalSetting: ModalSetting(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-          ),
-        ),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [
-          Switch(
-              value: isDark,
-              onChanged: (bool newValue) {
-                isDark = newValue;
-                final appState = context.findAncestorStateOfType<MyAppState>();
-                if (appState != null) {
-                  appState
-                      .setTheme(isDark ? ThemeData.dark() : ThemeData.light());
-                }
-              })
-        ],
       ),
       body: Center(
         child: Column(
