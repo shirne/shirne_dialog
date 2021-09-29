@@ -36,4 +36,16 @@ MyDialog.of(context).popup(Text('popup contents'));
 MyDialog.of(context).snack('tip');
 ```
 
+Or 
+```
+// initialize in mainApp
+MyDialog.initialize(context,MyDialogSetting());
+
+// call in anywhere
+MyDialog.confirm('');
+
+MyDialog.alert('');
+
+```
+
 [Demo](https://www.shirne.com/demo/easydialog/)

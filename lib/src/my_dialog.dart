@@ -23,67 +23,260 @@ enum IconType {
 
 /// static class to call alert, confirm, toast etc.
 class MyDialog {
-  BuildContext context;
-
-  static MyDialogSetting globalSetting = const MyDialogSetting(
+  static MyDialogSetting setting = const MyDialogSetting(
     modalSetting: ModalSetting(),
   );
-  final MyDialogSetting? setting;
 
-  /// construct with a [BuildContext]
-  MyDialog.of(this.context, [this.setting]);
+  static ShirneDialog? _instance;
+
+  /// initialize a MyDialog instance
+  static void initialize(BuildContext context, [MyDialogSetting? setting]) {
+    _instance = ShirneDialog._(context, setting);
+  }
+
+  /// return a MyDialog instance or construct new instance with [BuildContext]
+  static ShirneDialog of([BuildContext? context, MyDialogSetting? setting]) {
+    if (context != null) {
+      return ShirneDialog._(context, setting);
+    } else if (_instance == null) {
+      throw ArgumentError.notNull('context');
+    }
+
+    return _instance!;
+  }
 
   /// detault top position for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Alignment get alignTop => globalSetting.alignTop;
+  static Alignment get alignTop => setting.alignTop;
 
   /// default bottom position for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Alignment get alignBottom => globalSetting.alignBottom;
+  static Alignment get alignBottom => setting.alignBottom;
 
   /// transform string to [Alignment] that use for [toast]
   static Alignment getAlignment(String align) {
     switch (align.toLowerCase()) {
       case "top":
       case "topcenter":
-        return globalSetting.alignTop;
+        return setting.alignTop;
       case "center":
         return Alignment.center;
       default:
-        return globalSetting.alignBottom;
+        return setting.alignBottom;
     }
   }
 
   /// success icon for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconSuccess => globalSetting.iconSuccess;
+  static Widget get iconSuccess => setting.iconSuccess;
 
   /// error icon for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconError => globalSetting.iconError;
+  static Widget get iconError => setting.iconError;
 
   /// warning icon for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconWarning => globalSetting.iconWarning;
+  static Widget get iconWarning => setting.iconWarning;
 
   /// info icon for [toast]
   @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconInfo => globalSetting.iconInfo;
+  static Widget get iconInfo => setting.iconInfo;
 
-  static Widget? getIcon(IconType iconType, [MyDialogSetting? setting]) {
+  static Widget? getIcon(IconType iconType, [MyDialogSetting? instSetting]) {
     switch (iconType) {
       case IconType.error:
-        return setting?.iconError ?? globalSetting.iconError;
+        return instSetting?.iconError ?? setting.iconError;
       case IconType.success:
-        return setting?.iconSuccess ?? globalSetting.iconSuccess;
+        return instSetting?.iconSuccess ?? setting.iconSuccess;
       case IconType.warning:
-        return setting?.iconWarning ?? globalSetting.iconWarning;
+        return instSetting?.iconWarning ?? setting.iconWarning;
       case IconType.info:
-        return setting?.iconInfo ?? globalSetting.iconInfo;
+        return instSetting?.iconInfo ?? setting.iconInfo;
       default:
         return null;
     }
   }
+
+  static Future<bool?> confirm(
+    dynamic message, {
+    String? buttonText,
+    String title = '',
+    Widget? titleWidget,
+    String? cancelText,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use confirm!');
+    }
+    return _instance!.confirm(
+      message,
+      buttonText: buttonText,
+      title: title,
+      titleWidget: titleWidget,
+      cancelText: cancelText,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
+  static Future<bool?> alert(
+    message, {
+    String? buttonText,
+    String title = '',
+    Widget? titleWidget,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use alert!');
+    }
+    return _instance!.alert(
+      message,
+      buttonText: buttonText,
+      title: title,
+      titleWidget: titleWidget,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
+  static Future<T?> modal<T>(
+    Widget body,
+    List<Widget> buttons, {
+    String title = '',
+    Widget? titleWidget,
+    bool barrierDismissible = false,
+    Color? barrierColor = Colors.black54,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use modal!');
+    }
+    return _instance!.modal<T>(
+      body,
+      buttons,
+      title: title,
+      titleWidget: titleWidget,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
+  static Future<dynamic> imagePreview(
+    List<String> images, {
+    String? currentImage,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use imagePreview!');
+    }
+    return _instance!.imagePreview(
+      images,
+      currentImage: currentImage,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
+  static Future<T?> popup<T>(
+    Widget body, {
+    barrierDismissible = false,
+    double height = 0,
+    double borderRound = 10,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
+    Color barrierColor = Colors.black54,
+    Color? backgroundColor,
+    bool isDismissible = true,
+    bool isScrollControlled = false,
+    double? elevation,
+    bool showClose = true,
+    Widget closeButton = const Icon(
+      Icons.cancel,
+      color: Colors.black38,
+    ),
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use popup!');
+    }
+    return _instance!.popup<T>(
+      body,
+      barrierDismissible: barrierDismissible,
+      height: height,
+      borderRound: borderRound,
+      padding: padding,
+      barrierColor: barrierColor,
+      backgroundColor: backgroundColor,
+      isDismissible: isDismissible,
+      isScrollControlled: isScrollControlled,
+      elevation: elevation,
+      showClose: showClose,
+      closeButton: closeButton,
+    );
+  }
+
+  static DialogController loading(
+    String message, {
+    showProgress = false,
+    showOverlay = true,
+    double time = 3,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use loading!');
+    }
+    return _instance!.loading(
+      message,
+      showProgress: showProgress,
+      showOverlay: showOverlay,
+      time: time,
+    );
+  }
+
+  static void toast(
+    String message, {
+    int duration = 2,
+    Alignment? align,
+    @Deprecated('use iconType insted.') Widget? icon,
+    IconType iconType = IconType.none,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use toast!');
+    }
+    return _instance!.toast(
+      message,
+      duration: duration,
+      align: align,
+      // ignore: deprecated_member_use_from_same_package
+      icon: icon,
+      iconType: iconType,
+    );
+  }
+
+  static EntryController snack(
+    String message, {
+    Widget? action,
+    int duration = 3,
+    Alignment? align,
+    double width = 0.7,
+  }) {
+    if (_instance == null) {
+      throw StateError('Pls call MyDialog.instance before use snack!');
+    }
+    return _instance!.snack(
+      message,
+      action: action,
+      duration: duration,
+      align: align,
+      width: width,
+    );
+  }
+}
+
+class ShirneDialog {
+  final BuildContext context;
+  final MyDialogSetting? setting;
+
+  ShirneDialog._(this.context, this.setting);
 
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
@@ -91,6 +284,7 @@ class MyDialog {
     dynamic message, {
     String? buttonText,
     String title = '',
+    Widget? titleWidget,
     String? cancelText,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
@@ -103,24 +297,36 @@ class MyDialog {
                   .toString()
                   .split('\n')
                   .map<Widget>((item) => Text(item))
-                  .toList()),
+                  .toList(),
+            ),
       [
         TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: Text(cancelText ??
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          style:
+              setting?.cancelButtonStyle ?? MyDialog.setting.cancelButtonStyle,
+          child: Text(
+            cancelText ??
                 setting?.buttonTextCancel ??
-                globalSetting.buttonTextCancel)),
+                MyDialog.setting.buttonTextCancel,
+          ),
+        ),
         ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: Text(buttonText ??
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          style: setting?.primaryButtonStyle ??
+              MyDialog.setting.primaryButtonStyle,
+          child: Text(
+            buttonText ??
                 setting?.buttonTextOK ??
-                globalSetting.buttonTextOK)),
+                MyDialog.setting.buttonTextOK,
+          ),
+        ),
       ],
       title: title,
+      titleWidget: titleWidget,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -132,6 +338,7 @@ class MyDialog {
     message, {
     String? buttonText,
     String title = '',
+    Widget? titleWidget,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
@@ -149,12 +356,15 @@ class MyDialog {
           onPressed: () {
             Navigator.pop(context, true);
           },
+          style: setting?.primaryButtonStyle ??
+              MyDialog.setting.primaryButtonStyle,
           child: Text(buttonText ??
               setting?.buttonTextOK ??
-              globalSetting.buttonTextOK),
+              MyDialog.setting.buttonTextOK),
         ),
       ],
       title: title,
+      titleWidget: titleWidget,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -170,7 +380,7 @@ class MyDialog {
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
-    final modalSetting = setting?.modalSetting ?? globalSetting.modalSetting;
+    final modalSetting = setting?.modalSetting ?? MyDialog.setting.modalSetting;
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
@@ -269,8 +479,12 @@ class MyDialog {
 
   /// show a loading progress within an [OverlayEntry].
   /// keep in `time` seconds or manual control it's status by pass 0 to `time`
-  DialogController loading(String message,
-      {showProgress = false, showOverlay = true, double time = 3}) {
+  DialogController loading(
+    String message, {
+    showProgress = false,
+    showOverlay = true,
+    double time = 3,
+  }) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
     ProgressController controller = ProgressController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {
@@ -304,8 +518,8 @@ class MyDialog {
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
-        icon: icon ?? getIcon(iconType, setting),
-        alignment: align ?? setting?.alignTop ?? globalSetting.alignTop,
+        icon: icon ?? MyDialog.getIcon(iconType, setting),
+        alignment: align ?? setting?.alignTop ?? MyDialog.setting.alignTop,
         duration: duration,
       );
     });
@@ -318,17 +532,20 @@ class MyDialog {
   }
 
   /// show a [SnackBar] like Widget but use a diy Widget with [OverlayEntry]
-  EntryController snack(String message,
-      {Widget? action,
-      int duration = 3,
-      Alignment? align,
-      double width = 0.7}) {
+  EntryController snack(
+    String message, {
+    Widget? action,
+    int duration = 3,
+    Alignment? align,
+    double width = 0.7,
+  }) {
     ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
     EntryController controller = EntryController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(
         message,
-        alignment: align ?? setting?.alignBottom ?? globalSetting.alignBottom,
+        alignment:
+            align ?? setting?.alignBottom ?? MyDialog.setting.alignBottom,
         action: action,
         duration: duration,
         notifier: progressNotify,

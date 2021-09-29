@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    MyDialog.globalSetting = MyDialogSetting(
+    MyDialog.setting = MyDialogSetting(
       buttonTextOK: '确定',
       buttonTextCancel: '取消',
     );
@@ -95,6 +95,24 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return MyHomePage(title: 'sub page');
+                        },
+                      ),
+                    );
+                  },
+                  child: Text('子页'),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -135,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context).confirm(Text('是否确认')).then((v) {
-                      if (v) {
+                      if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
                         MyDialog.of(context)

@@ -28,6 +28,9 @@ class MyDialogSetting {
   /// detault button text for [MyDialog.confirm]
   final String buttonTextCancel;
 
+  final ButtonStyle? primaryButtonStyle;
+  final ButtonStyle? cancelButtonStyle;
+
   final ModalSetting? modalSetting;
 
   const MyDialogSetting({
@@ -51,6 +54,8 @@ class MyDialogSetting {
     ),
     this.buttonTextOK = 'OK',
     this.buttonTextCancel = 'Cancel',
+    this.primaryButtonStyle,
+    this.cancelButtonStyle,
     this.modalSetting,
   });
 }
