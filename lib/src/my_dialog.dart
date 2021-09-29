@@ -25,7 +25,9 @@ enum IconType {
 class MyDialog {
   BuildContext context;
 
-  static MyDialogSetting globalSetting = const MyDialogSetting();
+  static MyDialogSetting globalSetting = const MyDialogSetting(
+    modalSetting: ModalSetting(),
+  );
   final MyDialogSetting? setting;
 
   /// construct with a [BuildContext]
@@ -164,20 +166,44 @@ class MyDialog {
     Widget body,
     List<Widget> buttons, {
     String title = '',
+    Widget? titleWidget,
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
+    final modalSetting = setting?.modalSetting ?? globalSetting.modalSetting;
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: title.isEmpty ? null : Text(title),
+          title: titleWidget ?? (title.isEmpty ? null : Text(title)),
+          titlePadding: modalSetting?.titlePadding,
+          titleTextStyle: modalSetting?.titleTextStyle,
           content: SingleChildScrollView(
             child: body,
           ),
+          contentPadding: modalSetting?.contentPadding ??
+              const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+          contentTextStyle: modalSetting?.contentTextStyle,
           actions: buttons,
+          actionsPadding: modalSetting?.actionsPadding ?? EdgeInsets.zero,
+          actionsAlignment: modalSetting?.actionsAlignment,
+          actionsOverflowDirection: modalSetting?.actionsOverflowDirection,
+          actionsOverflowButtonSpacing:
+              modalSetting?.actionsOverflowButtonSpacing,
+          buttonPadding: modalSetting?.buttonPadding,
+          backgroundColor: modalSetting?.backgroundColor,
+          elevation: modalSetting?.elevation,
+          semanticLabel: modalSetting?.semanticLabel,
+          insetPadding: modalSetting?.insetPadding ??
+              const EdgeInsets.symmetric(
+                horizontal: 40.0,
+                vertical: 24.0,
+              ),
+          clipBehavior: modalSetting?.clipBehavior ?? Clip.none,
+          shape: modalSetting?.shape,
+          scrollable: modalSetting?.scrollable ?? false,
         );
       },
     );
