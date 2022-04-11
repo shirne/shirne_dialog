@@ -2,7 +2,6 @@ library shirne_dialog;
 
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
@@ -19,10 +18,17 @@ enum IconType {
   error,
   warning,
   info,
+  help,
 }
 
 /// static class to call alert, confirm, toast etc.
 class MyDialog {
+  static GlobalKey<NavigatorState>? _navigatorKey;
+  static GlobalKey<NavigatorState> get navigatorKey {
+    _navigatorKey ??= GlobalKey<NavigatorState>();
+    return _navigatorKey!;
+  }
+
   static MyDialogSetting setting = const MyDialogSetting(
     modalSetting: ModalSetting(),
   );
@@ -30,8 +36,13 @@ class MyDialog {
   static ShirneDialog? _instance;
 
   /// initialize a MyDialog instance
-  static void initialize(BuildContext context, [MyDialogSetting? setting]) {
-    _instance = ShirneDialog._(context, setting);
+  static void initialize([BuildContext? context, MyDialogSetting? setting]) {
+    if (context == null) {
+      assert(_navigatorKey != null, "");
+      assert(_navigatorKey!.currentContext != null, "");
+    }
+    _instance =
+        ShirneDialog._(context ?? _navigatorKey!.currentContext!, setting);
   }
 
   /// return a MyDialog instance or construct new instance with [BuildContext]
@@ -39,19 +50,15 @@ class MyDialog {
     if (context != null) {
       return ShirneDialog._(context, setting);
     } else if (_instance == null) {
-      throw ArgumentError.notNull('context');
+      if (_navigatorKey != null && _navigatorKey!.currentContext != null) {
+        initialize();
+      } else {
+        throw ArgumentError.notNull('context');
+      }
     }
 
     return _instance!;
   }
-
-  /// detault top position for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Alignment get alignTop => setting.alignTop;
-
-  /// default bottom position for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Alignment get alignBottom => setting.alignBottom;
 
   /// transform string to [Alignment] that use for [toast]
   static Alignment getAlignment(String align) {
@@ -66,22 +73,6 @@ class MyDialog {
     }
   }
 
-  /// success icon for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconSuccess => setting.iconSuccess;
-
-  /// error icon for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconError => setting.iconError;
-
-  /// warning icon for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconWarning => setting.iconWarning;
-
-  /// info icon for [toast]
-  @Deprecated('use globalSetting/setting insted.')
-  static Widget get iconInfo => setting.iconInfo;
-
   static Widget? getIcon(IconType iconType, [MyDialogSetting? instSetting]) {
     switch (iconType) {
       case IconType.error:
@@ -92,9 +83,15 @@ class MyDialog {
         return instSetting?.iconWarning ?? setting.iconWarning;
       case IconType.info:
         return instSetting?.iconInfo ?? setting.iconInfo;
+      case IconType.help:
+        return instSetting?.iconHelp ?? setting.iconHelp;
       default:
         return null;
     }
+  }
+
+  static void _checkInstance() {
+    _instance ??= of();
   }
 
   static Future<bool?> confirm(
@@ -106,9 +103,7 @@ class MyDialog {
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use confirm!');
-    }
+    _checkInstance();
     return _instance!.confirm(
       message,
       buttonText: buttonText,
@@ -128,9 +123,7 @@ class MyDialog {
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use alert!');
-    }
+    _checkInstance();
     return _instance!.alert(
       message,
       buttonText: buttonText,
@@ -149,9 +142,7 @@ class MyDialog {
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use modal!');
-    }
+    _checkInstance();
     return _instance!.modal<T>(
       body,
       buttons,
@@ -168,9 +159,7 @@ class MyDialog {
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use imagePreview!');
-    }
+    _checkInstance();
     return _instance!.imagePreview(
       images,
       currentImage: currentImage,
@@ -196,9 +185,7 @@ class MyDialog {
       color: Colors.black38,
     ),
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use popup!');
-    }
+    _checkInstance();
     return _instance!.popup<T>(
       body,
       barrierDismissible: barrierDismissible,
@@ -221,9 +208,7 @@ class MyDialog {
     showOverlay = true,
     double time = 3,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use loading!');
-    }
+    _checkInstance();
     return _instance!.loading(
       message,
       showProgress: showProgress,
@@ -239,9 +224,7 @@ class MyDialog {
     @Deprecated('use iconType insted.') Widget? icon,
     IconType iconType = IconType.none,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use toast!');
-    }
+    _checkInstance();
     return _instance!.toast(
       message,
       duration: duration,
@@ -259,9 +242,7 @@ class MyDialog {
     Alignment? align,
     double width = 0.7,
   }) {
-    if (_instance == null) {
-      throw StateError('Pls call MyDialog.instance before use snack!');
-    }
+    _checkInstance();
     return _instance!.snack(
       message,
       action: action,
@@ -512,7 +493,7 @@ class ShirneDialog {
     String message, {
     int duration = 2,
     Alignment? align,
-    @Deprecated('use iconType insted.') Widget? icon,
+    Widget? icon,
     IconType iconType = IconType.none,
   }) {
     OverlayEntry entry = OverlayEntry(builder: (context) {

@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shirne_dialog/src/dialog_icons.dart';
 
 /// Provide unified parameter settings for various dialogs
 class MyDialogSetting {
@@ -22,6 +21,9 @@ class MyDialogSetting {
   /// info icon for [MyDialog.toast]
   final Widget iconInfo;
 
+  /// help icon for [MyDialog.toast]
+  final Widget iconHelp;
+
   /// detault button text for [MyDialog.confirm]
   final String buttonTextOK;
 
@@ -37,19 +39,23 @@ class MyDialogSetting {
     this.alignTop = const Alignment(0.0, -0.7),
     this.alignBottom = const Alignment(0.0, 0.7),
     this.iconSuccess = const Icon(
-      CupertinoIcons.checkmark_circle_fill,
+      DialogIcons.checkmarkFill,
       color: Colors.green,
     ),
     this.iconError = const Icon(
-      CupertinoIcons.multiply_circle_fill,
+      DialogIcons.closeFill,
       color: Colors.red,
     ),
     this.iconWarning = const Icon(
-      CupertinoIcons.exclamationmark_triangle_fill,
+      DialogIcons.warningFill,
       color: Colors.deepOrangeAccent,
     ),
     this.iconInfo = const Icon(
-      CupertinoIcons.exclamationmark_circle_fill,
+      DialogIcons.informationFill,
+      color: Colors.blue,
+    ),
+    this.iconHelp = const Icon(
+      DialogIcons.helpFill,
       color: Colors.blue,
     ),
     this.buttonTextOK = 'OK',
