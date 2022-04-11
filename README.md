@@ -41,6 +41,13 @@ Or
 // initialize in mainApp's first page
 MyDialog.initialize(context,MyDialogSetting());
 
+// Or use Mydialog.navigatorKey with MaterialApp
+ MaterialApp(
+    //...
+    navigatorKey: MyDialog.navigatorKey,
+    //...
+ );
+ 
 // call in anywhere
 MyDialog.confirm('aaa');
 MyDialog.alert('test');

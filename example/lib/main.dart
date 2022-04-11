@@ -28,6 +28,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shirne Dialog Demo',
+      navigatorKey: MyDialog.navigatorKey,
       theme: theme,
       scrollBehavior: MyCustomScrollBehavior(),
       home: MyHomePage(title: 'Shirne Dialog Demo'),
