@@ -73,7 +73,7 @@ class _NewPageState extends State<NewPage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.alignBottom);
+                        .toast('提示信息', align: MyDialog.setting.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
@@ -103,8 +103,8 @@ class _NewPageState extends State<NewPage> {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.of(context)
-                            .toast('em...', align: MyDialog.alignBottom);
+                        MyDialog.of(context).toast('em...',
+                            align: MyDialog.setting.alignBottom);
                       }
                     });
                   },

@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息', align: MyDialog.alignBottom);
+                    MyDialog.toast('提示信息', align: MyDialog.setting.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
@@ -189,7 +189,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (v ?? false) {
                         MyDialog.toast('好的');
                       } else {
-                        MyDialog.toast('em...', align: MyDialog.alignBottom);
+                        MyDialog.toast('em...',
+                            align: MyDialog.setting.alignBottom);
                       }
                     });
                   },
