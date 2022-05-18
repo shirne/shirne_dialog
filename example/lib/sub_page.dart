@@ -6,9 +6,8 @@ import 'package:shirne_dialog/shirne_dialog.dart';
 import 'new_page.dart';
 
 class SubPage extends StatefulWidget {
-  SubPage({Key key, this.title}) : super(key: key);
-
   final String title;
+  SubPage({Key? key, this.title = ''}) : super(key: key);
 
   @override
   _SubPageState createState() => _SubPageState();
@@ -40,53 +39,23 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return SubPage(title: 'sub page');
-                        },
-                      ),
-                    );
-                  },
-                  child: Text('子页'),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return NewPage(title: '动态调用示例');
-                        },
-                      ),
-                    );
-                  },
-                  child: Text('动态调用示例'),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.toast('提示信息');
+                    MyDialog.of(context).toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息', align: MyDialog.setting.alignBottom);
+                    MyDialog.of(context)
+                        .toast('提示信息', align: MyDialog.setting.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('操作成功', iconType: IconType.success);
+                    MyDialog.of(context)
+                        .toast('操作成功', iconType: IconType.success);
                   },
                   child: Text('Toast with Icon'),
                 ),
@@ -106,9 +75,9 @@ class _SubPageState extends State<SubPage> {
                   onPressed: () {
                     MyDialog.confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.toast('好的');
+                        MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.toast('em...',
+                        MyDialog.of(context).toast('em...',
                             align: MyDialog.setting.alignBottom);
                       }
                     });
@@ -117,26 +86,27 @@ class _SubPageState extends State<SubPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                images.length * 2 - 1,
-                (index) => index % 2 == 0
-                    ? GestureDetector(
-                        onTap: () {
-                          MyDialog.imagePreview(
-                            images,
-                            currentImage: images[index ~/ 2],
-                          );
-                        },
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: 100,
-                          ),
-                          child: Image.network(images[index ~/ 2]),
-                        ),
-                      )
-                    : SizedBox(width: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Wrap(
+                spacing: 10,
+                children: List.generate(
+                  images.length,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      MyDialog.imagePreview(
+                        images,
+                        currentImage: images[index],
+                      );
+                    },
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 100,
+                      ),
+                      child: Image.network(images[index]),
+                    ),
+                  ),
+                ),
               ),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -173,7 +143,7 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.snack('提示信息');
+                    MyDialog.of(context).snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -181,7 +151,7 @@ class _SubPageState extends State<SubPage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack(
+                    controller = MyDialog.of(context).snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -200,7 +170,7 @@ class _SubPageState extends State<SubPage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack('多个操作',
+                    controller = MyDialog.of(context).snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -215,7 +185,7 @@ class _SubPageState extends State<SubPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.toast('好的好的');
+                                MyDialog.of(context).toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -234,15 +204,15 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.loading('加载中');
+                    MyDialog.of(context).loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller =
-                        MyDialog.loading('加载中', showProgress: true, time: 0);
+                    var controller = MyDialog.of(context)
+                        .loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
                       controller.update(20);
                       Timer(Duration(milliseconds: 1000), () {

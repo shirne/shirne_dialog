@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
 class NewPage extends StatefulWidget {
-  NewPage({Key key, this.title}) : super(key: key);
-
   final String title;
+  NewPage({Key? key, this.title = ''}) : super(key: key);
 
   @override
   _NewPageState createState() => _NewPageState();
@@ -42,24 +41,6 @@ class _NewPageState extends State<NewPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return NewPage(title: 'sub page');
-                        },
-                      ),
-                    );
-                  },
-                  child: Text('子页'),
-                ),
-              ],
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -112,26 +93,27 @@ class _NewPageState extends State<NewPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                images.length * 2 - 1,
-                (index) => index % 2 == 0
-                    ? GestureDetector(
-                        onTap: () {
-                          MyDialog.of(context).imagePreview(
-                            images,
-                            currentImage: images[index ~/ 2],
-                          );
-                        },
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: 100,
-                          ),
-                          child: Image.network(images[index ~/ 2]),
-                        ),
-                      )
-                    : SizedBox(width: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Wrap(
+                spacing: 10,
+                children: List.generate(
+                  images.length,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      MyDialog.of(context).imagePreview(
+                        images,
+                        currentImage: images[index],
+                      );
+                    },
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 100,
+                      ),
+                      child: Image.network(images[index]),
+                    ),
+                  ),
+                ),
               ),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [

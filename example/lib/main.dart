@@ -48,9 +48,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
+  MyHomePage({Key? key, this.title = ''}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -69,30 +68,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    MyDialog.initialize(
-      context,
-      MyDialogSetting(
-        buttonTextOK: '确定',
-        buttonTextCancel: '取消',
-        primaryButtonStyle: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
+    MyDialog.setting = MyDialogSetting(
+      buttonTextOK: '确定',
+      buttonTextCancel: '取消',
+      primaryButtonStyle: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(40),
           ),
         ),
-        cancelButtonStyle: OutlinedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(40),
-            ),
+      ),
+      cancelButtonStyle: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(40),
           ),
         ),
-        modalSetting: ModalSetting(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
+      ),
+      modalSetting: ModalSetting(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
           ),
         ),
       ),
@@ -154,21 +150,23 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息');
+                    MyDialog.of(context).toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('提示信息', align: MyDialog.setting.alignBottom);
+                    MyDialog.of(context)
+                        .toast('提示信息', align: MyDialog.setting.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.toast('操作成功', iconType: IconType.success);
+                    MyDialog.of(context)
+                        .toast('操作成功', iconType: IconType.success);
                   },
                   child: Text('Toast with Icon'),
                 ),
@@ -188,9 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.toast('好的');
+                        MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.toast('em...',
+                        MyDialog.of(context).toast('em...',
                             align: MyDialog.setting.alignBottom);
                       }
                     });
@@ -199,26 +197,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                images.length * 2 - 1,
-                (index) => index % 2 == 0
-                    ? GestureDetector(
-                        onTap: () {
-                          MyDialog.imagePreview(
-                            images,
-                            currentImage: images[index ~/ 2],
-                          );
-                        },
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: 100,
-                          ),
-                          child: Image.network(images[index ~/ 2]),
-                        ),
-                      )
-                    : SizedBox(width: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Wrap(
+                spacing: 10,
+                children: List.generate(
+                  images.length,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      MyDialog.imagePreview(
+                        images,
+                        currentImage: images[index],
+                      );
+                    },
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 100,
+                      ),
+                      child: Image.network(images[index]),
+                    ),
+                  ),
+                ),
               ),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -255,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.snack('提示信息');
+                    MyDialog.of(context).snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -263,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack(
+                    controller = MyDialog.of(context).snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -282,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.snack('多个操作',
+                    controller = MyDialog.of(context).snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -297,7 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.toast('好的好的');
+                                MyDialog.of(context).toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -316,15 +315,15 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.loading('加载中');
+                    MyDialog.of(context).loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller =
-                        MyDialog.loading('加载中', showProgress: true, time: 0);
+                    var controller = MyDialog.of(context)
+                        .loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
                       controller.update(20);
                       Timer(Duration(milliseconds: 1000), () {
