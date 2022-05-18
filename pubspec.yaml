@@ -1,6 +1,6 @@
 name: shirne_dialog
 description: A package to use alert, confirm, toast, imagePreview, snack and popup within one line code.
-version: 2.0.0
+version: 2.0.1
 homepage: https://www.shirne.com/demo/easydialog/
 repository: https://github.com/shirne/shirne_dialog
 

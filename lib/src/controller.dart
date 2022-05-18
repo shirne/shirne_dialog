@@ -27,7 +27,10 @@ class ProgressController extends DialogController<int> {
 
   @override
   open() {
-    Overlay.of(context)!.insert(entry!);
+    final overlay = Overlay.of(context);
+    assert(overlay != null,
+        'ProgressController shuld be create with a Scaffold context');
+    overlay!.insert(entry!);
   }
 
   @override
@@ -58,7 +61,10 @@ class EntryController extends DialogController<int> {
 
   @override
   open() {
-    Overlay.of(context)!.insert(entry!);
+    final overlay = Overlay.of(context);
+    assert(overlay != null,
+        'EntryController shuld be create with a Scaffold context');
+    overlay!.insert(entry!);
   }
 
   @override

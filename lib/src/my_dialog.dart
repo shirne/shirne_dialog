@@ -496,6 +496,8 @@ class ShirneDialog {
     Widget? icon,
     IconType iconType = IconType.none,
   }) {
+    final overlay = Overlay.of(context);
+    assert(overlay != null, 'toast shuld call with a Scaffold context');
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
@@ -505,7 +507,7 @@ class ShirneDialog {
       );
     });
 
-    Overlay.of(context)!.insert(entry);
+    overlay!.insert(entry);
     Future.delayed(Duration(seconds: duration)).then((value) {
       // 移除层可以通过调用OverlayEntry的remove方法。
       entry.remove();
