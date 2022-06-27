@@ -84,7 +84,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
         child: Container(
           padding: widget.padding,
           decoration: widget.decoration ??
-              BoxDecoration(
+              const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
@@ -101,10 +101,10 @@ class _ProgressWidgetState extends State<ProgressWidget>
                     ),
                 strokeWidth: widget.strokeWidth,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 widget.message!,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black54,
                   decoration: TextDecoration.none,
                   fontSize: 14,
@@ -132,7 +132,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
       });
     } else {
       if (progress >= 100) {
-        Future.delayed(Duration(milliseconds: 200)).then((v) {
+        Future.delayed(const Duration(milliseconds: 200)).then((v) {
           widget.controller!.remove();
         });
       }

@@ -46,7 +46,7 @@ class _SnackWidgetState extends State<SnackWidget>
     }
     alignment = Alignment(0, alignY);
     _aniController = AnimationController.unbounded(
-        vsync: this, duration: Duration(milliseconds: 300));
+        vsync: this, duration: const Duration(milliseconds: 300));
     _aniController.value = 0;
     _aniController.addListener(_onAnimation);
 

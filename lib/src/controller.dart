@@ -25,11 +25,22 @@ class ProgressController extends DialogController<int> {
       [this.entry])
       : super.of(context, notifier);
 
+  OverlayState? getOverlayState(BuildContext context) {
+    var overlay = Overlay.of(context);
+    if (overlay == null) {
+      // var children;
+      // context.findRenderObject()?.visitChildren((child) {
+      //   if(child is )
+      // });
+    }
+    return overlay;
+  }
+
   @override
   open() {
     final overlay = Overlay.of(context);
     assert(overlay != null,
-        'ProgressController shuld be create with a Scaffold context');
+        'ProgressController shuld be create within a Overlay context');
     overlay!.insert(entry!);
   }
 
