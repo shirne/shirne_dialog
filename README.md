@@ -22,11 +22,27 @@ A package for flutter to use alert and toast within one line code.
 
 ## Notice
 
-
+You must initialize ShirneDialogTheme on theme.extensions in flutter version 3.0.0
 
 ## Usage
 
-initialize 
+Direct usage
+```
+
+MyDialog.of(context).toast('tip message');
+
+MyDialog.of(context).alert(Text('alert message'));
+
+MyDialog.of(context).confirm(Text('alert message')).then((v){
+
+});
+
+MyDialog.of(context).popup(Text('popup contents'));
+
+MyDialog.of(context).snack('tip');
+```
+
+initialize & usage
 ```
 // initialize in mainApp's first page
 MyDialog.initialize(context);
@@ -41,26 +57,10 @@ MyDialog.initialize(context);
  );
  
 
-```
-usage
-```
 // call in anywhere
 MyDialog.confirm('aaa');
 MyDialog.alert('test');
 MyDialog.toase('test');
-
-MyDialog.toast('tip message');
-
-MyDialog.alert(Text('alert message'));
-
-MyDialog.confirm(Text('alert message')).then((v){
-
-});
-
-MyDialog.popup(Text('popup contents'));
-
-MyDialog.snack('tip');
 ```
-
 
 [Demo](https://www.shirne.com/demo/easydialog/)

@@ -37,7 +37,7 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).toast('提示信息');
+                    MyDialog.toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
@@ -73,7 +73,7 @@ class _SubPageState extends State<SubPage> {
                   onPressed: () {
                     MyDialog.confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.of(context).toast('好的');
+                        MyDialog.toast('好的');
                       } else {
                         MyDialog.of(context)
                             .toast('em...', align: MyDialog.theme.alignBottom);
@@ -141,7 +141,7 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).snack('提示信息');
+                    MyDialog.snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -149,7 +149,7 @@ class _SubPageState extends State<SubPage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack(
+                    controller = MyDialog.snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -168,7 +168,7 @@ class _SubPageState extends State<SubPage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack('多个操作',
+                    controller = MyDialog.snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -183,7 +183,7 @@ class _SubPageState extends State<SubPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.of(context).toast('好的好的');
+                                MyDialog.toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -202,7 +202,7 @@ class _SubPageState extends State<SubPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).loading('加载中');
+                    MyDialog.loading('加载中');
                   },
                   child: Text('Loading'),
                 ),

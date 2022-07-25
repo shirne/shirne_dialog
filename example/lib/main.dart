@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:example/new_page.dart';
-import 'package:example/sub_page.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'new_page.dart';
+import 'sub_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +23,7 @@ class MyAppState extends State<MyApp> {
 
   setTheme(ThemeData newTheme) {
     setState(() {
-      theme = newTheme;
+      theme = newTheme.copyWith(extensions: [const ShirneDialogTheme()]);
     });
   }
 
@@ -29,6 +31,12 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shirne Dialog Demo',
+      localizationsDelegates: [
+        ShirneDialogLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       navigatorKey: MyDialog.navigatorKey,
       theme: theme,
       scrollBehavior: MyCustomScrollBehavior(),
@@ -126,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).toast('提示信息');
+                    MyDialog.toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
@@ -162,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.of(context).toast('好的');
+                        MyDialog.toast('好的');
                       } else {
                         MyDialog.of(context)
                             .toast('em...', align: MyDialog.theme.alignBottom);
@@ -230,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).snack('提示信息');
+                    MyDialog.snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -238,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack(
+                    controller = MyDialog.snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -257,7 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack('多个操作',
+                    controller = MyDialog.snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -272,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.of(context).toast('好的好的');
+                                MyDialog.toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -291,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).loading('加载中');
+                    MyDialog.loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
