@@ -1,3 +1,6 @@
+## [2.0.3]
+    * navigatorKey初始化后适配到Overlay
+    
 ## [2.0.2]
     * 代码优化
     * icon嵌入

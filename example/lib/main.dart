@@ -150,23 +150,21 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).toast('提示信息');
+                    MyDialog.toast('提示信息');
                   },
                   child: Text('Toast'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.setting.alignBottom);
+                    MyDialog.toast('提示信息', align: MyDialog.setting.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context)
-                        .toast('操作成功', iconType: IconType.success);
+                    MyDialog.toast('操作成功', iconType: IconType.success);
                   },
                   child: Text('Toast with Icon'),
                 ),
@@ -186,9 +184,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.confirm(Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.of(context).toast('好的');
+                        MyDialog.toast('好的');
                       } else {
-                        MyDialog.of(context).toast('em...',
+                        MyDialog.toast('em...',
                             align: MyDialog.setting.alignBottom);
                       }
                     });
@@ -254,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).snack('提示信息');
+                    MyDialog.snack('提示信息');
                   },
                   child: Text('Snack'),
                 ),
@@ -262,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack(
+                    controller = MyDialog.snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
@@ -281,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     var controller;
-                    controller = MyDialog.of(context).snack('多个操作',
+                    controller = MyDialog.snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
@@ -296,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                MyDialog.of(context).toast('好的好的');
+                                MyDialog.toast('好的好的');
                               },
                               child: Text(
                                 '确认',
@@ -315,15 +313,15 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).loading('加载中');
+                    MyDialog.loading('加载中');
                   },
                   child: Text('Loading'),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller = MyDialog.of(context)
-                        .loading('加载中', showProgress: true, time: 0);
+                    var controller =
+                        MyDialog.loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
                       controller.update(20);
                       Timer(Duration(milliseconds: 1000), () {

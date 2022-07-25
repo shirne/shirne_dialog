@@ -496,7 +496,8 @@ class ShirneDialog {
     Widget? icon,
     IconType iconType = IconType.none,
   }) {
-    final overlay = Overlay.of(context);
+    final overlay =
+        Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null, 'toast shuld call with a Scaffold context');
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
