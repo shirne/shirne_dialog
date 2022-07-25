@@ -3,13 +3,14 @@ library shirne_dialog;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shirne_dialog/src/localizations.dart';
 
 import 'controller.dart';
 import 'image_preview.dart';
 import 'popup.dart';
 import 'progress.dart';
-import 'setting.dart';
 import 'snack.dart';
+import 'theme.dart';
 import 'toast.dart';
 
 enum IconType {
@@ -29,26 +30,33 @@ class MyDialog {
     return _navigatorKey!;
   }
 
-  static MyDialogSetting setting = const MyDialogSetting(
-    modalSetting: ModalSetting(),
-  );
+  static ShirneDialogTheme? _theme;
+  static ShirneDialogTheme get theme {
+    _theme ??= (_navigatorKey?.currentContext == null
+            ? null
+            : Theme.of(_navigatorKey!.currentContext!)
+                .extension<ShirneDialogTheme>()) ??
+        const ShirneDialogTheme();
+    return _theme!;
+  }
 
   static ShirneDialog? _instance;
 
   /// initialize a MyDialog instance
-  static void initialize([BuildContext? context, MyDialogSetting? setting]) {
+  static void initialize([BuildContext? context]) {
     if (context == null) {
       assert(_navigatorKey != null, "");
       assert(_navigatorKey!.currentContext != null, "");
     }
-    _instance =
-        ShirneDialog._(context ?? _navigatorKey!.currentContext!, setting);
+    _instance = ShirneDialog._(context ?? _navigatorKey!.currentContext!);
   }
 
   /// return a MyDialog instance or construct new instance with [BuildContext]
-  static ShirneDialog of([BuildContext? context, MyDialogSetting? setting]) {
+  static ShirneDialog of([BuildContext? context]) {
     if (context != null) {
-      return ShirneDialog._(context, setting);
+      _theme = Theme.of(context).extension<ShirneDialogTheme>() ??
+          const ShirneDialogTheme();
+      return ShirneDialog._(context);
     } else if (_instance == null) {
       if (_navigatorKey != null && _navigatorKey!.currentContext != null) {
         initialize();
@@ -65,26 +73,26 @@ class MyDialog {
     switch (align.toLowerCase()) {
       case "top":
       case "topcenter":
-        return setting.alignTop;
+        return theme.alignTop;
       case "center":
         return Alignment.center;
       default:
-        return setting.alignBottom;
+        return theme.alignBottom;
     }
   }
 
-  static Widget? getIcon(IconType iconType, [MyDialogSetting? instSetting]) {
+  static Widget? getIcon(IconType iconType) {
     switch (iconType) {
       case IconType.error:
-        return instSetting?.iconError ?? setting.iconError;
+        return theme.iconError;
       case IconType.success:
-        return instSetting?.iconSuccess ?? setting.iconSuccess;
+        return theme.iconSuccess;
       case IconType.warning:
-        return instSetting?.iconWarning ?? setting.iconWarning;
+        return theme.iconWarning;
       case IconType.info:
-        return instSetting?.iconInfo ?? setting.iconInfo;
+        return theme.iconInfo;
       case IconType.help:
-        return instSetting?.iconHelp ?? setting.iconHelp;
+        return theme.iconHelp;
       default:
         return null;
     }
@@ -255,9 +263,12 @@ class MyDialog {
 
 class ShirneDialog {
   final BuildContext context;
-  final MyDialogSetting? setting;
+  final ShirneDialogTheme? theme;
+  final ShirneDialogLocalizations? local;
 
-  ShirneDialog._(this.context, this.setting);
+  ShirneDialog._(this.context)
+      : theme = Theme.of(context).extension<ShirneDialogTheme>(),
+        local = ShirneDialogLocalizations.of(context);
 
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
@@ -285,24 +296,18 @@ class ShirneDialog {
           onPressed: () {
             Navigator.pop(context, false);
           },
-          style:
-              setting?.cancelButtonStyle ?? MyDialog.setting.cancelButtonStyle,
+          style: theme?.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
           child: Text(
-            cancelText ??
-                setting?.buttonTextCancel ??
-                MyDialog.setting.buttonTextCancel,
+            cancelText ?? ShirneDialogLocalizations.of(context).buttonCancel,
           ),
         ),
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context, true);
           },
-          style: setting?.primaryButtonStyle ??
-              MyDialog.setting.primaryButtonStyle,
+          style: theme?.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
           child: Text(
-            buttonText ??
-                setting?.buttonTextOK ??
-                MyDialog.setting.buttonTextOK,
+            buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
           ),
         ),
       ],
@@ -337,11 +342,9 @@ class ShirneDialog {
           onPressed: () {
             Navigator.pop(context, true);
           },
-          style: setting?.primaryButtonStyle ??
-              MyDialog.setting.primaryButtonStyle,
+          style: MyDialog.theme.primaryButtonStyle,
           child: Text(buttonText ??
-              setting?.buttonTextOK ??
-              MyDialog.setting.buttonTextOK),
+              ShirneDialogLocalizations.of(context).buttonConfirm),
         ),
       ],
       title: title,
@@ -361,7 +364,7 @@ class ShirneDialog {
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
-    final modalSetting = setting?.modalSetting ?? MyDialog.setting.modalSetting;
+    final modalSetting = MyDialog.theme.modalStyle;
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
@@ -496,13 +499,14 @@ class ShirneDialog {
     Widget? icon,
     IconType iconType = IconType.none,
   }) {
-    final overlay = Overlay.of(context);
+    final overlay =
+        Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null, 'toast shuld call with a Scaffold context');
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
-        icon: icon ?? MyDialog.getIcon(iconType, setting),
-        alignment: align ?? setting?.alignTop ?? MyDialog.setting.alignTop,
+        icon: icon ?? MyDialog.getIcon(iconType),
+        alignment: align ?? MyDialog.theme.alignTop,
         duration: duration,
       );
     });
@@ -527,8 +531,7 @@ class ShirneDialog {
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(
         message,
-        alignment:
-            align ?? setting?.alignBottom ?? MyDialog.setting.alignBottom,
+        alignment: align ?? MyDialog.theme.alignBottom,
         action: action,
         duration: duration,
         notifier: progressNotify,

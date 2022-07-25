@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/src/dialog_icons.dart';
+
+import 'dialog_icons.dart';
 
 /// Provide unified parameter settings for various dialogs
-class MyDialogSetting {
+class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   /// detault top position for [MyDialog.toast]
   final Alignment alignTop;
 
-  /// detault bottom position for [MyDialog.toast]
+  /// default bottom position for [MyDialog.toast]
   final Alignment alignBottom;
 
   /// success icon for [MyDialog.toast]
@@ -24,18 +25,12 @@ class MyDialogSetting {
   /// help icon for [MyDialog.toast]
   final Widget iconHelp;
 
-  /// detault button text for [MyDialog.confirm]
-  final String buttonTextOK;
-
-  /// detault button text for [MyDialog.confirm]
-  final String buttonTextCancel;
-
   final ButtonStyle? primaryButtonStyle;
   final ButtonStyle? cancelButtonStyle;
 
-  final ModalSetting? modalSetting;
+  final ModalStyle? modalStyle;
 
-  const MyDialogSetting({
+  const ShirneDialogTheme({
     this.alignTop = const Alignment(0.0, -0.7),
     this.alignBottom = const Alignment(0.0, 0.7),
     this.iconSuccess = const Icon(
@@ -58,15 +53,46 @@ class MyDialogSetting {
       DialogIcons.helpFill,
       color: Colors.blue,
     ),
-    this.buttonTextOK = 'OK',
-    this.buttonTextCancel = 'Cancel',
     this.primaryButtonStyle,
     this.cancelButtonStyle,
-    this.modalSetting,
+    this.modalStyle,
   });
+
+  @override
+  ThemeExtension<ShirneDialogTheme> copyWith({
+    Alignment? alignTop,
+    Alignment? alignBottom,
+    Icon? iconSuccess,
+    Icon? iconError,
+    Icon? iconWarning,
+    Icon? iconInfo,
+    Icon? iconHelp,
+    ButtonStyle? primaryButtonStyle,
+    ButtonStyle? cancelButtonStyle,
+    ModalStyle? modalStyle,
+  }) {
+    return ShirneDialogTheme(
+      alignTop: alignTop ?? this.alignTop,
+      alignBottom: alignBottom ?? this.alignBottom,
+      iconSuccess: iconSuccess ?? this.iconSuccess,
+      iconError: iconError ?? this.iconError,
+      iconWarning: iconWarning ?? this.iconWarning,
+      iconInfo: iconInfo ?? this.iconInfo,
+      iconHelp: iconHelp ?? this.iconHelp,
+      primaryButtonStyle: primaryButtonStyle ?? this.primaryButtonStyle,
+      cancelButtonStyle: cancelButtonStyle ?? this.cancelButtonStyle,
+      modalStyle: modalStyle ?? this.modalStyle,
+    );
+  }
+
+  @override
+  ThemeExtension<ShirneDialogTheme> lerp(
+      ThemeExtension<ShirneDialogTheme>? other, double t) {
+    return t < 0.5 ? this : other ?? this;
+  }
 }
 
-class ModalSetting {
+class ModalStyle {
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleTextStyle;
   final EdgeInsets contentPadding;
@@ -84,7 +110,7 @@ class ModalSetting {
   final ShapeBorder? shape;
   final bool scrollable;
 
-  const ModalSetting({
+  const ModalStyle({
     this.titlePadding,
     this.titleTextStyle,
     this.contentPadding = const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),

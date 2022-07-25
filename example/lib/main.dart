@@ -16,7 +16,8 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  ThemeData theme = ThemeData.light();
+  ThemeData theme =
+      ThemeData.light().copyWith(extensions: [const ShirneDialogTheme()]);
 
   setTheme(ThemeData newTheme) {
     setState(() {
@@ -68,31 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    MyDialog.setting = MyDialogSetting(
-      buttonTextOK: '确定',
-      buttonTextCancel: '取消',
-      primaryButtonStyle: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(40),
-          ),
-        ),
-      ),
-      cancelButtonStyle: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(40),
-          ),
-        ),
-      ),
-      modalSetting: ModalSetting(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -158,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.setting.alignBottom);
+                        .toast('提示信息', align: MyDialog.theme.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
@@ -188,8 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.of(context).toast('em...',
-                            align: MyDialog.setting.alignBottom);
+                        MyDialog.of(context)
+                            .toast('em...', align: MyDialog.theme.alignBottom);
                       }
                     });
                   },

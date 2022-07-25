@@ -25,10 +25,6 @@ class _NewPageState extends State<NewPage> {
   @override
   void initState() {
     super.initState();
-    MyDialog.setting = MyDialogSetting(
-      buttonTextOK: '确定',
-      buttonTextCancel: '取消',
-    );
   }
 
   @override
@@ -54,7 +50,7 @@ class _NewPageState extends State<NewPage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.setting.alignBottom);
+                        .toast('提示信息', align: MyDialog.theme.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
@@ -84,8 +80,8 @@ class _NewPageState extends State<NewPage> {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.of(context).toast('em...',
-                            align: MyDialog.setting.alignBottom);
+                        MyDialog.of(context)
+                            .toast('em...', align: MyDialog.theme.alignBottom);
                       }
                     });
                   },

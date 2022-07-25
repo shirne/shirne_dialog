@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
-import 'new_page.dart';
-
 class SubPage extends StatefulWidget {
   final String title;
   SubPage({Key? key, this.title = ''}) : super(key: key);
@@ -47,7 +45,7 @@ class _SubPageState extends State<SubPage> {
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.setting.alignBottom);
+                        .toast('提示信息', align: MyDialog.theme.alignBottom);
                   },
                   child: Text('Toast Bottom'),
                 ),
@@ -77,8 +75,8 @@ class _SubPageState extends State<SubPage> {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.of(context).toast('em...',
-                            align: MyDialog.setting.alignBottom);
+                        MyDialog.of(context)
+                            .toast('em...', align: MyDialog.theme.alignBottom);
                       }
                     });
                   },

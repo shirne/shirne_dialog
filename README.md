@@ -5,7 +5,7 @@
     </a>
 </p>
 
-# dialog
+# Dialog
 
 A package for flutter to use alert and toast within one line code.
 
@@ -20,39 +20,47 @@ A package for flutter to use alert and toast within one line code.
 * snack
 * loading
 
-## usage
+## Notice
 
-```
-MyDialog.of(context).toast('tip message');
 
-MyDialog.of(context).alert(Text('alert message'));
 
-MyDialog.of(context).confirm(Text('alert message')).then((v){
+## Usage
 
-});
-
-MyDialog.of(context).popup(Text('popup contents'));
-
-MyDialog.of(context).snack('tip');
-```
-
-Or 
+initialize 
 ```
 // initialize in mainApp's first page
-MyDialog.initialize(context,MyDialogSetting());
+MyDialog.initialize(context);
 
 // Or use Mydialog.navigatorKey with MaterialApp
+// and set theme for dialog
  MaterialApp(
     //...
     navigatorKey: MyDialog.navigatorKey,
+    theme: ThemeData.light().copyWith(extensions: [const ShirneDialogTheme()]);
     //...
  );
  
+
+```
+usage
+```
 // call in anywhere
 MyDialog.confirm('aaa');
 MyDialog.alert('test');
 MyDialog.toase('test');
 
+MyDialog.toast('tip message');
+
+MyDialog.alert(Text('alert message'));
+
+MyDialog.confirm(Text('alert message')).then((v){
+
+});
+
+MyDialog.popup(Text('popup contents'));
+
+MyDialog.snack('tip');
 ```
+
 
 [Demo](https://www.shirne.com/demo/easydialog/)

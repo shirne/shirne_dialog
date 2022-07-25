@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../shirne_dialog.dart';
+
 /// abstract controller
 abstract class DialogController<T> {
   ValueNotifier<T>? notifier;
@@ -25,20 +27,10 @@ class ProgressController extends DialogController<int> {
       [this.entry])
       : super.of(context, notifier);
 
-  OverlayState? getOverlayState(BuildContext context) {
-    var overlay = Overlay.of(context);
-    if (overlay == null) {
-      // var children;
-      // context.findRenderObject()?.visitChildren((child) {
-      //   if(child is )
-      // });
-    }
-    return overlay;
-  }
-
   @override
   open() {
-    final overlay = Overlay.of(context);
+    final overlay =
+        Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null,
         'ProgressController shuld be create within a Overlay context');
     overlay!.insert(entry!);
@@ -72,7 +64,8 @@ class EntryController extends DialogController<int> {
 
   @override
   open() {
-    final overlay = Overlay.of(context);
+    final overlay =
+        Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null,
         'EntryController shuld be create with a Scaffold context');
     overlay!.insert(entry!);
