@@ -52,6 +52,14 @@ MyDialog.initialize(context);
  MaterialApp(
     //...
     navigatorKey: MyDialog.navigatorKey,
+    localizationsDelegates:[
+        ShirneDialogLocalizations.delegate,
+
+        // flutter locals see [https://docs.flutter.dev/development/accessibility-and-localization/internationalization]
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+    ],
     theme: ThemeData.light().copyWith(extensions: [const ShirneDialogTheme()]);
     //...
  );
