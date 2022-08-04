@@ -8,7 +8,7 @@ import 'controller.dart';
 
 /// a progress Widget
 class ProgressWidget extends StatefulWidget {
-  final ValueNotifier<int>? notifier;
+  final ValueNotifier<double>? notifier;
   final bool showProgress;
   final bool showOverlay;
   final String? message;
@@ -41,7 +41,7 @@ class ProgressWidget extends StatefulWidget {
 
 class _ProgressWidgetState extends State<ProgressWidget>
     with SingleTickerProviderStateMixin {
-  int progress = 0;
+  double progress = 0;
   AnimationController? _aniController;
 
   @override
@@ -54,7 +54,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
       if (widget.showProgress) {
         _aniController = AnimationController.unbounded(
             vsync: this, duration: const Duration(milliseconds: 400));
-        _aniController!.value = progress / 100.0;
+        _aniController!.value = progress;
         _aniController!.addListener(_onAnimation);
       }
     }
@@ -124,14 +124,14 @@ class _ProgressWidgetState extends State<ProgressWidget>
     });
     if (_aniController != null) {
       _aniController!
-          .animateTo(progress / 100.0, curve: Curves.easeOutQuart)
+          .animateTo(progress, curve: Curves.easeOutQuart)
           .whenComplete(() {
-        if (progress >= 100) {
+        if (progress >= 1) {
           widget.controller!.remove();
         }
       });
     } else {
-      if (progress >= 100) {
+      if (progress >= 1) {
         Future.delayed(const Duration(milliseconds: 200)).then((v) {
           widget.controller!.remove();
         });

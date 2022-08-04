@@ -403,13 +403,13 @@ class ShirneDialog {
     );
   }
 
-  Future<dynamic> imagePreview(
+  Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    return showDialog<dynamic>(
+    return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -463,13 +463,13 @@ class ShirneDialog {
 
   /// show a loading progress within an [OverlayEntry].
   /// keep in `time` seconds or manual control it's status by pass 0 to `time`
-  DialogController loading(
+  ProgressController loading(
     String message, {
     showProgress = false,
     showOverlay = true,
     double time = 3,
   }) {
-    ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
+    ValueNotifier<double> progressNotify = ValueNotifier<double>(0);
     ProgressController controller = ProgressController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {
       return ProgressWidget(
@@ -526,7 +526,7 @@ class ShirneDialog {
     Alignment? align,
     double width = 0.7,
   }) {
-    ValueNotifier<int> progressNotify = ValueNotifier<int>(0);
+    ValueNotifier<bool> progressNotify = ValueNotifier<bool>(true);
     EntryController controller = EntryController(context, progressNotify);
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(

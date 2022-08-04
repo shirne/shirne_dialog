@@ -212,15 +212,15 @@ class _SubPageState extends State<SubPage> {
                     var controller = MyDialog.of(context)
                         .loading('加载中', showProgress: true, time: 0);
                     Timer(Duration(milliseconds: 500), () {
-                      controller.update(20);
+                      controller.update(0.2);
                       Timer(Duration(milliseconds: 1000), () {
-                        controller.update(40);
+                        controller.update(0.4);
                         Timer(Duration(milliseconds: 300), () {
-                          controller.update(60);
+                          controller.update(0.6);
                           Timer(Duration(milliseconds: 500), () {
-                            controller.update(80);
+                            controller.update(0.8);
                             Timer(Duration(milliseconds: 1000), () {
-                              controller.update(100);
+                              controller.update(1);
                             });
                           });
                         });

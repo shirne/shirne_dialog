@@ -1,6 +1,4 @@
-library shirne_dialog.controller;
-
-import 'dart:async';
+library controller;
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +7,6 @@ import '../shirne_dialog.dart';
 /// abstract controller
 abstract class DialogController<T> {
   ValueNotifier<T>? notifier;
-  Future<dynamic>? result;
 
   BuildContext context;
   DialogController.of(this.context, this.notifier);
@@ -21,9 +18,9 @@ abstract class DialogController<T> {
 }
 
 /// controller of [ProgressWidget]
-class ProgressController extends DialogController<int> {
+class ProgressController extends DialogController<double> {
   OverlayEntry? entry;
-  ProgressController(BuildContext context, ValueNotifier<int> notifier,
+  ProgressController(BuildContext context, ValueNotifier<double> notifier,
       [this.entry])
       : super.of(context, notifier);
 
@@ -37,13 +34,13 @@ class ProgressController extends DialogController<int> {
   }
 
   @override
-  update(int value) {
+  update(double value) {
     notifier!.value = value;
   }
 
   @override
   close() {
-    notifier!.value = 101;
+    notifier!.value = 1;
   }
 
   @override
@@ -55,11 +52,11 @@ class ProgressController extends DialogController<int> {
 }
 
 /// controller of any popup use [Overlay] exp. [MyDialog.snack]
-class EntryController extends DialogController<int> {
+class EntryController extends DialogController<bool> {
   OverlayEntry? entry;
 
   EntryController(BuildContext context,
-      [ValueNotifier<int>? notifier, this.entry])
+      [ValueNotifier<bool>? notifier, this.entry])
       : super.of(context, notifier);
 
   @override
@@ -72,12 +69,12 @@ class EntryController extends DialogController<int> {
   }
 
   @override
-  update(int value) {}
+  update(bool value) {}
 
   @override
   close() {
     if (notifier != null) {
-      notifier!.value = 101;
+      notifier!.value = false;
     } else {
       remove();
     }

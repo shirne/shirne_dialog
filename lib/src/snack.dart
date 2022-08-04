@@ -16,15 +16,16 @@ class SnackWidget extends StatefulWidget {
   final DialogController? controller;
   final double maxWidth;
 
-  const SnackWidget(this.message,
-      {Key? key,
-      this.duration = 4,
-      this.alignment = const Alignment(0, 0.8),
-      this.action,
-      this.notifier,
-      this.controller,
-      this.maxWidth = 0.7})
-      : super(key: key);
+  const SnackWidget(
+    this.message, {
+    Key? key,
+    this.duration = 4,
+    this.alignment = const Alignment(0, 0.8),
+    this.action,
+    this.notifier,
+    this.controller,
+    this.maxWidth = 0.7,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SnackWidgetState();
