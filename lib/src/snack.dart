@@ -11,6 +11,8 @@ class SnackWidget extends StatefulWidget {
   final String message;
   final int duration;
   final Alignment alignment;
+
+  /// dismiss time, in millionseconds
   final Widget? action;
   final ValueNotifier? notifier;
   final DialogController? controller;
@@ -19,7 +21,7 @@ class SnackWidget extends StatefulWidget {
   const SnackWidget(
     this.message, {
     Key? key,
-    this.duration = 4,
+    this.duration = 3000,
     this.alignment = const Alignment(0, 0.8),
     this.action,
     this.notifier,
@@ -64,7 +66,7 @@ class _SnackWidgetState extends State<SnackWidget>
   }
 
   void _onStateChange() {
-    if (widget.notifier!.value >= 100) {
+    if (widget.notifier!.value) {
       _aniController.animateTo(0).whenComplete(() {
         widget.controller!.remove();
       });

@@ -23,21 +23,24 @@ enum IconType {
 }
 
 /// static class to call alert, confirm, toast etc.
+/// ** Must use navigatorKey Or call initialize with a context in Navigator **
 class MyDialog {
   static GlobalKey<NavigatorState>? _navigatorKey;
+  static set navigatorKey(GlobalKey<NavigatorState> key) {
+    _navigatorKey = key;
+  }
+
   static GlobalKey<NavigatorState> get navigatorKey {
     _navigatorKey ??= GlobalKey<NavigatorState>();
     return _navigatorKey!;
   }
 
-  static ShirneDialogTheme? _theme;
+  /// 默认主题
+  static const defaultTheme = ShirneDialogTheme();
+
+  /// 获取主题
   static ShirneDialogTheme get theme {
-    _theme ??= (_navigatorKey?.currentContext == null
-            ? null
-            : Theme.of(_navigatorKey!.currentContext!)
-                .extension<ShirneDialogTheme>()) ??
-        const ShirneDialogTheme();
-    return _theme!;
+    return _instance?.theme ?? defaultTheme;
   }
 
   static ShirneDialog? _instance;
@@ -54,8 +57,6 @@ class MyDialog {
   /// return a MyDialog instance or construct new instance with [BuildContext]
   static ShirneDialog of([BuildContext? context]) {
     if (context != null) {
-      _theme = Theme.of(context).extension<ShirneDialogTheme>() ??
-          const ShirneDialogTheme();
       return ShirneDialog._(context);
     } else if (_instance == null) {
       if (_navigatorKey != null && _navigatorKey!.currentContext != null) {
@@ -227,9 +228,9 @@ class MyDialog {
 
   static void toast(
     String message, {
-    int duration = 2,
+    int duration = 2000,
     Alignment? align,
-    @Deprecated('use iconType insted.') Widget? icon,
+    Widget? icon,
     IconType iconType = IconType.none,
   }) {
     _checkInstance();
@@ -237,7 +238,6 @@ class MyDialog {
       message,
       duration: duration,
       align: align,
-      // ignore: deprecated_member_use_from_same_package
       icon: icon,
       iconType: iconType,
     );
@@ -246,7 +246,7 @@ class MyDialog {
   static EntryController snack(
     String message, {
     Widget? action,
-    int duration = 3,
+    int duration = 3000,
     Alignment? align,
     double width = 0.7,
   }) {
@@ -263,12 +263,13 @@ class MyDialog {
 
 class ShirneDialog {
   final BuildContext context;
-  final ShirneDialogTheme? theme;
-  final ShirneDialogLocalizations? local;
 
-  ShirneDialog._(this.context)
-      : theme = Theme.of(context).extension<ShirneDialogTheme>(),
-        local = ShirneDialogLocalizations.of(context);
+  ShirneDialogTheme? get theme =>
+      Theme.of(context).extension<ShirneDialogTheme>();
+
+  ShirneDialogLocalizations? get local => ShirneDialogLocalizations.of(context);
+
+  ShirneDialog._(this.context);
 
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
@@ -449,13 +450,13 @@ class ShirneDialog {
       isScrollControlled: isScrollControlled,
       builder: (BuildContext context) {
         return PopupWidget(
-          child: body,
           height: height,
           borderRound: borderRound,
           backgroundColor: backgroundColor,
           padding: padding,
           showClose: showClose,
           closeButton: closeButton,
+          child: body,
         );
       },
     );
@@ -494,7 +495,7 @@ class ShirneDialog {
   /// show a light weight tip with in `message`, an `icon` is optional.
   void toast(
     String message, {
-    int duration = 2,
+    int duration = 2000,
     Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
@@ -522,7 +523,7 @@ class ShirneDialog {
   EntryController snack(
     String message, {
     Widget? action,
-    int duration = 3,
+    int duration = 3000,
     Alignment? align,
     double width = 0.7,
   }) {
@@ -541,7 +542,7 @@ class ShirneDialog {
     });
 
     controller.open();
-    Future.delayed(Duration(seconds: duration)).then((value) {
+    Future.delayed(Duration(milliseconds: duration)).then((value) {
       controller.close();
     });
 

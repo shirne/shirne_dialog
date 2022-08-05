@@ -29,6 +29,8 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final ButtonStyle? cancelButtonStyle;
 
   final ModalStyle? modalStyle;
+  final ToastStyle? toastStyle;
+  final SnackStyle? snackStyle;
 
   const ShirneDialogTheme({
     this.alignTop = const Alignment(0.0, -0.7),
@@ -56,6 +58,8 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     this.primaryButtonStyle,
     this.cancelButtonStyle,
     this.modalStyle,
+    this.toastStyle,
+    this.snackStyle,
   });
 
   @override
@@ -132,3 +136,16 @@ class ModalStyle {
     this.scrollable = false,
   });
 }
+
+class ToastStyle {
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final BorderRadius? borderRadius;
+  ToastStyle({
+    this.backgroundColor,
+    this.foregroundColor,
+    this.borderRadius,
+  });
+}
+
+class SnackStyle {}
