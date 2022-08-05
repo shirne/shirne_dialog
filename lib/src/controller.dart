@@ -1,11 +1,12 @@
 library controller;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../shirne_dialog.dart';
 
 /// abstract controller
-abstract class DialogController<T> {
+abstract class DialogController<T> implements ValueListenable {
   ValueNotifier<T>? notifier;
 
   BuildContext context;
@@ -15,6 +16,19 @@ abstract class DialogController<T> {
   void update(T value);
   void close();
   void remove();
+
+  @override
+  void addListener(VoidCallback listener) {
+    notifier?.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    notifier?.removeListener(listener);
+  }
+
+  @override
+  T? get value => notifier?.value;
 }
 
 /// controller of [ProgressWidget]
@@ -55,6 +69,8 @@ class ProgressController extends DialogController<double> {
 class EntryController extends DialogController<bool> {
   OverlayEntry? entry;
 
+  bool get isClose => notifier?.value ?? false;
+
   EntryController(BuildContext context,
       [ValueNotifier<bool>? notifier, this.entry])
       : super.of(context, notifier);
@@ -69,7 +85,9 @@ class EntryController extends DialogController<bool> {
   }
 
   @override
-  update(bool value) {}
+  update(bool value) {
+    notifier!.value = value;
+  }
 
   @override
   close() {

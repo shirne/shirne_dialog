@@ -148,4 +148,16 @@ class ToastStyle {
   });
 }
 
-class SnackStyle {}
+class SnackStyle extends ToastStyle {
+  final Gradient? gradient;
+  final BoxDecoration? decoration;
+  final double? height;
+  SnackStyle({
+    this.height,
+    this.gradient,
+    this.decoration,
+    super.backgroundColor,
+    super.foregroundColor,
+    super.borderRadius,
+  });
+}

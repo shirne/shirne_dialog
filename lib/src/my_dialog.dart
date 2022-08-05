@@ -215,7 +215,7 @@ class MyDialog {
     String message, {
     showProgress = false,
     showOverlay = true,
-    double time = 3,
+    int time = 3000,
   }) {
     _checkInstance();
     return _instance!.loading(
@@ -232,6 +232,7 @@ class MyDialog {
     Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
+    ToastStyle? style,
   }) {
     _checkInstance();
     return _instance!.toast(
@@ -240,6 +241,7 @@ class MyDialog {
       align: align,
       icon: icon,
       iconType: iconType,
+      style: style,
     );
   }
 
@@ -249,6 +251,7 @@ class MyDialog {
     int duration = 3000,
     Alignment? align,
     double width = 0.7,
+    SnackStyle? style,
   }) {
     _checkInstance();
     return _instance!.snack(
@@ -257,6 +260,7 @@ class MyDialog {
       duration: duration,
       align: align,
       width: width,
+      style: style,
     );
   }
 }
@@ -468,7 +472,7 @@ class ShirneDialog {
     String message, {
     showProgress = false,
     showOverlay = true,
-    double time = 3,
+    int time = 3000,
   }) {
     ValueNotifier<double> progressNotify = ValueNotifier<double>(0);
     ProgressController controller = ProgressController(context, progressNotify);
@@ -485,7 +489,7 @@ class ShirneDialog {
     controller.open();
 
     if (time > 0) {
-      Future.delayed(Duration(milliseconds: (time * 1000).toInt())).then((v) {
+      Future.delayed(Duration(milliseconds: time)).then((v) {
         controller.close();
       });
     }
@@ -499,6 +503,7 @@ class ShirneDialog {
     Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
+    ToastStyle? style,
   }) {
     final overlay =
         Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
@@ -509,11 +514,12 @@ class ShirneDialog {
         icon: icon ?? MyDialog.getIcon(iconType),
         alignment: align ?? MyDialog.theme.alignTop,
         duration: duration,
+        style: style ?? theme?.toastStyle,
       );
     });
 
     overlay!.insert(entry);
-    Future.delayed(Duration(seconds: duration)).then((value) {
+    Future.delayed(Duration(milliseconds: duration)).then((value) {
       // 移除层可以通过调用OverlayEntry的remove方法。
       entry.remove();
     });
@@ -526,18 +532,19 @@ class ShirneDialog {
     int duration = 3000,
     Alignment? align,
     double width = 0.7,
+    SnackStyle? style,
   }) {
-    ValueNotifier<bool> progressNotify = ValueNotifier<bool>(true);
-    EntryController controller = EntryController(context, progressNotify);
+    EntryController controller =
+        EntryController(context, ValueNotifier<bool>(false));
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(
         message,
         alignment: align ?? MyDialog.theme.alignBottom,
         action: action,
         duration: duration,
-        notifier: progressNotify,
         controller: controller,
         maxWidth: width,
+        style: style ?? theme?.snackStyle,
       );
     });
 
