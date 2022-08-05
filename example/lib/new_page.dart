@@ -5,10 +5,10 @@ import 'package:shirne_dialog/shirne_dialog.dart';
 
 class NewPage extends StatefulWidget {
   final String title;
-  NewPage({Key? key, this.title = ''}) : super(key: key);
+  const NewPage({Key? key, this.title = ''}) : super(key: key);
 
   @override
-  _NewPageState createState() => _NewPageState();
+  State<NewPage> createState() => _NewPageState();
 }
 
 class _NewPageState extends State<NewPage> {
@@ -44,23 +44,23 @@ class _NewPageState extends State<NewPage> {
                   onPressed: () {
                     MyDialog.of(context).toast('提示信息');
                   },
-                  child: Text('Toast'),
+                  child: const Text('Toast'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
                         .toast('提示信息', align: MyDialog.theme.alignBottom);
                   },
-                  child: Text('Toast Bottom'),
+                  child: const Text('Toast Bottom'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
                         .toast('操作成功', iconType: IconType.success);
                   },
-                  child: Text('Toast with Icon'),
+                  child: const Text('Toast with Icon'),
                 ),
               ],
             ),
@@ -69,14 +69,14 @@ class _NewPageState extends State<NewPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).alert(Text('提示信息'));
+                    MyDialog.of(context).alert(const Text('提示信息'));
                   },
-                  child: Text('Alert'),
+                  child: const Text('Alert'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).confirm(Text('是否确认')).then((v) {
+                    MyDialog.of(context).confirm(const Text('是否确认')).then((v) {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
@@ -85,7 +85,7 @@ class _NewPageState extends State<NewPage> {
                       }
                     });
                   },
-                  child: Text('Confirm'),
+                  child: const Text('Confirm'),
                 ),
               ],
             ),
@@ -103,7 +103,7 @@ class _NewPageState extends State<NewPage> {
                       );
                     },
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         maxWidth: 100,
                       ),
                       child: Image.network(images[index]),
@@ -115,18 +115,18 @@ class _NewPageState extends State<NewPage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.of(context).popup(Text('弹出窗内容'));
+                  MyDialog.of(context).popup(const Text('弹出窗内容'));
                 },
-                child: Text('Popup'),
+                child: const Text('Popup'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.of(context).popup(Text('弹出窗内容'), height: 100);
+                  MyDialog.of(context).popup(const Text('弹出窗内容'), height: 100);
                 },
-                child: Text('Popup height 100'),
+                child: const Text('Popup height 100'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   MyDialog.of(context).popup(
@@ -138,7 +138,7 @@ class _NewPageState extends State<NewPage> {
                       ),
                       isScrollControlled: true);
                 },
-                child: Text('Popup with scroll'),
+                child: const Text('Popup with scroll'),
               ),
             ]),
             Row(
@@ -148,40 +148,40 @@ class _NewPageState extends State<NewPage> {
                   onPressed: () {
                     MyDialog.of(context).snack('提示信息');
                   },
-                  child: Text('Snack'),
+                  child: const Text('Snack'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller;
+                    EntryController? controller;
                     controller = MyDialog.of(context).snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
-                          controller.close();
+                          controller?.close();
                         },
-                        child: Text(
+                        child: const Text(
                           '确认',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     );
                   },
-                  child: Text('Snack with Action'),
+                  child: const Text('Snack with Action'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller;
+                    EntryController? controller;
                     controller = MyDialog.of(context).snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
                             TextButton(
                               onPressed: () {
-                                controller.close();
+                                controller?.close();
                               },
-                              child: Text(
+                              child: const Text(
                                 '取消',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -190,7 +190,7 @@ class _NewPageState extends State<NewPage> {
                               onPressed: () {
                                 MyDialog.of(context).toast('好的好的');
                               },
-                              child: Text(
+                              child: const Text(
                                 '确认',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -198,7 +198,7 @@ class _NewPageState extends State<NewPage> {
                           ],
                         ));
                   },
-                  child: Text('Snack with Actions'),
+                  child: const Text('Snack with Actions'),
                 ),
               ],
             ),
@@ -209,22 +209,22 @@ class _NewPageState extends State<NewPage> {
                   onPressed: () {
                     MyDialog.of(context).loading('加载中');
                   },
-                  child: Text('Loading'),
+                  child: const Text('Loading'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     var controller = MyDialog.of(context)
                         .loading('加载中', showProgress: true, time: 0);
-                    Timer(Duration(milliseconds: 500), () {
+                    Timer(const Duration(milliseconds: 500), () {
                       controller.update(0.2);
-                      Timer(Duration(milliseconds: 1000), () {
+                      Timer(const Duration(milliseconds: 1000), () {
                         controller.update(0.4);
-                        Timer(Duration(milliseconds: 300), () {
+                        Timer(const Duration(milliseconds: 300), () {
                           controller.update(0.6);
-                          Timer(Duration(milliseconds: 500), () {
+                          Timer(const Duration(milliseconds: 500), () {
                             controller.update(0.8);
-                            Timer(Duration(milliseconds: 1000), () {
+                            Timer(const Duration(milliseconds: 1000), () {
                               controller.update(1);
                             });
                           });
@@ -232,7 +232,7 @@ class _NewPageState extends State<NewPage> {
                       });
                     });
                   },
-                  child: Text('Loading with progress'),
+                  child: const Text('Loading with progress'),
                 )
               ],
             ),

@@ -9,10 +9,12 @@ import 'new_page.dart';
 import 'sub_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   MyAppState createState() => MyAppState();
 }
@@ -31,7 +33,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shirne Dialog Demo',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         ShirneDialogLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -40,7 +42,7 @@ class MyAppState extends State<MyApp> {
       navigatorKey: MyDialog.navigatorKey,
       theme: theme,
       scrollBehavior: MyCustomScrollBehavior(),
-      home: MyHomePage(title: 'Shirne Dialog Demo'),
+      home: const MyHomePage(title: 'Shirne Dialog Demo'),
     );
   }
 }
@@ -58,10 +60,10 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  MyHomePage({Key? key, this.title = ''}) : super(key: key);
+  const MyHomePage({Key? key, this.title = ''}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -106,26 +108,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return SubPage(title: 'sub page');
+                          return const SubPage(title: 'sub page');
                         },
                       ),
                     );
                   },
-                  child: Text('子页'),
+                  child: const Text('子页'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return NewPage(title: '动态调用示例');
+                          return const NewPage(title: '动态调用示例');
                         },
                       ),
                     );
                   },
-                  child: Text('动态调用示例'),
+                  child: const Text('动态调用示例'),
                 ),
               ],
             ),
@@ -136,23 +138,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.toast('提示信息');
                   },
-                  child: Text('Toast'),
+                  child: const Text('Toast'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
                         .toast('提示信息', align: MyDialog.theme.alignBottom);
                   },
-                  child: Text('Toast Bottom'),
+                  child: const Text('Toast Bottom'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     MyDialog.of(context)
                         .toast('操作成功', iconType: IconType.success);
                   },
-                  child: Text('Toast with Icon'),
+                  child: const Text('Toast with Icon'),
                 ),
               ],
             ),
@@ -161,14 +163,14 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.alert(Text('提示信息'));
+                    MyDialog.alert(const Text('提示信息'));
                   },
-                  child: Text('Alert'),
+                  child: const Text('Alert'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.confirm(Text('是否确认')).then((v) {
+                    MyDialog.confirm(const Text('是否确认')).then((v) {
                       if (v ?? false) {
                         MyDialog.toast('好的');
                       } else {
@@ -177,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                     });
                   },
-                  child: Text('Confirm'),
+                  child: const Text('Confirm'),
                 ),
               ],
             ),
@@ -195,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     },
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         maxWidth: 100,
                       ),
                       child: Image.network(images[index]),
@@ -207,18 +209,18 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(Text('弹出窗内容'));
+                  MyDialog.popup(const Text('弹出窗内容'));
                 },
-                child: Text('Popup'),
+                child: const Text('Popup'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(Text('弹出窗内容'), height: 100);
+                  MyDialog.popup(const Text('弹出窗内容'), height: 100);
                 },
-                child: Text('Popup height 100'),
+                child: const Text('Popup height 100'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   MyDialog.popup(
@@ -230,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       isScrollControlled: true);
                 },
-                child: Text('Popup with scroll'),
+                child: const Text('Popup with scroll'),
               ),
             ]),
             Row(
@@ -240,40 +242,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.snack('提示信息');
                   },
-                  child: Text('Snack'),
+                  child: const Text('Snack'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller;
+                    EntryController? controller;
                     controller = MyDialog.snack(
                       '提示信息',
                       action: TextButton(
                         onPressed: () {
-                          controller.close();
+                          controller?.close();
                         },
-                        child: Text(
+                        child: const Text(
                           '确认',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     );
                   },
-                  child: Text('Snack with Action'),
+                  child: const Text('Snack with Action'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    var controller;
+                    EntryController? controller;
                     controller = MyDialog.snack('多个操作',
                         action: ListBody(
                           mainAxis: Axis.horizontal,
                           children: [
                             TextButton(
                               onPressed: () {
-                                controller.close();
+                                controller?.close();
                               },
-                              child: Text(
+                              child: const Text(
                                 '取消',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -282,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: () {
                                 MyDialog.toast('好的好的');
                               },
-                              child: Text(
+                              child: const Text(
                                 '确认',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -290,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ));
                   },
-                  child: Text('Snack with Actions'),
+                  child: const Text('Snack with Actions'),
                 ),
               ],
             ),
@@ -301,22 +303,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     MyDialog.loading('加载中');
                   },
-                  child: Text('Loading'),
+                  child: const Text('Loading'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     final controller = MyDialog.of(context)
                         .loading('加载中', showProgress: true, time: 0);
-                    Timer(Duration(milliseconds: 500), () {
+                    Timer(const Duration(milliseconds: 500), () {
                       controller.update(0.2);
-                      Timer(Duration(milliseconds: 1000), () {
+                      Timer(const Duration(milliseconds: 1000), () {
                         controller.update(0.4);
-                        Timer(Duration(milliseconds: 300), () {
+                        Timer(const Duration(milliseconds: 300), () {
                           controller.update(0.6);
-                          Timer(Duration(milliseconds: 500), () {
+                          Timer(const Duration(milliseconds: 500), () {
                             controller.update(0.8);
-                            Timer(Duration(milliseconds: 1000), () {
+                            Timer(const Duration(milliseconds: 1000), () {
                               controller.update(1);
                             });
                           });
@@ -324,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     });
                   },
-                  child: Text('Loading with progress'),
+                  child: const Text('Loading with progress'),
                 )
               ],
             ),
