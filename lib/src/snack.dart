@@ -50,14 +50,14 @@ class _SnackWidgetState extends State<SnackWidget>
       alignY = -1.2;
     }
     alignment = Alignment(0, alignY);
-    _aniController = AnimationController.unbounded(
+    _aniController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
     _aniController.value = 0;
     _aniController.addListener(_onAnimation);
 
     widget.controller.addListener(_onStateChange);
 
-    _aniController.animateTo(100);
+    _aniController.animateTo(1, curve: Curves.easeIn);
   }
 
   @override
@@ -78,7 +78,7 @@ class _SnackWidgetState extends State<SnackWidget>
 
   void _onStateChange() {
     if (widget.controller.value == true) {
-      _aniController.animateTo(0).whenComplete(() {
+      _aniController.animateTo(0, curve: Curves.easeOut).whenComplete(() {
         widget.controller.remove();
       });
     }
@@ -86,16 +86,14 @@ class _SnackWidgetState extends State<SnackWidget>
 
   void _onAnimation() {
     setState(() {
-      alignment = Alignment(0,
-          alignY + (widget.alignment.y - alignY) * _aniController.value / 100);
-      opacity = _aniController.value / 100;
+      alignment = Alignment(
+          0, alignY + (widget.alignment.y - alignY) * _aniController.value);
+      opacity = _aniController.value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-
     return Align(
       alignment: alignment,
       child: Opacity(
@@ -125,7 +123,7 @@ class _SnackWidgetState extends State<SnackWidget>
               ),
           padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 5),
           height: widget.style?.height ?? 45,
-          width: width * maxWidth(context),
+          width: maxWidth(context),
           child: Material(
             color: Colors.transparent,
             child: Row(

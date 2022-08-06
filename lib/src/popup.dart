@@ -4,23 +4,49 @@ import 'package:flutter/material.dart';
 
 /// A popup Widget wrapper
 class PopupWidget extends StatefulWidget {
+  /// 弹出内容
   final Widget? child;
+
+  /// 弹出层高度，不设置随内容而定，受最大高度限制
   final double? height;
-  final double borderRound;
-  final EdgeInsetsGeometry padding;
+
+  /// 弹出层最大高度，默认减去 toolBarHeight及statusBarheight
+  final double? maxHeight;
+
+  /// 自定义的弹窗背景样式
+  final BoxDecoration? decoration;
+
+  /// 弹出层背景样式中的左上和右上的圆角
+  final double? borderRadius;
+
+  final EdgeInsetsGeometry? margin;
+
+  /// 内容区的内边距
+  final EdgeInsetsGeometry? padding;
+
+  /// 是否显示关闭按钮
   final bool showClose;
-  final Widget closeButton;
+
+  /// 指定的关闭按钮组件
+  final Widget? closeButton;
+  final Widget? dragHandler;
   final Color? backgroundColor;
+  final String? closeSemanticsLabel;
 
   const PopupWidget({
     Key? key,
     this.child,
     this.height,
-    this.borderRound = 10,
-    this.padding = const EdgeInsets.all(10),
+    this.maxHeight,
+    this.decoration,
+    this.borderRadius,
+    this.margin,
+    this.padding,
     this.backgroundColor,
     this.showClose = true,
-    this.closeButton = const Icon(Icons.cancel),
+    this.dragHandler,
+    this.closeButton,
+    this.closeSemanticsLabel,
   }) : super(key: key);
 
   @override
@@ -28,7 +54,7 @@ class PopupWidget extends StatefulWidget {
 }
 
 class _PopupWidgetState extends State<PopupWidget> {
-  double height = 0;
+  double? height;
 
   @override
   void initState() {
@@ -38,47 +64,87 @@ class _PopupWidgetState extends State<PopupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    if (height <= 0) {
-      // 按具体高度
-      height = size.height * 0.8;
-    } else if (height < 1) {
-      // 按屏高百分比
-      height = size.height * height;
+    final mediaData = MediaQuery.of(context);
+    if (height != null) {
+      if (height! <= 0) {
+        // 按具体高度
+        height = mediaData.size.height * 0.8;
+      } else if (height! < 1) {
+        // 按屏高百分比
+        height = mediaData.size.height * height!;
+      }
     }
 
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-        color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(widget.borderRound),
-          topRight: Radius.circular(widget.borderRound),
-        ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: height ?? 0,
+        maxHeight: widget.maxHeight ??
+            mediaData.size.height - kToolbarHeight - mediaData.padding.top,
       ),
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: <Widget>[
-          Padding(
-            padding: widget.padding,
-            child: widget.child,
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: widget.showClose
-                ? GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: widget.closeButton,
+      child: Container(
+        height: height,
+        margin: widget.margin,
+        decoration: widget.decoration ??
+            BoxDecoration(
+              color: widget.backgroundColor ??
+                  Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(widget.borderRadius ?? 16.0),
+                topRight: Radius.circular(widget.borderRadius ?? 16.0),
+              ),
+            ),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              child: Center(
+                child: widget.dragHandler ??
+                    Container(
+                      width: 128,
+                      height: 6.0,
+                      margin: const EdgeInsets.only(top: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
-                  )
-                : null,
-          )
-        ],
+              ),
+            ),
+            Padding(
+              padding: widget.padding ??
+                  const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 32.0,
+                    bottom: 16.0,
+                  ),
+              child: widget.child,
+            ),
+            if (widget.showClose)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Semantics(
+                    button: true,
+                    label: widget.closeSemanticsLabel ?? 'close',
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: widget.closeButton ??
+                          const Icon(
+                            Icons.cancel,
+                            color: Colors.black38,
+                          ),
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

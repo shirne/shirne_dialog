@@ -8,7 +8,6 @@ import 'controller.dart';
 
 /// a progress Widget
 class ProgressWidget extends StatefulWidget {
-  final ValueNotifier<double>? notifier;
   final bool showProgress;
   final bool showOverlay;
   final String? message;
@@ -22,7 +21,6 @@ class ProgressWidget extends StatefulWidget {
 
   const ProgressWidget({
     Key? key,
-    this.notifier,
     this.showProgress = false,
     this.message,
     this.controller,
@@ -47,9 +45,8 @@ class _ProgressWidgetState extends State<ProgressWidget>
   @override
   void initState() {
     super.initState();
-
-    if (widget.notifier != null) {
-      widget.notifier!.addListener(_onValueChange);
+    if (widget.controller != null) {
+      widget.controller?.addListener(_onValueChange);
 
       if (widget.showProgress) {
         _aniController = AnimationController.unbounded(
@@ -62,8 +59,8 @@ class _ProgressWidgetState extends State<ProgressWidget>
 
   @override
   void dispose() {
-    if (widget.notifier != null) {
-      widget.notifier!.removeListener(_onValueChange);
+    if (widget.controller != null) {
+      widget.controller?.removeListener(_onValueChange);
       if (_aniController != null) {
         _aniController!.removeListener(_onAnimation);
         _aniController!.dispose();
@@ -120,7 +117,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
   void _onValueChange() {
     if (!mounted) return;
     setState(() {
-      progress = widget.notifier!.value;
+      progress = widget.controller!.value;
     });
     if (_aniController != null) {
       _aniController!

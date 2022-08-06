@@ -200,7 +200,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       constraints: const BoxConstraints(
                         maxWidth: 100,
                       ),
-                      child: Image.network(images[index]),
+                      child: Hero(
+                        tag: images[index],
+                        child: Image.network(images[index]),
+                      ),
                     ),
                   ),
                 ),
@@ -209,7 +212,23 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () {
-                  MyDialog.popup(const Text('弹出窗内容'));
+                  MyDialog.popup(Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                      Text('弹出窗内容'),
+                    ],
+                  ));
                 },
                 child: const Text('Popup'),
               ),
@@ -219,6 +238,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   MyDialog.popup(const Text('弹出窗内容'), height: 100);
                 },
                 child: const Text('Popup height 100'),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  MyDialog.popup(
+                    const Text('弹出窗内容'),
+                    height: 100,
+                    margin: const EdgeInsets.all(16.0),
+                    showClose: false,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  );
+                },
+                child: const Text('Popup DIY'),
               ),
               const SizedBox(width: 10),
               ElevatedButton(

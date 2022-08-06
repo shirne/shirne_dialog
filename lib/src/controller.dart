@@ -80,7 +80,7 @@ class EntryController extends DialogController<bool> {
     final overlay =
         Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null,
-        'EntryController shuld be create with a Scaffold context');
+        '[EntryController] shuld be create with a [Overlay] context');
     overlay!.insert(entry!);
   }
 
@@ -92,7 +92,7 @@ class EntryController extends DialogController<bool> {
   @override
   close() {
     if (notifier != null) {
-      notifier!.value = false;
+      notifier!.value = true;
     } else {
       remove();
     }

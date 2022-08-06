@@ -8,12 +8,14 @@ class ImagePreviewWidget extends StatefulWidget {
   final List<String> imageUrls;
   final String? currentImage;
   final ImageProvider<Object>? placement;
+  final bool useHero;
 
   const ImagePreviewWidget({
     Key? key,
     required this.imageUrls,
     this.currentImage,
     this.placement,
+    this.useHero = true,
   }) : super(key: key);
   @override
   State<ImagePreviewWidget> createState() => _ImagePreviewWidgetState();
@@ -22,7 +24,7 @@ class ImagePreviewWidget extends StatefulWidget {
 class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
   int _currentImage = 0;
   late PageController _controller;
-  late ImageProvider _placementImage;
+  ImageProvider? _placementImage;
 
   @override
   void initState() {
@@ -35,11 +37,14 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
     }
 
     _controller = PageController(initialPage: _currentImage);
-    _placementImage = MemoryImage(Uint8List.fromList([
-      71, 73, 70, 56, 55, 97, 1, 0, 1, 0, 240, 0, 0, 0, 0, 0, 201, 69, 38, //
-      33, 249, 4, 1, 0, 0, 1, 0, 44, 0, 0, 0, 00, 1, 0, 1, 0, 0, 2, 2, 76, 1, 0,
-      59,
-    ]));
+    if (widget.placement == null) {
+      _placementImage = MemoryImage(Uint8List.fromList([
+        71, 73, 70, 56, 55, 97, 1, 0, 1, 0, 240, 0, 0, 0, 0, 0, 201, 69, 38, //
+        33, 249, 4, 1, 0, 0, 1, 0, 44, 0, 0, 0, 00, 1, 0, 1, 0, 0, 2, 2, 76, 1,
+        0,
+        59,
+      ]));
+    }
   }
 
   @override
@@ -66,15 +71,32 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
         },
         children: widget.imageUrls
             .map<Widget>(
-              (src) => Center(
-                child: FadeInImage(
-                  placeholder: widget.placement ?? _placementImage,
-                  image: NetworkImage(src),
-                ),
+              (src) => _ImageItem(
+                src,
+                widget.useHero,
+                widget.placement ?? _placementImage!,
               ),
             )
             .toList(),
       ),
+    );
+  }
+}
+
+class _ImageItem extends StatelessWidget {
+  final String src;
+  final bool useHero;
+  final ImageProvider<Object> placement;
+  const _ImageItem(this.src, this.useHero, this.placement);
+
+  @override
+  Widget build(BuildContext context) {
+    final image = FadeInImage(
+      placeholder: placement,
+      image: NetworkImage(src),
+    );
+    return Center(
+      child: useHero ? Hero(tag: src, child: image) : image,
     );
   }
 }

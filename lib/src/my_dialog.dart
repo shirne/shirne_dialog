@@ -30,6 +30,7 @@ class MyDialog {
     _navigatorKey = key;
   }
 
+  /// return a globalKey use for Navigator
   static GlobalKey<NavigatorState> get navigatorKey {
     _navigatorKey ??= GlobalKey<NavigatorState>();
     return _navigatorKey!;
@@ -38,7 +39,7 @@ class MyDialog {
   /// 默认主题
   static const defaultTheme = ShirneDialogTheme();
 
-  /// 获取主题
+  /// get [ShirneDialogTheme] from context or return default
   static ShirneDialogTheme get theme {
     return _instance?.theme ?? defaultTheme;
   }
@@ -54,7 +55,7 @@ class MyDialog {
     _instance = ShirneDialog._(context ?? _navigatorKey!.currentContext!);
   }
 
-  /// return a MyDialog instance or construct new instance with [BuildContext]
+  /// return a [ShirneDialog] instance or construct new instance with [BuildContext]
   static ShirneDialog of([BuildContext? context]) {
     if (context != null) {
       return ShirneDialog._(context);
@@ -69,7 +70,7 @@ class MyDialog {
     return _instance!;
   }
 
-  /// transform string to [Alignment] that use for [toast]
+  /// transform a [String] to [Alignment] that use for [toast]
   static Alignment getAlignment(String align) {
     switch (align.toLowerCase()) {
       case "top":
@@ -82,6 +83,7 @@ class MyDialog {
     }
   }
 
+  /// transform [IconType] to [Icon]
   static Widget? getIcon(IconType iconType) {
     switch (iconType) {
       case IconType.error:
@@ -103,6 +105,7 @@ class MyDialog {
     _instance ??= of();
   }
 
+  /// A wrapper of [ShirneDialog.confirm]
   static Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
@@ -110,7 +113,7 @@ class MyDialog {
     Widget? titleWidget,
     String? cancelText,
     bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    Color? barrierColor,
   }) {
     _checkInstance();
     return _instance!.confirm(
@@ -124,6 +127,7 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.alert]
   static Future<bool?> alert(
     message, {
     String? buttonText,
@@ -143,7 +147,8 @@ class MyDialog {
     );
   }
 
-  static Future<T?> modal<T>(
+  /// A wrapper of [ShirneDialog.alertModal]
+  static Future<T?> alertModal<T>(
     Widget body,
     List<Widget> buttons, {
     String title = '',
@@ -152,7 +157,7 @@ class MyDialog {
     Color? barrierColor = Colors.black54,
   }) {
     _checkInstance();
-    return _instance!.modal<T>(
+    return _instance!.alertModal<T>(
       body,
       buttons,
       title: title,
@@ -162,6 +167,20 @@ class MyDialog {
     );
   }
 
+  static Future<T?> modal<T>(
+    Widget modal, {
+    bool barrierDismissible = false,
+    Color? barrierColor = Colors.black54,
+  }) {
+    _checkInstance();
+    return _instance!.modal<T>(
+      modal,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
+  /// A wrapper of [ShirneDialog.imagePreview]
   static Future<dynamic> imagePreview(
     List<String> images, {
     String? currentImage,
@@ -177,29 +196,33 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.popup]
   static Future<T?> popup<T>(
     Widget body, {
     barrierDismissible = false,
-    double height = 0,
-    double borderRound = 10,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
-    Color barrierColor = Colors.black54,
+    double? height,
+    double? maxHeight,
+    BoxDecoration? decoration,
+    double? borderRadius,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    Color? barrierColor,
     Color? backgroundColor,
     bool isDismissible = true,
     bool isScrollControlled = false,
     double? elevation,
     bool showClose = true,
-    Widget closeButton = const Icon(
-      Icons.cancel,
-      color: Colors.black38,
-    ),
+    Widget? closeButton,
   }) {
     _checkInstance();
     return _instance!.popup<T>(
       body,
       barrierDismissible: barrierDismissible,
       height: height,
-      borderRound: borderRound,
+      maxHeight: maxHeight,
+      decoration: decoration,
+      borderRadius: borderRadius,
+      margin: margin,
       padding: padding,
       barrierColor: barrierColor,
       backgroundColor: backgroundColor,
@@ -211,6 +234,7 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.loading]
   static DialogController loading(
     String message, {
     showProgress = false,
@@ -226,9 +250,10 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.toast]
   static void toast(
     String message, {
-    int duration = 2000,
+    int? duration,
     Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
@@ -245,12 +270,13 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.snack]
   static EntryController snack(
     String message, {
     Widget? action,
-    int duration = 3000,
+    int? duration,
     Alignment? align,
-    double width = 0.7,
+    double? width,
     SnackStyle? style,
   }) {
     _checkInstance();
@@ -271,7 +297,7 @@ class ShirneDialog {
   ShirneDialogTheme? get theme =>
       Theme.of(context).extension<ShirneDialogTheme>();
 
-  ShirneDialogLocalizations? get local => ShirneDialogLocalizations.of(context);
+  ShirneDialogLocalizations get local => ShirneDialogLocalizations.of(context);
 
   ShirneDialog._(this.context);
 
@@ -284,9 +310,9 @@ class ShirneDialog {
     Widget? titleWidget,
     String? cancelText,
     bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    Color? barrierColor,
   }) {
-    return modal<bool>(
+    return alertModal<bool>(
       message is Widget
           ? message
           : ListBody(
@@ -303,7 +329,7 @@ class ShirneDialog {
           },
           style: theme?.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
           child: Text(
-            cancelText ?? ShirneDialogLocalizations.of(context).buttonCancel,
+            cancelText ?? local.buttonCancel,
           ),
         ),
         ElevatedButton(
@@ -312,7 +338,7 @@ class ShirneDialog {
           },
           style: theme?.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
           child: Text(
-            buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
+            buttonText ?? local.buttonConfirm,
           ),
         ),
       ],
@@ -333,7 +359,7 @@ class ShirneDialog {
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    return modal<bool>(
+    return alertModal<bool>(
       message is Widget
           ? message
           : ListBody(
@@ -359,9 +385,9 @@ class ShirneDialog {
     );
   }
 
-  /// show a modal witch content is `body`,with any `buttons`.
+  /// show an [AlertDialog] witch content is `body`,with any `buttons`.
   /// The modal title will be hidden if `title` isEmpty
-  Future<T?> modal<T>(
+  Future<T?> alertModal<T>(
     Widget body,
     List<Widget> buttons, {
     String title = '',
@@ -369,41 +395,49 @@ class ShirneDialog {
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
-    final modalSetting = MyDialog.theme.modalStyle;
+    final style = MyDialog.theme.modalStyle;
+    return modal<T>(AlertDialog(
+      title: titleWidget ?? (title.isEmpty ? null : Text(title)),
+      titlePadding: style?.titlePadding,
+      titleTextStyle: style?.titleTextStyle,
+      content: SingleChildScrollView(
+        child: body,
+      ),
+      contentPadding: style?.contentPadding ??
+          const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+      contentTextStyle: style?.contentTextStyle,
+      actions: buttons,
+      actionsPadding: style?.actionsPadding ?? EdgeInsets.zero,
+      actionsAlignment: style?.actionsAlignment,
+      actionsOverflowDirection: style?.actionsOverflowDirection,
+      actionsOverflowButtonSpacing: style?.actionsOverflowButtonSpacing,
+      buttonPadding: style?.buttonPadding,
+      backgroundColor: style?.backgroundColor,
+      elevation: style?.elevation,
+      semanticLabel: style?.semanticLabel,
+      insetPadding: style?.insetPadding ??
+          const EdgeInsets.symmetric(
+            horizontal: 40.0,
+            vertical: 24.0,
+          ),
+      clipBehavior: style?.clipBehavior ?? Clip.none,
+      shape: style?.shape,
+      scrollable: style?.scrollable ?? false,
+    ));
+  }
+
+  /// show a custom modal.
+  Future<T?> modal<T>(
+    Widget modal, {
+    bool barrierDismissible = false,
+    Color? barrierColor = Colors.black54,
+  }) {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: titleWidget ?? (title.isEmpty ? null : Text(title)),
-          titlePadding: modalSetting?.titlePadding,
-          titleTextStyle: modalSetting?.titleTextStyle,
-          content: SingleChildScrollView(
-            child: body,
-          ),
-          contentPadding: modalSetting?.contentPadding ??
-              const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
-          contentTextStyle: modalSetting?.contentTextStyle,
-          actions: buttons,
-          actionsPadding: modalSetting?.actionsPadding ?? EdgeInsets.zero,
-          actionsAlignment: modalSetting?.actionsAlignment,
-          actionsOverflowDirection: modalSetting?.actionsOverflowDirection,
-          actionsOverflowButtonSpacing:
-              modalSetting?.actionsOverflowButtonSpacing,
-          buttonPadding: modalSetting?.buttonPadding,
-          backgroundColor: modalSetting?.backgroundColor,
-          elevation: modalSetting?.elevation,
-          semanticLabel: modalSetting?.semanticLabel,
-          insetPadding: modalSetting?.insetPadding ??
-              const EdgeInsets.symmetric(
-                horizontal: 40.0,
-                vertical: 24.0,
-              ),
-          clipBehavior: modalSetting?.clipBehavior ?? Clip.none,
-          shape: modalSetting?.shape,
-          scrollable: modalSetting?.scrollable ?? false,
-        );
+        return modal;
       },
     );
   }
@@ -431,35 +465,40 @@ class ShirneDialog {
   Future<T?> popup<T>(
     Widget body, {
     barrierDismissible = false,
-    double height = 0,
-    double borderRound = 10,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(10),
-    Color barrierColor = Colors.black54,
+    double? height,
+    double? maxHeight,
+    BoxDecoration? decoration,
+    double? borderRadius,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    Color? barrierColor,
     Color? backgroundColor,
     bool isDismissible = true,
     bool isScrollControlled = false,
     double? elevation,
     bool showClose = true,
-    Widget closeButton = const Icon(
-      Icons.cancel,
-      color: Colors.black38,
-    ),
+    Widget? closeButton,
+    String? closeSemanticsLabel,
   }) {
     return showModalBottomSheet<T>(
       backgroundColor: Colors.transparent,
       barrierColor: barrierColor,
-      context: context,
       elevation: elevation,
       isDismissible: isDismissible,
       isScrollControlled: isScrollControlled,
+      context: context,
       builder: (BuildContext context) {
         return PopupWidget(
           height: height,
-          borderRound: borderRound,
+          maxHeight: maxHeight,
+          decoration: decoration,
+          borderRadius: borderRadius,
           backgroundColor: backgroundColor,
+          margin: margin,
           padding: padding,
           showClose: showClose,
           closeButton: closeButton,
+          closeSemanticsLabel: closeSemanticsLabel ?? local.closeSemantics,
           child: body,
         );
       },
@@ -472,13 +511,14 @@ class ShirneDialog {
     String message, {
     showProgress = false,
     showOverlay = true,
-    int time = 3000,
+    int? time,
   }) {
-    ValueNotifier<double> progressNotify = ValueNotifier<double>(0);
-    ProgressController controller = ProgressController(context, progressNotify);
+    ProgressController controller = ProgressController(
+      context,
+      ValueNotifier<double>(0),
+    );
     controller.entry = OverlayEntry(builder: (context) {
       return ProgressWidget(
-        notifier: progressNotify,
         showProgress: showProgress,
         showOverlay: showOverlay,
         message: message,
@@ -488,7 +528,7 @@ class ShirneDialog {
 
     controller.open();
 
-    if (time > 0) {
+    if (time != null && time > 0) {
       Future.delayed(Duration(milliseconds: time)).then((v) {
         controller.close();
       });
@@ -499,7 +539,7 @@ class ShirneDialog {
   /// show a light weight tip with in `message`, an `icon` is optional.
   void toast(
     String message, {
-    int duration = 2000,
+    int? duration,
     Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
@@ -508,48 +548,75 @@ class ShirneDialog {
     final overlay =
         Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
     assert(overlay != null, 'toast shuld call with a Scaffold context');
+    final d = duration ?? 2000;
     OverlayEntry entry = OverlayEntry(builder: (context) {
       return ToastWidget(
         message,
         icon: icon ?? MyDialog.getIcon(iconType),
         alignment: align ?? MyDialog.theme.alignTop,
-        duration: duration,
+        duration: d,
         style: style ?? theme?.toastStyle,
       );
     });
 
     overlay!.insert(entry);
-    Future.delayed(Duration(milliseconds: duration)).then((value) {
-      // 移除层可以通过调用OverlayEntry的remove方法。
+    Future.delayed(Duration(milliseconds: d)).then((value) {
       entry.remove();
     });
+  }
+
+  /// Popup a Widget in Overlay.
+  /// When [isEnterControlled], [align] would be ignore.
+  /// You can handle the EnterAnimation in initialize and postFrameCallback
+  /// and handle the ExitAnimation with listening controller
+  /// when controller.value==1, and call controller.remove after animation
+  EntryController overlayModal(
+    Widget child, {
+    Alignment? align,
+    bool isEnterControlled = false,
+  }) {
+    EntryController controller =
+        EntryController(context, ValueNotifier<bool>(false));
+    controller.entry = OverlayEntry(builder: (context) {
+      return isEnterControlled
+          ? child
+          : Align(
+              alignment: align ?? Alignment.center,
+              child: child,
+            );
+    });
+
+    controller.open();
+
+    return controller;
   }
 
   /// show a [SnackBar] like Widget but use a diy Widget with [OverlayEntry]
   EntryController snack(
     String message, {
     Widget? action,
-    int duration = 3000,
+    int? duration,
     Alignment? align,
-    double width = 0.7,
+    double? width,
     SnackStyle? style,
   }) {
+    final d = duration ?? 3000;
     EntryController controller =
         EntryController(context, ValueNotifier<bool>(false));
     controller.entry = OverlayEntry(builder: (context) {
       return SnackWidget(
         message,
+        controller: controller,
         alignment: align ?? MyDialog.theme.alignBottom,
         action: action,
-        duration: duration,
-        controller: controller,
+        duration: d,
         maxWidth: width,
         style: style ?? theme?.snackStyle,
       );
     });
 
     controller.open();
-    Future.delayed(Duration(milliseconds: duration)).then((value) {
+    Future.delayed(Duration(milliseconds: d)).then((value) {
       controller.close();
     });
 

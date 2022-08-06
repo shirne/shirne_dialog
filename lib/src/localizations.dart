@@ -13,6 +13,7 @@ abstract class ShirneDialogLocalizations {
 
   String get buttonConfirm;
   String get buttonCancel;
+  String get closeSemantics;
 }
 
 class _ShirneDialogLocalizationsDelegate
@@ -56,6 +57,9 @@ class ShirneDialogLocalizationsCn extends ShirneDialogLocalizations {
 
   @override
   String get buttonConfirm => '取消';
+
+  @override
+  String get closeSemantics => '关闭';
 }
 
 class ShirneDialogLocalizationsEn extends ShirneDialogLocalizations {
@@ -64,4 +68,7 @@ class ShirneDialogLocalizationsEn extends ShirneDialogLocalizations {
 
   @override
   String get buttonConfirm => 'Cancel';
+
+  @override
+  String get closeSemantics => 'Close';
 }
