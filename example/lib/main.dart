@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               value: isDark,
               onChanged: (bool newValue) {
                 isDark = newValue;
+                setState(() {});
                 final appState = context.findAncestorStateOfType<MyAppState>();
                 if (appState != null) {
                   appState
@@ -249,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: const EdgeInsets.all(16.0),
                     showClose: false,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(32),
                     ),
                   );
