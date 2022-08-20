@@ -2,10 +2,11 @@ library shirne_dialog;
 
 import 'dart:async';
 
+import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
-const _animateDuration = 300;
+const _defaultDuration = Duration(milliseconds: 300);
 
 /// a light weight message tip Widget
 class ToastWidget extends StatefulWidget {
@@ -16,13 +17,11 @@ class ToastWidget extends StatefulWidget {
 
   /// Icon before text
   final Widget? icon;
-  final Alignment alignment;
   final ToastStyle? style;
 
   const ToastWidget(
     this.message, {
     Key? key,
-    this.alignment = Alignment.center,
     this.duration = 3000,
     this.icon,
     this.style,
@@ -62,49 +61,47 @@ class _ToastGroup {
 }
 
 class _ToastWidgetState extends State<ToastWidget> {
-  static final instances = <Alignment, _ToastGroup>{};
+  static final instances = <AlignmentGeometry, _ToastGroup>{};
 
   late final int instanceId;
   int instanceIndex = 0;
 
-  late Alignment alignment;
-  double opacity = 1;
+  late ToastStyle style;
+  bool willHide = false;
 
   @override
   void initState() {
     super.initState();
-    final group = instances.putIfAbsent(widget.alignment, () => _ToastGroup());
+    style = (widget.style ?? MyDialog.theme.toastStyle ?? const ToastStyle())
+        .bottomIfNoAlign();
+    final group = instances.putIfAbsent(
+        style.animationIn!.alignEnd!, () => _ToastGroup());
     instanceId = group.addItem(onCreateInstance);
 
-    if (widget.alignment.y > 0) {
-      alignment = Alignment.bottomCenter;
-    } else {
-      alignment = Alignment.topCenter;
-    }
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (!mounted) return;
-      setState(() {
-        alignment = widget.alignment;
-      });
-    });
-
-    Future.delayed(Duration(milliseconds: widget.duration - _animateDuration),
+    Future.delayed(
+        Duration(
+            milliseconds: widget.duration - _defaultDuration.inMilliseconds),
         () {
       if (!mounted) return;
       setState(() {
-        opacity = 0;
+        willHide = true;
+        if (style.animationOut?.alignEnd != style.animationOut?.alignStart) {
+          instanceIndex = 0;
+        }
       });
     });
   }
 
   @override
   void dispose() {
-    instances[widget.alignment]?.removeItem(instanceId);
+    instances[style.animationIn!.alignEnd!]?.removeItem(instanceId);
     super.dispose();
   }
 
-  onCreateInstance(int index) {
-    if (!mounted) return;
+  /// translate position of this when new toast at the same position
+  void onCreateInstance(int index) {
+    if (!mounted || willHide) return;
+
     //使用异步,防止触发时在initState中执行
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (!mounted) return;
@@ -114,10 +111,20 @@ class _ToastWidgetState extends State<ToastWidget> {
     });
   }
 
+  bool isTop(AlignmentGeometry? alignment) {
+    if (alignment != null) {
+      if (alignment is Alignment) {
+        return alignment.y > 0;
+      }
+      if (alignment is AlignmentDirectional) {
+        return alignment.y > 0;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    const aDuration = Duration(milliseconds: _animateDuration);
-
     final text = Text(
       widget.message,
       style: TextStyle(
@@ -127,45 +134,40 @@ class _ToastWidgetState extends State<ToastWidget> {
 
     return IgnorePointer(
       ignoring: true,
-      // 入场动画
-      child: AnimatedAlign(
-        duration: aDuration,
-        curve: Curves.easeOutQuart,
-        alignment: alignment,
-        // 叠加动画
+      // 叠加动画
+      child: CombinedAnimation(
+        state: willHide ? AnimationType.end : AnimationType.start,
+        config: style.animationIn!,
+        outConfig: style.animationOut,
         child: AnimatedSlide(
-          duration: aDuration,
+          duration: style.animationIn!.duration ?? _defaultDuration,
           curve: Curves.easeOut,
           offset: Offset(
             0,
-            (widget.alignment.y > 0 ? -1.2 : 1.2) * instanceIndex,
+            (isTop(style.animationIn?.alignEnd) ? -1.2 : 1.2) * instanceIndex,
           ),
-          // 出场动画
-          child: AnimatedOpacity(
-            opacity: opacity,
-            duration: aDuration,
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.style?.backgroundColor ??
-                    const Color.fromRGBO(0, 0, 0, 0.5),
-                shape: BoxShape.rectangle,
-                borderRadius:
-                    widget.style?.borderRadius ?? BorderRadius.circular(5),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: Material(
-                color: Colors.transparent,
-                child: widget.icon == null
-                    ? text
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          widget.icon!,
-                          const SizedBox(width: 15),
-                          text,
-                        ],
-                      ),
-              ),
+          // 出入场动画
+          child: Container(
+            decoration: BoxDecoration(
+              color: widget.style?.backgroundColor ??
+                  const Color.fromRGBO(0, 0, 0, 0.5),
+              shape: BoxShape.rectangle,
+              borderRadius:
+                  widget.style?.borderRadius ?? BorderRadius.circular(5),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: Material(
+              color: Colors.transparent,
+              child: widget.icon == null
+                  ? text
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        widget.icon!,
+                        const SizedBox(width: 15),
+                        text,
+                      ],
+                    ),
             ),
           ),
         ),

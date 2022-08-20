@@ -1,6 +1,8 @@
+import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
 
 import 'dialog_icons.dart';
+import 'my_dialog.dart';
 
 /// Provide unified parameter settings for various dialogs
 class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
@@ -57,11 +59,13 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     ),
     this.primaryButtonStyle,
     this.cancelButtonStyle,
-    this.modalStyle,
-    this.toastStyle,
-    this.snackStyle,
+    this.modalStyle = const ModalStyle(),
+    this.toastStyle = const ToastStyle(),
+    this.snackStyle = const SnackStyle(),
   });
 
+  /// Creates a copy of this theme
+  /// but with the given fields replaced with the new values.
   @override
   ThemeExtension<ShirneDialogTheme> copyWith({
     Alignment? alignTop,
@@ -89,6 +93,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     );
   }
 
+  /// TODO
   @override
   ThemeExtension<ShirneDialogTheme> lerp(
       ThemeExtension<ShirneDialogTheme>? other, double t) {
@@ -96,6 +101,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   }
 }
 
+/// Style for modal
 class ModalStyle {
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleTextStyle;
@@ -135,29 +141,148 @@ class ModalStyle {
     this.shape,
     this.scrollable = false,
   });
+
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  ModalStyle copyWith({
+    EdgeInsetsGeometry? titlePadding,
+    TextStyle? titleTextStyle,
+    EdgeInsets? contentPadding,
+    TextStyle? contentTextStyle,
+    EdgeInsetsGeometry? actionsPadding,
+    MainAxisAlignment? actionsAlignment,
+    VerticalDirection? actionsOverflowDirection,
+    double? actionsOverflowButtonSpacing,
+    EdgeInsetsGeometry? buttonPadding,
+    Color? backgroundColor,
+    double? elevation,
+    String? semanticLabel,
+    EdgeInsets? insetPadding,
+    Clip? clipBehavior,
+    ShapeBorder? shape,
+    bool? scrollable,
+  }) =>
+      ModalStyle(
+        titlePadding: titlePadding ?? this.titlePadding,
+        titleTextStyle: titleTextStyle ?? this.titleTextStyle,
+        contentPadding: contentPadding ?? this.contentPadding,
+        contentTextStyle: contentTextStyle ?? this.contentTextStyle,
+        actionsPadding: actionsPadding ?? this.actionsPadding,
+        actionsAlignment: actionsAlignment ?? this.actionsAlignment,
+        actionsOverflowDirection:
+            actionsOverflowDirection ?? this.actionsOverflowDirection,
+        actionsOverflowButtonSpacing:
+            actionsOverflowButtonSpacing ?? this.actionsOverflowButtonSpacing,
+        buttonPadding: buttonPadding ?? this.buttonPadding,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        elevation: elevation ?? this.elevation,
+        semanticLabel: semanticLabel ?? this.semanticLabel,
+        insetPadding: insetPadding ?? this.insetPadding,
+        clipBehavior: clipBehavior ?? this.clipBehavior,
+        shape: shape ?? this.shape,
+        scrollable: scrollable ?? this.scrollable,
+      );
 }
 
+/// Style for [ToastWidget]
 class ToastStyle {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final BorderRadius? borderRadius;
-  ToastStyle({
+  final AnimationConfig? animationIn;
+  final AnimationConfig? animationOut;
+
+  const ToastStyle({
+    this.backgroundColor,
+    this.foregroundColor,
+    this.borderRadius,
+    this.animationIn,
+    this.animationOut,
+  });
+  ToastStyle topIfNoAlign() {
+    if (animationIn?.alignEnd != null) return this;
+    return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
+  }
+
+  ToastStyle top() {
+    return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
+  }
+
+  ToastStyle bottomIfNoAlign() {
+    if (animationIn?.alignEnd != null) return this;
+    return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
+  }
+
+  ToastStyle bottom() {
+    return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
+  }
+
+  ToastStyle _reAlign(Alignment align, Alignment out) {
+    return copyWith(
+      animationIn: (animationIn ?? AnimationConfig.fadeAndZoomIn).copyWith(
+        alignStart:
+            (animationIn?.alignStart == animationIn?.alignEnd) ? align : out,
+        alignEnd: align,
+      ),
+      animationOut: (animationOut ?? AnimationConfig.fadeAndZoomOut).copyWith(
+        alignStart:
+            (animationOut?.alignStart == animationOut?.alignEnd) ? align : out,
+        alignEnd: align,
+      ),
+    );
+  }
+
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  ToastStyle copyWith({
+    Color? backgroundColor,
+    Color? foregroundColor,
+    BorderRadius? borderRadius,
+    AnimationConfig? animationIn,
+    AnimationConfig? animationOut,
+  }) =>
+      ToastStyle(
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        foregroundColor: foregroundColor ?? this.foregroundColor,
+        borderRadius: borderRadius ?? this.borderRadius,
+        animationIn: animationIn ?? this.animationIn,
+        animationOut: animationOut ?? this.animationOut,
+      );
+}
+
+/// Style for [SnackWidget]
+class SnackStyle {
+  final Gradient? gradient;
+  final BoxDecoration? decoration;
+  final double? height;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final BorderRadius? borderRadius;
+  const SnackStyle({
+    this.height,
+    this.gradient,
+    this.decoration,
     this.backgroundColor,
     this.foregroundColor,
     this.borderRadius,
   });
-}
 
-class SnackStyle extends ToastStyle {
-  final Gradient? gradient;
-  final BoxDecoration? decoration;
-  final double? height;
-  SnackStyle({
-    this.height,
-    this.gradient,
-    this.decoration,
-    super.backgroundColor,
-    super.foregroundColor,
-    super.borderRadius,
-  });
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  SnackStyle copyWith({
+    Gradient? gradient,
+    BoxDecoration? decoration,
+    double? height,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    BorderRadius? borderRadius,
+  }) =>
+      SnackStyle(
+        gradient: gradient ?? this.gradient,
+        decoration: decoration ?? this.decoration,
+        height: height ?? this.height,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        foregroundColor: foregroundColor ?? this.foregroundColor,
+        borderRadius: borderRadius ?? this.borderRadius,
+      );
 }

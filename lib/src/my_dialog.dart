@@ -186,6 +186,7 @@ class MyDialog {
     String? currentImage,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
+    Rect? startRect,
   }) {
     _checkInstance();
     return _instance!.imagePreview(
@@ -193,6 +194,7 @@ class MyDialog {
       currentImage: currentImage,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
+      startRect: startRect,
     );
   }
 
@@ -254,7 +256,6 @@ class MyDialog {
   static void toast(
     String message, {
     int? duration,
-    Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
     ToastStyle? style,
@@ -263,7 +264,6 @@ class MyDialog {
     return _instance!.toast(
       message,
       duration: duration,
-      align: align,
       icon: icon,
       iconType: iconType,
       style: style,
@@ -446,15 +446,18 @@ class ShirneDialog {
     List<String> images, {
     String? currentImage,
     bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    Color? barrierColor,
+    Rect? startRect,
   }) {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      barrierColor: Colors.transparent,
       builder: (BuildContext context) {
         return ImagePreviewWidget(
           imageUrls: images,
+          startRect: startRect,
+          backgroundColor: barrierColor,
           currentImage: currentImage,
         );
       },
@@ -540,7 +543,6 @@ class ShirneDialog {
   void toast(
     String message, {
     int? duration,
-    Alignment? align,
     Widget? icon,
     IconType iconType = IconType.none,
     ToastStyle? style,
@@ -553,7 +555,6 @@ class ShirneDialog {
       return ToastWidget(
         message,
         icon: icon ?? MyDialog.getIcon(iconType),
-        alignment: align ?? MyDialog.theme.alignTop,
         duration: d,
         style: style ?? theme?.toastStyle,
       );

@@ -49,10 +49,12 @@ class _NewPageState extends State<NewPage> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.theme.alignBottom);
+                    MyDialog.of(context).toast(
+                      '提示信息',
+                      style: MyDialog.theme.toastStyle?.top(),
+                    );
                   },
-                  child: const Text('Toast Bottom'),
+                  child: const Text('Toast Top'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
@@ -80,8 +82,10 @@ class _NewPageState extends State<NewPage> {
                       if (v ?? false) {
                         MyDialog.of(context).toast('好的');
                       } else {
-                        MyDialog.of(context)
-                            .toast('em...', align: MyDialog.theme.alignBottom);
+                        MyDialog.of(context).toast(
+                          'em...',
+                          style: MyDialog.theme.toastStyle?.bottom(),
+                        );
                       }
                     });
                   },

@@ -55,6 +55,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.mouse,
         PointerDeviceKind.stylus,
         PointerDeviceKind.invertedStylus,
+        PointerDeviceKind.unknown,
       };
 }
 
@@ -143,16 +144,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context)
-                        .toast('提示信息', align: MyDialog.theme.alignBottom);
+                    MyDialog.toast(
+                      '提示信息',
+                      style: MyDialog.theme.toastStyle?.top(),
+                    );
                   },
-                  child: const Text('Toast Bottom'),
+                  child: const Text('Toast Top'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context)
-                        .toast('操作成功', iconType: IconType.success);
+                    MyDialog.toast('操作成功', iconType: IconType.success);
                   },
                   child: const Text('Toast with Icon'),
                 ),
@@ -174,8 +176,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (v ?? false) {
                         MyDialog.toast('好的');
                       } else {
-                        MyDialog.of(context)
-                            .toast('em...', align: MyDialog.theme.alignBottom);
+                        MyDialog.toast(
+                          'em...',
+                          style: MyDialog.theme.toastStyle?.bottom(),
+                        );
                       }
                     });
                   },
@@ -200,10 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       constraints: const BoxConstraints(
                         maxWidth: 100,
                       ),
-                      child: Hero(
-                        tag: images[index],
-                        child: Image.network(images[index]),
-                      ),
+                      child: Image.network(images[index]),
                     ),
                   ),
                 ),
@@ -343,8 +344,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    final controller = MyDialog.of(context)
-                        .loading('加载中', showProgress: true, time: 0);
+                    final controller =
+                        MyDialog.loading('加载中', showProgress: true, time: 0);
                     Timer(const Duration(milliseconds: 500), () {
                       controller.update(0.2);
                       Timer(const Duration(milliseconds: 1000), () {

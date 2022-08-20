@@ -1,5 +1,5 @@
 name: shirne_dialog
-description: A package to use alert, confirm, toast, imagePreview, snack and popup within one line code.
+description: A flutter package to use alert, toast, popup, snack etc. with customizable style in anywhere.
 version: 4.0.0
 homepage: https://www.shirne.com/demo/easydialog/
 repository: https://github.com/shirne/shirne_dialog
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  combined_animation: ^0.0.2
 
 
 dev_dependencies:
