@@ -36,7 +36,7 @@ class MyDialog {
     return _navigatorKey!;
   }
 
-  /// 默认主题
+  /// Default ShirneDialogTheme
   static const defaultTheme = ShirneDialogTheme();
 
   /// get [ShirneDialogTheme] from context or return default
@@ -214,7 +214,7 @@ class MyDialog {
   }
 
   /// A wrapper of [ShirneDialog.imagePreview]
-  static Future<dynamic> imagePreview(
+  static Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
     bool barrierDismissible = true,
@@ -222,7 +222,7 @@ class MyDialog {
     Rect? startRect,
   }) {
     _checkInstance();
-    return _instance!.imagePreview(
+    return _instance!.imagePreview<T>(
       images,
       currentImage: currentImage,
       barrierDismissible: barrierDismissible,
@@ -270,7 +270,7 @@ class MyDialog {
   }
 
   /// A wrapper of [ShirneDialog.loading]
-  static DialogController loading(
+  static ProgressController loading(
     String message, {
     showProgress = false,
     showOverlay = true,
