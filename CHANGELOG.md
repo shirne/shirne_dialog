@@ -1,5 +1,7 @@
 ## [4.1.0]
     * add [prompt]
+    * implement [ShirneTheme.lerp]
+    * add onConfirm callback for alert & confirm
 
 ## [4.0.0]
     * Improve themes
