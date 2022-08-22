@@ -95,7 +95,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     );
   }
 
-  /// TODO
+  /// lerp theme
   @override
   ThemeExtension<ShirneDialogTheme> lerp(
       ThemeExtension<ShirneDialogTheme>? other, double t) {
@@ -204,6 +204,7 @@ class ModalStyle {
         scrollable: scrollable ?? this.scrollable,
       );
 
+  /// lerp ModalStyle
   static ModalStyle lerp(ModalStyle? a, ModalStyle? b, double t) {
     return ModalStyle(
       titlePadding:
@@ -253,20 +254,25 @@ class ToastStyle {
     this.animationIn,
     this.animationOut,
   });
+
+  /// Set align style for animation if do not contains align
   ToastStyle topIfNoAlign() {
     if (animationIn?.alignEnd != null) return this;
     return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
   }
 
+  /// Set align top for animation
   ToastStyle top() {
     return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
   }
 
+  /// Set align bottom for animation if do not contains align
   ToastStyle bottomIfNoAlign() {
     if (animationIn?.alignEnd != null) return this;
     return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
   }
 
+  /// Set align bottom for animation
   ToastStyle bottom() {
     return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
   }
@@ -303,6 +309,7 @@ class ToastStyle {
         animationOut: animationOut ?? this.animationOut,
       );
 
+  /// lerp two ToastStyle
   static ToastStyle lerp(ToastStyle? a, ToastStyle? b, double t) {
     return ToastStyle(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
@@ -350,6 +357,7 @@ class SnackStyle {
         borderRadius: borderRadius ?? this.borderRadius,
       );
 
+  /// lerp two SnackStyle
   static SnackStyle lerp(SnackStyle? a, SnackStyle? b, double t) {
     return SnackStyle(
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),

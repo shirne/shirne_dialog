@@ -105,6 +105,7 @@ class MyDialog {
     _instance ??= of();
   }
 
+  /// A wrapper of [ShirneDialog.prompt]
   static Future<String?> prompt({
     String? defaultValue,
     Widget? label,
@@ -136,6 +137,7 @@ class MyDialog {
   static Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
+    bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     String? cancelText,
@@ -146,6 +148,7 @@ class MyDialog {
     return _instance!.confirm(
       message,
       buttonText: buttonText,
+      onConfirm: onConfirm,
       title: title,
       titleWidget: titleWidget,
       cancelText: cancelText,
@@ -158,6 +161,7 @@ class MyDialog {
   static Future<bool?> alert(
     message, {
     String? buttonText,
+    bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     bool barrierDismissible = true,
@@ -167,6 +171,7 @@ class MyDialog {
     return _instance!.alert(
       message,
       buttonText: buttonText,
+      onConfirm: onConfirm,
       title: title,
       titleWidget: titleWidget,
       barrierDismissible: barrierDismissible,
@@ -194,6 +199,7 @@ class MyDialog {
     );
   }
 
+  /// A wrapper of [ShirneDialog.modal]
   static Future<T?> modal<T>(
     Widget modal, {
     bool barrierDismissible = false,
@@ -318,6 +324,7 @@ class MyDialog {
   }
 }
 
+/// Dialog instance for all method
 class ShirneDialog {
   final BuildContext context;
 
@@ -328,10 +335,17 @@ class ShirneDialog {
 
   ShirneDialog._(this.context);
 
+  /// Popup a dialog with input to collect user input
   Future<String?> prompt({
     String? defaultValue,
     Widget? label,
+
+    /// A custom input builder for content.
+    /// Must use controller for your TextField.
     Widget Function(BuildContext, TextEditingController)? builder,
+
+    /// called when confirm button tapped.
+    /// if not validate pass the input ,return false pls.
     bool Function(String)? onConfirm,
     String title = '',
     String? buttonText,
@@ -380,6 +394,9 @@ class ShirneDialog {
   Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
+
+    /// A confirm button callback.
+    /// Modal will hold on only when return false.
     bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
@@ -431,6 +448,7 @@ class ShirneDialog {
   Future<bool?> alert(
     message, {
     String? buttonText,
+    bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     bool barrierDismissible = true,
@@ -447,7 +465,9 @@ class ShirneDialog {
                   .toList()),
       [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            final result = onConfirm?.call();
+            if (result == false) return;
             Navigator.pop(context, true);
           },
           style: MyDialog.theme.primaryButtonStyle,
