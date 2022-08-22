@@ -1,3 +1,7 @@
+## [4.1.1]
+    * fix loading return type
+    * add previews
+
 ## [4.1.0]
     * add [prompt]
     * implement [ShirneTheme.lerp]
@@ -13,9 +17,12 @@
     * Improve theme into MaterialThemeData.extension
     * fetch Overlay from navigatorKey
 
+## [2.0.3]
+    * fetch Overlay from navigatorKey
+
 ## [2.0.2]
-    * 代码优化
-    * icon嵌入
+    * Improve code style
+    * Embeded icons
 ## [2.0.1]
     * update example
     * toast arguments doc

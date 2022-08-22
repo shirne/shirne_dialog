@@ -2,7 +2,7 @@
 
 A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePreview, loading etc. with customizable style in anywhere.
 
-<a href="https://pub.dartlang.org/packages/shirne_dialog">
+<a href="https://pub.dev/packages/shirne_dialog">
     <img src="https://img.shields.io/pub/v/shirne_dialog.svg" alt="pub package" />
 </a>
 
@@ -22,28 +22,22 @@ A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePrevi
 
 You must initialize ShirneDialogTheme on theme.extensions in flutter version 3.0.0
 
+## Preview
+
+[Online Demo](https://www.shirne.com/demo/easydialog/)
+
+|Toast|Dialog|ImagePreview|
+|:-:|:-:|:-:|
+|![toast](preview/toast.gif)|![dialog](preview/dialog.gif)|![imagePreview](preview/preview.gif)|
+|Loading|Popup|Snackbar|
+|![loading](preview/loading.gif)|![popup](preview/popup.gif)|![snack](preview/snack.gif)|
+
+
 ## Usage
 
-Direct usage
+
+Recommanded usage
 ```
-
-MyDialog.of(context).toast('tip message');
-
-MyDialog.of(context).alert(Text('alert message'));
-
-MyDialog.of(context).confirm(Text('alert message')).then((v){
-
-});
-
-MyDialog.of(context).popup(Text('popup contents'));
-
-MyDialog.of(context).snack('tip');
-```
-
-initialize & usage
-```
-// initialize in mainApp's first page
-MyDialog.initialize(context);
 
 // Or use Mydialog.navigatorKey with MaterialApp
 // and set theme for dialog
@@ -69,4 +63,31 @@ MyDialog.alert('test');
 MyDialog.toase('test');
 ```
 
-[Demo](https://www.shirne.com/demo/easydialog/)
+In [2.x](https://pub.dev/packages/shirne_dialog2) and earlier
+```
+
+MyDialog.of(context).toast('tip message');
+
+MyDialog.of(context).alert(Text('alert message'));
+
+MyDialog.of(context).confirm(Text('alert message')).then((v){
+
+});
+
+MyDialog.of(context).popup(Text('popup contents'));
+
+MyDialog.of(context).snack('tip');
+
+
+// initialize in MaterialApp
+ MaterialApp(
+    //...
+    navigatorKey: MyDialog.navigatorKey,
+    //...
+);
+
+// and then call in anywhere
+MyDialog.confirm('aaa');
+MyDialog.alert('test');
+MyDialog.toase('test');
+```

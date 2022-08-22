@@ -237,127 +237,136 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                      Text('弹出窗内容'),
-                    ],
-                  ));
-                },
-                child: const Text('Popup'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(const Text('弹出窗内容'), height: 100);
-                },
-                child: const Text('Popup height 100'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(
-                    const Text('弹出窗内容'),
-                    height: 100,
-                    margin: const EdgeInsets.all(16.0),
-                    showClose: false,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                  );
-                },
-                child: const Text('Popup DIY'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(
-                      SingleChildScrollView(
-                        child: ListBody(
-                          children: List.generate(
-                              50, (index) => Text('This is row $index')),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.popup(Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                          Text('弹出窗内容'),
+                        ],
+                      ));
+                    },
+                    child: const Text('Popup'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.popup(const Text('弹出窗内容'), height: 100);
+                    },
+                    child: const Text('Popup height 100'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.popup(
+                        const Text('弹出窗内容'),
+                        height: 100,
+                        margin: const EdgeInsets.all(16.0),
+                        showClose: false,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(32),
                         ),
-                      ),
-                      isScrollControlled: true);
-                },
-                child: const Text('Popup with scroll'),
+                      );
+                    },
+                    child: const Text('Popup DIY'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.popup(
+                          SingleChildScrollView(
+                            child: ListBody(
+                              children: List.generate(
+                                  50, (index) => Text('This is row $index')),
+                            ),
+                          ),
+                          isScrollControlled: true);
+                    },
+                    child: const Text('Popup with scroll'),
+                  ),
+                ],
               ),
-            ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.snack('提示信息');
-                  },
-                  child: const Text('Snack'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    EntryController? controller;
-                    controller = MyDialog.snack(
-                      '提示信息',
-                      action: TextButton(
-                        onPressed: () {
-                          controller?.close();
-                        },
-                        child: const Text(
-                          '确认',
-                          style: TextStyle(color: Colors.white),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.snack('提示信息');
+                    },
+                    child: const Text('Snack'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      EntryController? controller;
+                      controller = MyDialog.snack(
+                        '提示信息',
+                        action: TextButton(
+                          onPressed: () {
+                            controller?.close();
+                          },
+                          child: const Text(
+                            '确认',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  child: const Text('Snack with Action'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    EntryController? controller;
-                    controller = MyDialog.snack('多个操作',
-                        action: ListBody(
-                          mainAxis: Axis.horizontal,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                controller?.close();
-                              },
-                              child: const Text(
-                                '取消',
-                                style: TextStyle(color: Colors.white),
+                      );
+                    },
+                    child: const Text('Snack with Action'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      EntryController? controller;
+                      controller = MyDialog.snack('多个操作',
+                          action: ListBody(
+                            mainAxis: Axis.horizontal,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  controller?.close();
+                                },
+                                child: const Text(
+                                  '取消',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                MyDialog.toast('好的好的');
-                              },
-                              child: const Text(
-                                '确认',
-                                style: TextStyle(color: Colors.white),
+                              ElevatedButton(
+                                onPressed: () {
+                                  MyDialog.toast('好的好的');
+                                },
+                                child: const Text(
+                                  '确认',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                          ],
-                        ));
-                  },
-                  child: const Text('Snack with Actions'),
-                ),
-              ],
+                            ],
+                          ));
+                    },
+                    child: const Text('Snack with Actions'),
+                  ),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
