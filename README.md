@@ -11,6 +11,7 @@ A flutter package to use alert, toast, popup, snack etc. with customizable style
 * toast
 * alert
 * confirm
+* prompt [new]
 * modal
 * popup
 * imagePreview

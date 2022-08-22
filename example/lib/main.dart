@@ -186,6 +186,32 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: const Text('Confirm'),
                 ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.prompt(
+                      title: '请输入数字',
+                      onConfirm: (v) {
+                        final s = int.tryParse(v);
+                        if (s == null) {
+                          MyDialog.toast(
+                            '请输入数字',
+                            style: MyDialog.theme.toastStyle?.top(),
+                          );
+                          return false;
+                        }
+                        return true;
+                      },
+                    ).then((v) {
+                      if (v == null) {
+                        MyDialog.toast('取消了输入');
+                      } else {
+                        MyDialog.toast('输入内容 $v');
+                      }
+                    });
+                  },
+                  child: const Text('Prompt'),
+                ),
               ],
             ),
             SingleChildScrollView(

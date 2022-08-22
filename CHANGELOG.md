@@ -1,3 +1,6 @@
+## [4.1.0]
+    * add [prompt]
+
 ## [4.0.0]
     * Improve themes
     * Improve widget

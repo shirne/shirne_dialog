@@ -105,6 +105,33 @@ class MyDialog {
     _instance ??= of();
   }
 
+  static Future<String?> prompt({
+    String? defaultValue,
+    Widget? label,
+    Widget Function(BuildContext, TextEditingController)? builder,
+    bool Function(String)? onConfirm,
+    String title = '',
+    String? buttonText,
+    Widget? titleWidget,
+    String? cancelText,
+    bool barrierDismissible = true,
+    Color? barrierColor,
+  }) {
+    _checkInstance();
+    return _instance!.prompt(
+      defaultValue: defaultValue,
+      label: label,
+      builder: builder,
+      onConfirm: onConfirm,
+      buttonText: buttonText,
+      title: title,
+      titleWidget: titleWidget,
+      cancelText: cancelText,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+  }
+
   /// A wrapper of [ShirneDialog.confirm]
   static Future<bool?> confirm(
     dynamic message, {
@@ -301,11 +328,59 @@ class ShirneDialog {
 
   ShirneDialog._(this.context);
 
+  Future<String?> prompt({
+    String? defaultValue,
+    Widget? label,
+    Widget Function(BuildContext, TextEditingController)? builder,
+    bool Function(String)? onConfirm,
+    String title = '',
+    String? buttonText,
+    Widget? titleWidget,
+    String? cancelText,
+    bool barrierDismissible = true,
+    Color? barrierColor,
+  }) async {
+    final controller = TextEditingController(text: defaultValue);
+    final result = await confirm(
+      builder?.call(context, controller) ??
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (label != null) Center(child: label),
+                TextField(
+                  controller: controller,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      onConfirm: () {
+        return onConfirm?.call(controller.text) ?? true;
+      },
+      buttonText: buttonText,
+      title: title,
+      titleWidget: titleWidget,
+      cancelText: cancelText,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+    );
+    return result == true ? controller.text : null;
+  }
+
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
   Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
+    bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     String? cancelText,
@@ -333,7 +408,9 @@ class ShirneDialog {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            final result = onConfirm?.call();
+            if (result == false) return;
             Navigator.pop(context, true);
           },
           style: theme?.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
