@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +99,26 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   @override
   ThemeExtension<ShirneDialogTheme> lerp(
       ThemeExtension<ShirneDialogTheme>? other, double t) {
-    return t < 0.5 ? this : other ?? this;
+    final o = other as ShirneDialogTheme?;
+    return ShirneDialogTheme(
+      alignTop: Alignment.lerp(alignTop, o?.alignTop, t) ?? alignTop,
+      alignBottom:
+          Alignment.lerp(alignBottom, o?.alignBottom, t) ?? alignBottom,
+      iconSuccess: t < 0.5 ? iconSuccess : o?.iconSuccess ?? iconSuccess,
+      iconError: t < 0.5 ? iconError : o?.iconError ?? iconError,
+      iconWarning: t < 0.5 ? iconWarning : o?.iconWarning ?? iconWarning,
+      iconInfo: t < 0.5 ? iconInfo : o?.iconInfo ?? iconInfo,
+      iconHelp: t < 0.5 ? iconHelp : o?.iconHelp ?? iconHelp,
+      primaryButtonStyle:
+          ButtonStyle.lerp(primaryButtonStyle, o?.primaryButtonStyle, t) ??
+              primaryButtonStyle,
+      cancelButtonStyle:
+          ButtonStyle.lerp(cancelButtonStyle, o?.cancelButtonStyle, t) ??
+              cancelButtonStyle,
+      modalStyle: ModalStyle.lerp(modalStyle, o?.modalStyle, t),
+      toastStyle: ToastStyle.lerp(toastStyle, o?.toastStyle, t),
+      snackStyle: SnackStyle.lerp(snackStyle, o?.snackStyle, t),
+    );
   }
 }
 
@@ -182,6 +203,39 @@ class ModalStyle {
         shape: shape ?? this.shape,
         scrollable: scrollable ?? this.scrollable,
       );
+
+  static ModalStyle lerp(ModalStyle? a, ModalStyle? b, double t) {
+    return ModalStyle(
+      titlePadding:
+          EdgeInsetsGeometry.lerp(a?.titlePadding, b?.titlePadding, t),
+      titleTextStyle: TextStyle.lerp(a?.titleTextStyle, b?.titleTextStyle, t),
+      contentPadding:
+          EdgeInsets.lerp(a?.contentPadding, b?.contentPadding, t) ??
+              EdgeInsets.zero,
+      contentTextStyle:
+          TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
+      actionsPadding:
+          EdgeInsetsGeometry.lerp(a?.actionsPadding, b?.actionsPadding, t) ??
+              EdgeInsets.zero,
+      actionsAlignment: t < 0.5 ? a?.actionsAlignment : b?.actionsAlignment,
+      actionsOverflowDirection:
+          t < 0.5 ? a?.actionsOverflowDirection : b?.actionsOverflowDirection,
+      actionsOverflowButtonSpacing: ui.lerpDouble(
+          a?.actionsOverflowButtonSpacing ?? 0,
+          b?.actionsOverflowButtonSpacing ?? 0,
+          t),
+      buttonPadding:
+          EdgeInsetsGeometry.lerp(a?.buttonPadding, b?.buttonPadding, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      elevation: ui.lerpDouble(a?.elevation, b?.elevation, t),
+      semanticLabel: t < 0.5 ? a?.semanticLabel : b?.semanticLabel,
+      insetPadding: EdgeInsets.lerp(a?.insetPadding, b?.insetPadding, t) ??
+          EdgeInsets.zero,
+      clipBehavior: (t < 0.5 ? a?.clipBehavior : b?.clipBehavior) ?? Clip.none,
+      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
+      scrollable: (t < 0.5 ? a?.scrollable : b?.scrollable) ?? false,
+    );
+  }
 }
 
 /// Style for [ToastWidget]
@@ -248,6 +302,16 @@ class ToastStyle {
         animationIn: animationIn ?? this.animationIn,
         animationOut: animationOut ?? this.animationOut,
       );
+
+  static ToastStyle lerp(ToastStyle? a, ToastStyle? b, double t) {
+    return ToastStyle(
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
+      borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
+      animationIn: t < 0.5 ? a?.animationIn : b?.animationIn,
+      animationOut: t < 0.5 ? a?.animationOut : b?.animationOut,
+    );
+  }
 }
 
 /// Style for [SnackWidget]
@@ -285,4 +349,15 @@ class SnackStyle {
         foregroundColor: foregroundColor ?? this.foregroundColor,
         borderRadius: borderRadius ?? this.borderRadius,
       );
+
+  static SnackStyle lerp(SnackStyle? a, SnackStyle? b, double t) {
+    return SnackStyle(
+      gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
+      decoration: BoxDecoration.lerp(a?.decoration, b?.decoration, t),
+      height: ui.lerpDouble(a?.height, b?.height, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
+      borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
+    );
+  }
 }
