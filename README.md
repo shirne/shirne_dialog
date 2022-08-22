@@ -1,6 +1,6 @@
 # Shirne Dialog
 
-A flutter package to use alert, toast, popup, snack etc. with customizable style in anywhere.
+A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePreview, loading etc. with customizable style in anywhere.
 
 <a href="https://pub.dartlang.org/packages/shirne_dialog">
     <img src="https://img.shields.io/pub/v/shirne_dialog.svg" alt="pub package" />
