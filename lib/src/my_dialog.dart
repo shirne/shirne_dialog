@@ -153,14 +153,14 @@ class MyDialog {
     );
   }
 
-  static Future<dynamic> imagePreview(
+  static Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
     _checkInstance();
-    return _instance!.imagePreview(
+    return _instance!.imagePreview<T>(
       images,
       currentImage: currentImage,
       barrierDismissible: barrierDismissible,
@@ -400,13 +400,13 @@ class ShirneDialog {
     );
   }
 
-  Future<dynamic> imagePreview(
+  Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
-    return showDialog<dynamic>(
+    return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -460,7 +460,7 @@ class ShirneDialog {
 
   /// show a loading progress within an [OverlayEntry].
   /// keep in `time` seconds or manual control it's status by pass 0 to `time`
-  DialogController loading(
+  ProgressController loading(
     String message, {
     showProgress = false,
     showOverlay = true,

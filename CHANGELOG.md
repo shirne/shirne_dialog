@@ -1,3 +1,6 @@
+## [2.0.4]
+    * fix loading & imagepreview return type
+
 ## [2.0.3]
     * navigatorKey初始化后适配到Overlay
     
