@@ -14,15 +14,18 @@ final _placementImage = MemoryImage(Uint8List.fromList([
 ]));
 
 class ImageAutoPreview extends StatefulWidget {
-  final String src;
-  final String? group;
-  final ImageProvider<Object>? placeholder;
   const ImageAutoPreview({
-    Key? key,
     required this.src,
+    Key? key,
     this.group,
     this.placeholder,
   }) : super(key: key);
+
+  final String src;
+
+  final String? group;
+
+  final ImageProvider<Object>? placeholder;
 
   @override
   State<ImageAutoPreview> createState() => _ImageAutoPreviewState();
@@ -51,40 +54,32 @@ class _ImageAutoPreviewState extends State<ImageAutoPreview> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapUp: (details) {
-        final images = previewImages
-            .where((e) => e.group == widget.group)
-            .map<String>((e) => e.src)
-            .toList();
-        final ele = context as Element;
-        MyDialog.imagePreview(
-          images,
-          currentImage: widget.src,
-          startRect: Rect.fromLTWH(
-            details.globalPosition.dx - details.localPosition.dx,
-            details.globalPosition.dy - details.localPosition.dy,
-            ele.size!.width,
-            ele.size!.height,
-          ),
-        );
-      },
-      child: FadeInImage(
-        placeholder: widget.placeholder ?? _placementImage,
-        image: getImage(widget.src),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => GestureDetector(
+        onTapUp: (details) {
+          final images = previewImages
+              .where((e) => e.group == widget.group)
+              .map<String>((e) => e.src)
+              .toList();
+          final ele = context as Element;
+          MyDialog.imagePreview(
+            images,
+            currentImage: widget.src,
+            startRect: Rect.fromLTWH(
+              details.globalPosition.dx - details.localPosition.dx,
+              details.globalPosition.dy - details.localPosition.dy,
+              ele.size!.width,
+              ele.size!.height,
+            ),
+          );
+        },
+        child: FadeInImage(
+          placeholder: widget.placeholder ?? _placementImage,
+          image: getImage(widget.src),
+        ),
+      );
 }
 
 class ImagePreviewWidget extends StatefulWidget {
-  final List<String> imageUrls;
-  final String? currentImage;
-  final ImageProvider<Object>? placement;
-  final Color? backgroundColor;
-  final Rect? startRect;
-
   const ImagePreviewWidget({
     Key? key,
     required this.imageUrls,
@@ -93,6 +88,11 @@ class ImagePreviewWidget extends StatefulWidget {
     this.backgroundColor,
     this.startRect,
   }) : super(key: key);
+  final List<String> imageUrls;
+  final String? currentImage;
+  final ImageProvider<Object>? placement;
+  final Color? backgroundColor;
+  final Rect? startRect;
   @override
   State<ImagePreviewWidget> createState() => _ImagePreviewWidgetState();
 }
@@ -150,9 +150,9 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
 }
 
 class _ImageItem extends StatelessWidget {
+  const _ImageItem(this.src, this.placement);
   final String src;
   final ImageProvider<Object>? placement;
-  const _ImageItem(this.src, this.placement);
 
   @override
   Widget build(BuildContext context) {

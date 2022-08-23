@@ -2,9 +2,10 @@ library shirne_dialog;
 
 import 'dart:async';
 
-import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
+
+import 'my_dialog.dart';
+import 'theme.dart';
 
 const _defaultDuration = Duration(milliseconds: 300);
 
@@ -41,7 +42,7 @@ class _ToastGroup {
   final lists = <_InstanceData>[];
 
   int addItem(Function(int index) onCountChange) {
-    int id = lists.isEmpty ? 0 : lists.last.id + 1;
+    final id = lists.isEmpty ? 0 : lists.last.id + 1;
     lists.add(_InstanceData(id, onCountChange));
     onChange();
     return id;
@@ -74,8 +75,8 @@ class _ToastWidgetState extends State<ToastWidget> {
     super.initState();
     style = (widget.style ?? MyDialog.theme.toastStyle ?? const ToastStyle())
         .bottomIfNoAlign();
-    final group = instances.putIfAbsent(
-        style.animationIn!.alignEnd!, () => _ToastGroup());
+    final group =
+        instances.putIfAbsent(style.enterAnimation!.endAlign!, _ToastGroup.new);
     instanceId = group.addItem(onCreateInstance);
 
     Future.delayed(
@@ -85,7 +86,8 @@ class _ToastWidgetState extends State<ToastWidget> {
       if (!mounted) return;
       setState(() {
         willHide = true;
-        if (style.animationOut?.alignEnd != style.animationOut?.alignStart) {
+        if (style.leaveAnimation?.startAlign !=
+            style.leaveAnimation?.startAlign) {
           instanceIndex = 0;
         }
       });
@@ -94,7 +96,7 @@ class _ToastWidgetState extends State<ToastWidget> {
 
   @override
   void dispose() {
-    instances[style.animationIn!.alignEnd!]?.removeItem(instanceId);
+    instances[style.enterAnimation!.endAlign!]?.removeItem(instanceId);
     super.dispose();
   }
 
@@ -111,7 +113,8 @@ class _ToastWidgetState extends State<ToastWidget> {
     });
   }
 
-  bool isTop(AlignmentGeometry? alignment) {
+  /// Whether the alignment is up
+  static bool isTop(AlignmentGeometry? alignment) {
     if (alignment != null) {
       if (alignment is Alignment) {
         return alignment.y > 0;
@@ -134,41 +137,36 @@ class _ToastWidgetState extends State<ToastWidget> {
 
     return IgnorePointer(
       ignoring: true,
-      // 叠加动画
-      child: CombinedAnimation(
-        state: willHide ? AnimationType.end : AnimationType.start,
-        config: style.animationIn!,
-        outConfig: style.animationOut,
-        child: AnimatedSlide(
-          duration: style.animationIn!.duration ?? _defaultDuration,
-          curve: Curves.easeOut,
-          offset: Offset(
-            0,
-            (isTop(style.animationIn?.alignEnd) ? -1.2 : 1.2) * instanceIndex,
+
+      // 出入场动画
+      child: AnimatedSlide(
+        duration: style.enterAnimation?.duration ?? _defaultDuration,
+        curve: Curves.easeOut,
+        offset: Offset(
+          0,
+          (isTop(style.enterAnimation?.endAlign) ? -1.2 : 1.2) * instanceIndex,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: widget.style?.backgroundColor ??
+                const Color.fromRGBO(0, 0, 0, 0.5),
+            shape: BoxShape.rectangle,
+            borderRadius:
+                widget.style?.borderRadius ?? BorderRadius.circular(5),
           ),
-          // 出入场动画
-          child: Container(
-            decoration: BoxDecoration(
-              color: widget.style?.backgroundColor ??
-                  const Color.fromRGBO(0, 0, 0, 0.5),
-              shape: BoxShape.rectangle,
-              borderRadius:
-                  widget.style?.borderRadius ?? BorderRadius.circular(5),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: Material(
-              color: Colors.transparent,
-              child: widget.icon == null
-                  ? text
-                  : Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        widget.icon!,
-                        const SizedBox(width: 15),
-                        text,
-                      ],
-                    ),
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Material(
+            color: Colors.transparent,
+            child: widget.icon == null
+                ? text
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      widget.icon!,
+                      const SizedBox(width: 15),
+                      text,
+                    ],
+                  ),
           ),
         ),
       ),

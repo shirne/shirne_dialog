@@ -21,12 +21,17 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  ThemeData theme =
-      ThemeData.light().copyWith(extensions: [const ShirneDialogTheme()]);
+  ThemeData theme = ThemeData.light().copyWith(
+    visualDensity: VisualDensity.standard,
+    extensions: [const ShirneDialogTheme()],
+  );
 
   setTheme(ThemeData newTheme) {
     setState(() {
-      theme = newTheme.copyWith(extensions: [const ShirneDialogTheme()]);
+      theme = newTheme.copyWith(
+        visualDensity: VisualDensity.standard,
+        extensions: [const ShirneDialogTheme()],
+      );
     });
   }
 
@@ -126,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -154,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -239,6 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Wrap(
@@ -262,6 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -329,6 +338,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -393,6 +403,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -405,22 +416,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    final controller =
-                        MyDialog.loading('加载中', showProgress: true, time: 0);
-                    Timer(const Duration(milliseconds: 500), () {
-                      controller.update(0.2);
-                      Timer(const Duration(milliseconds: 1000), () {
-                        controller.update(0.4);
-                        Timer(const Duration(milliseconds: 300), () {
-                          controller.update(0.6);
-                          Timer(const Duration(milliseconds: 500), () {
-                            controller.update(0.8);
-                            Timer(const Duration(milliseconds: 1000), () {
-                              controller.update(1);
-                            });
-                          });
-                        });
-                      });
+                    final controller = MyDialog.loading(
+                      '加载中',
+                      showProgress: true,
+                      duration: Duration.zero,
+                    );
+                    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+                      controller.value += 0.2;
+                      if (controller.value >= 1) {
+                        timer.cancel();
+                      }
                     });
                   },
                   child: const Text('Loading with progress'),

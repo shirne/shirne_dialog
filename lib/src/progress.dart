@@ -1,37 +1,32 @@
 library shirne_dialog;
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-import 'controller.dart';
+import 'theme.dart';
 
 /// a progress Widget
 class ProgressWidget extends StatefulWidget {
   final bool showProgress;
-  final bool showOverlay;
+
   final String? message;
-  final BoxDecoration? decoration;
-  final EdgeInsetsGeometry padding;
-  final double strokeWidth;
-  final DialogController? controller;
-  final Animation<Color?>? valueColor;
-  final Color? color;
-  final Color? backgroundColor;
+
+  final LoadingStyle? style;
+
+  final void Function(AnimationController)? onListen;
+  final VoidCallback? onDispose;
 
   const ProgressWidget({
     Key? key,
     this.showProgress = false,
     this.message,
-    this.controller,
-    this.showOverlay = true,
-    this.decoration,
-    this.padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-    this.strokeWidth = 4,
-    this.valueColor,
-    this.backgroundColor,
-    this.color,
-  }) : super(key: key);
+    this.onListen,
+    this.onDispose,
+    this.style,
+  })  : assert(
+          !showProgress || (showProgress && onListen != null),
+          'Must provide a Listener when showProgress',
+        ),
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProgressWidgetState();
@@ -40,47 +35,35 @@ class ProgressWidget extends StatefulWidget {
 class _ProgressWidgetState extends State<ProgressWidget>
     with SingleTickerProviderStateMixin {
   double progress = 0;
-  AnimationController? _aniController;
+
+  late final controller = AnimationController(vsync: this);
 
   @override
   void initState() {
     super.initState();
-    if (widget.controller != null) {
-      widget.controller?.addListener(_onValueChange);
+    widget.onListen?.call(controller);
 
-      if (widget.showProgress) {
-        _aniController = AnimationController.unbounded(
-            vsync: this, duration: const Duration(milliseconds: 400));
-        _aniController!.value = progress;
-        _aniController!.addListener(_onAnimation);
-      }
-    }
+    controller.addListener(_onAnimate);
   }
 
   @override
   void dispose() {
-    if (widget.controller != null) {
-      widget.controller?.removeListener(_onValueChange);
-      if (_aniController != null) {
-        _aniController!.removeListener(_onAnimation);
-        _aniController!.dispose();
-      }
-    }
+    controller.dispose();
     super.dispose();
   }
 
-  void _onAnimation() {
-    setState(() {});
+  _onAnimate() {
+    setState(() {
+      progress = controller.value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromRGBO(0, 0, 0, widget.showOverlay ? 0.4 : 0),
-      child: Center(
-        child: Container(
-          padding: widget.padding,
-          decoration: widget.decoration ??
+    return widget.style?.builder?.call(context, progress) ??
+        Container(
+          padding: widget.style?.padding,
+          decoration: widget.style?.decoration ??
               const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -90,13 +73,13 @@ class _ProgressWidgetState extends State<ProgressWidget>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               CircularProgressIndicator.adaptive(
-                value: widget.showProgress ? _aniController!.value : null,
-                backgroundColor: widget.backgroundColor,
-                valueColor: widget.valueColor ??
+                value: widget.showProgress ? progress : null,
+                backgroundColor: widget.style?.backgroundColor,
+                valueColor: widget.style?.valueColor ??
                     AlwaysStoppedAnimation<Color>(
-                      widget.color ?? Theme.of(context).primaryColor,
+                      widget.style?.color ?? Theme.of(context).primaryColor,
                     ),
-                strokeWidth: widget.strokeWidth,
+                strokeWidth: widget.style?.strokeWidth ?? 4,
               ),
               const SizedBox(height: 10),
               Text(
@@ -109,30 +92,6 @@ class _ProgressWidgetState extends State<ProgressWidget>
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  void _onValueChange() {
-    if (!mounted) return;
-    setState(() {
-      progress = widget.controller!.value;
-    });
-    if (_aniController != null) {
-      _aniController!
-          .animateTo(progress, curve: Curves.easeOutQuart)
-          .whenComplete(() {
-        if (progress >= 1) {
-          widget.controller!.remove();
-        }
-      });
-    } else {
-      if (progress >= 1) {
-        Future.delayed(const Duration(milliseconds: 200)).then((v) {
-          widget.controller!.remove();
-        });
-      }
-    }
+        );
   }
 }

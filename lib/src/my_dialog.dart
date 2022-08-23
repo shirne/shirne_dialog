@@ -2,9 +2,10 @@ library shirne_dialog;
 
 import 'dart:async';
 
+import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/src/localizations.dart';
 
+import 'localizations.dart';
 import 'controller.dart';
 import 'image_preview.dart';
 import 'popup.dart';
@@ -272,23 +273,36 @@ class MyDialog {
   /// A wrapper of [ShirneDialog.loading]
   static ProgressController loading(
     String message, {
-    showProgress = false,
-    showOverlay = true,
-    int time = 3000,
+    bool? showProgress,
+    Duration? duration,
+    LoadingStyle? style,
   }) {
     _checkInstance();
     return _instance!.loading(
       message,
       showProgress: showProgress,
-      showOverlay: showOverlay,
-      time: time,
+      duration: duration,
+      style: style,
+    );
+  }
+
+  static EntryController overlayModal(
+    Widget child, {
+    AnimationConfig? animate,
+    AnimationConfig? leaveAnimate,
+  }) {
+    _checkInstance();
+    return _instance!.overlayModal(
+      child,
+      animate: animate,
+      leaveAnimate: leaveAnimate,
     );
   }
 
   /// A wrapper of [ShirneDialog.toast]
   static void toast(
     String message, {
-    int? duration,
+    Duration? duration,
     Widget? icon,
     IconType iconType = IconType.none,
     ToastStyle? style,
@@ -307,7 +321,7 @@ class MyDialog {
   static EntryController snack(
     String message, {
     Widget? action,
-    int? duration,
+    Duration? duration,
     Alignment? align,
     double? width,
     SnackStyle? style,
@@ -328,10 +342,14 @@ class MyDialog {
 class ShirneDialog {
   final BuildContext context;
 
-  ShirneDialogTheme? get theme =>
-      Theme.of(context).extension<ShirneDialogTheme>();
+  ShirneDialogTheme get theme =>
+      Theme.of(context).extension<ShirneDialogTheme>() ??
+      const ShirneDialogTheme();
 
   ShirneDialogLocalizations get local => ShirneDialogLocalizations.of(context);
+
+  OverlayState get overlay =>
+      Overlay.of(context) ?? MyDialog.navigatorKey.currentState!.overlay!;
 
   ShirneDialog._(this.context);
 
@@ -408,18 +426,15 @@ class ShirneDialog {
       message is Widget
           ? message
           : ListBody(
-              children: message
-                  .toString()
-                  .split('\n')
-                  .map<Widget>((item) => Text(item))
-                  .toList(),
+              children:
+                  message.toString().split('\n').map<Widget>(Text.new).toList(),
             ),
       [
         TextButton(
           onPressed: () {
             Navigator.pop(context, false);
           },
-          style: theme?.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
+          style: theme.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
           child: Text(
             cancelText ?? local.buttonCancel,
           ),
@@ -431,7 +446,7 @@ class ShirneDialog {
             if (result == false) return;
             navigator.pop(true);
           },
-          style: theme?.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
+          style: theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
           child: Text(
             buttonText ?? local.buttonConfirm,
           ),
@@ -462,7 +477,7 @@ class ShirneDialog {
               children: message
                   .toString()
                   .split('\n')
-                  .map<Widget>((item) => Text(item))
+                  .map<Widget>(Text.new)
                   .toList()),
       [
         ElevatedButton(
@@ -610,112 +625,113 @@ class ShirneDialog {
   /// keep in `time` seconds or manual control it's status by pass 0 to `time`
   ProgressController loading(
     String message, {
-    showProgress = false,
-    showOverlay = true,
-    int? time,
+    bool? showProgress,
+    Duration? duration,
+    LoadingStyle? style,
   }) {
-    ProgressController controller = ProgressController(
-      context,
-      ValueNotifier<double>(0),
-    );
-    controller.entry = OverlayEntry(builder: (context) {
-      return ProgressWidget(
-        showProgress: showProgress,
-        showOverlay: showOverlay,
+    final loadingStyle = (style ?? theme.loadingStyle)?.centerIfNoAlign();
+    final sp = showProgress ?? false;
+    late final ProgressController controller;
+    controller = ProgressController(
+      ProgressWidget(
+        showProgress: showProgress ?? false,
         message: message,
-        controller: controller,
-      );
-    });
+        style: loadingStyle,
+        // ignore: unnecessary_lambdas
+        onListen: (ac) {
+          controller.bind(ac);
+        },
+        // ignore: unnecessary_lambdas
+        onDispose: () {
+          controller.unbind();
+        },
+      ),
+      overlay: overlay,
+      showOverlay: loadingStyle?.showOverlay,
+      overlayColor: loadingStyle?.overlayColor,
+      animate: loadingStyle?.enterAnimation,
+      leaveAnimate: loadingStyle?.leaveAnimation,
+    )..open();
 
-    controller.open();
-
-    if (time != null && time > 0) {
-      Future.delayed(Duration(milliseconds: time)).then((v) {
-        controller.close();
+    final closeDuration = duration ?? (sp ? null : const Duration(seconds: 3));
+    if (closeDuration != null && closeDuration.inMilliseconds > 0) {
+      Future.delayed(closeDuration).then((v) {
+        controller.value = 1;
       });
     }
+    return controller;
+  }
+
+  /// Popup a Widget in Overlay.
+  /// You can handle the EnterAnimation in initialize and postFrameCallback
+  /// and handle the ExitAnimation with listening controller
+  /// when controller.value==1, and call controller.remove after animation
+  EntryController overlayModal(
+    Widget child, {
+    AnimationConfig? animate,
+    AnimationConfig? leaveAnimate,
+  }) {
+    final controller = EntryController(
+      child,
+      overlay: overlay,
+      animate: animate,
+      leaveAnimate: leaveAnimate,
+    )..open();
+
     return controller;
   }
 
   /// show a light weight tip with in `message`, an `icon` is optional.
   void toast(
     String message, {
-    int? duration,
+    Duration? duration,
     Widget? icon,
     IconType iconType = IconType.none,
     ToastStyle? style,
   }) {
-    final overlay =
-        Overlay.of(context) ?? MyDialog.navigatorKey.currentState?.overlay;
-    assert(overlay != null, 'toast shuld call with a Scaffold context');
-    final d = duration ?? 2000;
-    OverlayEntry entry = OverlayEntry(builder: (context) {
-      return ToastWidget(
+    final toastStyle = (style ?? theme.toastStyle)?.bottomIfNoAlign();
+    final controller = overlayModal(
+      ToastWidget(
         message,
         icon: icon ?? MyDialog.getIcon(iconType),
-        duration: d,
-        style: style ?? theme?.toastStyle,
-      );
+        style: toastStyle,
+      ),
+      animate: toastStyle?.enterAnimation,
+      leaveAnimate: toastStyle?.leaveAnimation,
+    );
+
+    Future.delayed(duration ?? const Duration(seconds: 2)).then((value) {
+      controller.close();
     });
-
-    overlay!.insert(entry);
-    Future.delayed(Duration(milliseconds: d)).then((value) {
-      entry.remove();
-    });
-  }
-
-  /// Popup a Widget in Overlay.
-  /// When [isEnterControlled], [align] would be ignore.
-  /// You can handle the EnterAnimation in initialize and postFrameCallback
-  /// and handle the ExitAnimation with listening controller
-  /// when controller.value==1, and call controller.remove after animation
-  EntryController overlayModal(
-    Widget child, {
-    Alignment? align,
-    bool isEnterControlled = false,
-  }) {
-    EntryController controller =
-        EntryController(context, ValueNotifier<bool>(false));
-    controller.entry = OverlayEntry(builder: (context) {
-      return isEnterControlled
-          ? child
-          : Align(
-              alignment: align ?? Alignment.center,
-              child: child,
-            );
-    });
-
-    controller.open();
-
-    return controller;
   }
 
   /// show a [SnackBar] like Widget but use a diy Widget with [OverlayEntry]
   EntryController snack(
     String message, {
     Widget? action,
-    int? duration,
+    Duration? duration,
     Alignment? align,
     double? width,
     SnackStyle? style,
   }) {
-    final d = duration ?? 3000;
-    EntryController controller =
-        EntryController(context, ValueNotifier<bool>(false));
-    controller.entry = OverlayEntry(builder: (context) {
-      return SnackWidget(
+    final snackStyle =
+        (style ?? theme.snackStyle)?.bottomIfNoAlign(isAnimate: true);
+    final controller = overlayModal(
+      SnackWidget(
         message,
-        controller: controller,
-        alignment: align ?? MyDialog.theme.alignBottom,
         action: action,
-        duration: d,
         maxWidth: width,
-        style: style ?? theme?.snackStyle,
-      );
-    });
+        style: snackStyle,
+      ),
+      animate: snackStyle?.enterAnimation ??
+          AnimationConfig.fadeIn.copyWith(
+            startAlign: const Alignment(0, -1.2),
+            endAlign: const Alignment(0, -0.75),
+          ),
+      leaveAnimate: snackStyle?.leaveAnimation,
+    );
 
-    controller.open();
-    Future.delayed(Duration(milliseconds: d)).then((value) {
+    Future.delayed(duration ?? const Duration(seconds: 3)).then((value) {
       controller.close();
     });
 

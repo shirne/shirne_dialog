@@ -35,6 +35,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final ModalStyle? modalStyle;
   final ToastStyle? toastStyle;
   final SnackStyle? snackStyle;
+  final LoadingStyle? loadingStyle;
 
   const ShirneDialogTheme({
     this.alignTop = const Alignment(0.0, -0.7),
@@ -64,6 +65,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     this.modalStyle = const ModalStyle(),
     this.toastStyle = const ToastStyle(),
     this.snackStyle = const SnackStyle(),
+    this.loadingStyle = const LoadingStyle(),
   });
 
   /// Creates a copy of this theme
@@ -80,6 +82,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     ButtonStyle? primaryButtonStyle,
     ButtonStyle? cancelButtonStyle,
     ModalStyle? modalStyle,
+    LoadingStyle? loadingStyle,
   }) {
     return ShirneDialogTheme(
       alignTop: alignTop ?? this.alignTop,
@@ -92,6 +95,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       primaryButtonStyle: primaryButtonStyle ?? this.primaryButtonStyle,
       cancelButtonStyle: cancelButtonStyle ?? this.cancelButtonStyle,
       modalStyle: modalStyle ?? this.modalStyle,
+      loadingStyle: loadingStyle ?? this.loadingStyle,
     );
   }
 
@@ -118,6 +122,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       modalStyle: ModalStyle.lerp(modalStyle, o?.modalStyle, t),
       toastStyle: ToastStyle.lerp(toastStyle, o?.toastStyle, t),
       snackStyle: SnackStyle.lerp(snackStyle, o?.snackStyle, t),
+      loadingStyle: LoadingStyle.lerp(loadingStyle, other?.loadingStyle, t),
     );
   }
 }
@@ -239,74 +244,273 @@ class ModalStyle {
   }
 }
 
+abstract class AnimatedOverlayStyle {
+  final AnimationConfig? enterAnimation;
+  final AnimationConfig? leaveAnimation;
+  const AnimatedOverlayStyle(this.enterAnimation, this.leaveAnimation);
+
+  /// Set align style for animation if do not contains align
+  AnimatedOverlayStyle topIfNoAlign({bool? isAnimate}) {
+    if (enterAnimation?.endAlign != null) return this;
+    return _reAlign(
+      MyDialog.theme.alignTop,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, -1.2)
+          : null,
+    );
+  }
+
+  /// Set align top for animation
+  AnimatedOverlayStyle top({bool? isAnimate}) {
+    return _reAlign(
+      MyDialog.theme.alignTop,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, -1.2)
+          : null,
+    );
+  }
+
+  /// Set align bottom for animation if do not contains align
+  AnimatedOverlayStyle bottomIfNoAlign({bool? isAnimate}) {
+    if (enterAnimation?.endAlign != null) return this;
+    return _reAlign(
+      MyDialog.theme.alignBottom,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, 1.2)
+          : null,
+    );
+  }
+
+  /// Set align bottom for animation
+  AnimatedOverlayStyle bottom({bool? isAnimate}) {
+    return _reAlign(
+      MyDialog.theme.alignBottom,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, 1.2)
+          : null,
+    );
+  }
+
+  /// Set align center for animation if do not contains align
+  AnimatedOverlayStyle centerIfNoAlign({bool? isAnimate}) {
+    if (enterAnimation?.endAlign != null) return this;
+    return _reAlign(
+      Alignment.center,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, 1.2)
+          : null,
+    );
+  }
+
+  /// Set align center for animation
+  AnimatedOverlayStyle center({bool? isAnimate}) {
+    return _reAlign(
+      Alignment.center,
+      (isAnimate ?? enterAnimation?.startAlign != enterAnimation?.endAlign)
+          ? const Alignment(0, 1.2)
+          : null,
+    );
+  }
+
+  AnimatedOverlayStyle _reAlign(Alignment align, Alignment? out) {
+    return copyWith(
+      enterAnimation:
+          (enterAnimation ?? AnimationConfig.fadeAndZoomIn).copyWith(
+        startAlign: out ?? align,
+        endAlign: align,
+      ),
+      leaveAnimation:
+          (leaveAnimation ?? AnimationConfig.fadeAndZoomOut).copyWith(
+        startAlign: align,
+        endAlign: out ?? align,
+      ),
+    );
+  }
+
+  AnimatedOverlayStyle copyWith({
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  });
+}
+
+class LoadingStyle extends AnimatedOverlayStyle {
+  final bool showOverlay;
+  final Color? overlayColor;
+  final BoxDecoration? decoration;
+  final EdgeInsetsGeometry padding;
+  final double strokeWidth;
+  final Animation<Color?>? valueColor;
+  final Color? color;
+  final Color? backgroundColor;
+
+  final Widget Function(BuildContext, double)? builder;
+
+  const LoadingStyle({
+    this.showOverlay = true,
+    this.overlayColor,
+    this.decoration,
+    EdgeInsetsGeometry? padding,
+    double? strokeWidth,
+    this.valueColor,
+    this.color,
+    this.backgroundColor,
+    this.builder,
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  })  : padding = padding ?? const EdgeInsets.all(16),
+        strokeWidth = strokeWidth ?? 4,
+        super(enterAnimation, leaveAnimation);
+
+  /// Set align style for animation if do not contains align
+  @override
+  LoadingStyle topIfNoAlign({bool? isAnimate}) {
+    return super.topIfNoAlign(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Set align top for animation
+  @override
+  LoadingStyle top({bool? isAnimate}) {
+    return super.top(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Set align bottom for animation if do not contains align
+  @override
+  LoadingStyle bottomIfNoAlign({bool? isAnimate}) {
+    return super.bottomIfNoAlign(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Set align bottom for animation
+  @override
+  LoadingStyle bottom({bool? isAnimate}) {
+    return super.bottom(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Set align center for animation if do not contains align
+  @override
+  LoadingStyle centerIfNoAlign({bool? isAnimate}) {
+    return super.centerIfNoAlign(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Set align center for animation
+  @override
+  LoadingStyle center({bool? isAnimate}) {
+    return super.center(isAnimate: isAnimate) as LoadingStyle;
+  }
+
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  @override
+  LoadingStyle copyWith({
+    bool? showOverlay,
+    Color? overlayColor,
+    BoxDecoration? decoration,
+    EdgeInsetsGeometry? padding,
+    double? strokeWidth,
+    Animation<Color?>? valueColor,
+    Color? color,
+    Color? backgroundColor,
+    Widget Function(BuildContext, double)? builder,
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  }) =>
+      LoadingStyle(
+        showOverlay: showOverlay ?? this.showOverlay,
+        overlayColor: overlayColor ?? this.overlayColor,
+        decoration: decoration ?? this.decoration,
+        padding: padding ?? this.padding,
+        strokeWidth: strokeWidth ?? this.strokeWidth,
+        valueColor: valueColor ?? this.valueColor,
+        color: color ?? this.color,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        builder: builder ?? this.builder,
+        enterAnimation: enterAnimation ?? this.enterAnimation,
+        leaveAnimation: leaveAnimation ?? this.leaveAnimation,
+      );
+
+  /// lerp two ToastStyle
+  static LoadingStyle lerp(LoadingStyle? a, LoadingStyle? b, double t) {
+    return LoadingStyle(
+      showOverlay: (t < 0.5 ? a?.showOverlay : b?.showOverlay) ?? true,
+      overlayColor: Color.lerp(a?.overlayColor, b?.overlayColor, t),
+      decoration: t < 0.5 ? a?.decoration : b?.decoration,
+      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      strokeWidth: ui.lerpDouble(a?.strokeWidth, b?.strokeWidth, t),
+      valueColor: t < 0.5 ? a?.valueColor : b?.valueColor,
+      color: Color.lerp(a?.color, b?.color, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      builder: t < 0.5 ? a?.builder : b?.builder,
+      enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
+      leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
+    );
+  }
+}
+
 /// Style for [ToastWidget]
-class ToastStyle {
+class ToastStyle extends AnimatedOverlayStyle {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final BorderRadius? borderRadius;
-  final AnimationConfig? animationIn;
-  final AnimationConfig? animationOut;
 
   const ToastStyle({
     this.backgroundColor,
     this.foregroundColor,
     this.borderRadius,
-    this.animationIn,
-    this.animationOut,
-  });
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  }) : super(enterAnimation, leaveAnimation);
 
   /// Set align style for animation if do not contains align
-  ToastStyle topIfNoAlign() {
-    if (animationIn?.alignEnd != null) return this;
-    return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
+  @override
+  ToastStyle topIfNoAlign({bool? isAnimate}) {
+    return super.topIfNoAlign(isAnimate: isAnimate) as ToastStyle;
   }
 
   /// Set align top for animation
-  ToastStyle top() {
-    return _reAlign(MyDialog.theme.alignTop, const Alignment(0, -1.2));
+  @override
+  ToastStyle top({bool? isAnimate}) {
+    return super.top(isAnimate: isAnimate) as ToastStyle;
   }
 
   /// Set align bottom for animation if do not contains align
-  ToastStyle bottomIfNoAlign() {
-    if (animationIn?.alignEnd != null) return this;
-    return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
+  @override
+  ToastStyle bottomIfNoAlign({bool? isAnimate}) {
+    return super.bottomIfNoAlign(isAnimate: isAnimate) as ToastStyle;
   }
 
   /// Set align bottom for animation
-  ToastStyle bottom() {
-    return _reAlign(MyDialog.theme.alignBottom, const Alignment(0, 1.2));
+  @override
+  ToastStyle bottom({bool? isAnimate}) {
+    return super.bottom(isAnimate: isAnimate) as ToastStyle;
   }
 
-  ToastStyle _reAlign(Alignment align, Alignment out) {
-    return copyWith(
-      animationIn: (animationIn ?? AnimationConfig.fadeAndZoomIn).copyWith(
-        alignStart:
-            (animationIn?.alignStart == animationIn?.alignEnd) ? align : out,
-        alignEnd: align,
-      ),
-      animationOut: (animationOut ?? AnimationConfig.fadeAndZoomOut).copyWith(
-        alignStart:
-            (animationOut?.alignStart == animationOut?.alignEnd) ? align : out,
-        alignEnd: align,
-      ),
-    );
+  /// Set align center for animation if do not contains align
+  @override
+  ToastStyle centerIfNoAlign({bool? isAnimate}) {
+    return super.centerIfNoAlign(isAnimate: isAnimate) as ToastStyle;
+  }
+
+  /// Set align center for animation
+  @override
+  ToastStyle center({bool? isAnimate}) {
+    return super.center(isAnimate: isAnimate) as ToastStyle;
   }
 
   /// Creates a copy of this style
   /// but with the given fields replaced with the new values.
+  @override
   ToastStyle copyWith({
     Color? backgroundColor,
     Color? foregroundColor,
     BorderRadius? borderRadius,
-    AnimationConfig? animationIn,
-    AnimationConfig? animationOut,
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
   }) =>
       ToastStyle(
         backgroundColor: backgroundColor ?? this.backgroundColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         borderRadius: borderRadius ?? this.borderRadius,
-        animationIn: animationIn ?? this.animationIn,
-        animationOut: animationOut ?? this.animationOut,
+        enterAnimation: enterAnimation ?? this.enterAnimation,
+        leaveAnimation: leaveAnimation ?? this.leaveAnimation,
       );
 
   /// lerp two ToastStyle
@@ -315,14 +519,14 @@ class ToastStyle {
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
-      animationIn: t < 0.5 ? a?.animationIn : b?.animationIn,
-      animationOut: t < 0.5 ? a?.animationOut : b?.animationOut,
+      enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
+      leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );
   }
 }
 
 /// Style for [SnackWidget]
-class SnackStyle {
+class SnackStyle extends AnimatedOverlayStyle {
   final Gradient? gradient;
   final BoxDecoration? decoration;
   final double? height;
@@ -336,10 +540,49 @@ class SnackStyle {
     this.backgroundColor,
     this.foregroundColor,
     this.borderRadius,
-  });
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  }) : super(enterAnimation, leaveAnimation);
+
+  /// Set align style for animation if do not contains align
+  @override
+  SnackStyle topIfNoAlign({bool? isAnimate}) {
+    return super.topIfNoAlign(isAnimate: isAnimate) as SnackStyle;
+  }
+
+  /// Set align top for animation
+  @override
+  SnackStyle top({bool? isAnimate}) {
+    return super.top(isAnimate: isAnimate) as SnackStyle;
+  }
+
+  /// Set align bottom for animation if do not contains align
+  @override
+  SnackStyle bottomIfNoAlign({bool? isAnimate}) {
+    return super.bottomIfNoAlign(isAnimate: isAnimate) as SnackStyle;
+  }
+
+  /// Set align bottom for animation
+  @override
+  SnackStyle bottom({bool? isAnimate}) {
+    return super.bottom(isAnimate: isAnimate) as SnackStyle;
+  }
+
+  /// Set align center for animation if do not contains align
+  @override
+  SnackStyle centerIfNoAlign({bool? isAnimate}) {
+    return super.centerIfNoAlign(isAnimate: isAnimate) as SnackStyle;
+  }
+
+  /// Set align center for animation
+  @override
+  SnackStyle center({bool? isAnimate}) {
+    return super.center(isAnimate: isAnimate) as SnackStyle;
+  }
 
   /// Creates a copy of this style
   /// but with the given fields replaced with the new values.
+  @override
   SnackStyle copyWith({
     Gradient? gradient,
     BoxDecoration? decoration,
@@ -347,6 +590,8 @@ class SnackStyle {
     Color? backgroundColor,
     Color? foregroundColor,
     BorderRadius? borderRadius,
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
   }) =>
       SnackStyle(
         gradient: gradient ?? this.gradient,
@@ -355,6 +600,8 @@ class SnackStyle {
         backgroundColor: backgroundColor ?? this.backgroundColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         borderRadius: borderRadius ?? this.borderRadius,
+        enterAnimation: enterAnimation ?? this.enterAnimation,
+        leaveAnimation: leaveAnimation ?? this.leaveAnimation,
       );
 
   /// lerp two SnackStyle
@@ -366,6 +613,8 @@ class SnackStyle {
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
+      enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
+      leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );
   }
 }

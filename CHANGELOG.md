@@ -1,3 +1,7 @@
+## [4.2.0]
+    * toast & loading & snack reflactor,supported animation
+    * add loading theme style
+
 ## [4.1.1]
     * fix loading return type
     * add previews
