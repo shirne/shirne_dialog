@@ -1,13 +1,14 @@
+# Shirne Dialog 2
 
-<p align="center">
-    <a href="https://pub.dartlang.org/packages/shirne_dialog">
-        <img src="https://img.shields.io/pub/v/shirne_dialog.svg" alt="pub package" />
-    </a>
-</p>
+A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePreview, loading etc. with customizable style in anywhere.
 
-# dialog
+<a href="https://pub.dev/packages/shirne_dialog2">
+    <img src="https://img.shields.io/pub/v/shirne_dialog2.svg" alt="pub package" />
+</a>
 
-A package for flutter to use alert and toast within one line code.
+## Note
+
+This is an older version of [ShirneDialog](https://pub.dev/packages/shirne_dialog), recommand to upgrade with that new version.
 
 ## function
 
@@ -20,8 +21,13 @@ A package for flutter to use alert and toast within one line code.
 * snack
 * loading
 
+## preview
+
+[Online Demo](https://www.shirne.com/demo/easydialog/)
+
 ## usage
 
+Direct use
 ```
 MyDialog.of(context).toast('tip message');
 
@@ -36,17 +42,18 @@ MyDialog.of(context).popup(Text('popup contents'));
 MyDialog.of(context).snack('tip');
 ```
 
-Or 
+Or initialize and use
 ```
-// initialize in mainApp's first page
-MyDialog.initialize(context,MyDialogSetting());
 
-// Or use Mydialog.navigatorKey with MaterialApp
- MaterialApp(
+// Use Mydialog.navigatorKey with MaterialApp Or CupertinoApp
+MaterialApp(
     //...
     navigatorKey: MyDialog.navigatorKey,
     //...
- );
+);
+
+// Or initialize before use [do not recommand]
+MyDialog.initialize(context,MyDialogSetting());
  
 // call in anywhere
 MyDialog.confirm('aaa');
@@ -54,5 +61,3 @@ MyDialog.alert('test');
 MyDialog.toase('test');
 
 ```
-
-[Demo](https://www.shirne.com/demo/easydialog/)

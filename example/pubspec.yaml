@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  shirne_dialog:
+  shirne_dialog2:
     path: ../
 
 dev_dependencies:

@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:example/new_page.dart';
 import 'package:example/sub_page.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
+import 'package:shirne_dialog2/shirne_dialog2.dart';
 import 'package:flutter/material.dart';
+
+import 'images.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,14 +59,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isDark = false;
-  final images = <String>[
-    'https://img.shirne.com/website-mapp/1.png',
-    'https://img.shirne.com/website-mapp/2.png',
-    'https://img.shirne.com/website-mapp/3.png',
-    'https://img.shirne.com/website-mapp/4.png',
-    'https://img.shirne.com/website-mapp/5.png',
-    'https://img.shirne.com/website-mapp/6.png',
-  ];
 
   @override
   Widget build(BuildContext context) {

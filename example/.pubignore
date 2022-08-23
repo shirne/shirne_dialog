@@ -1,0 +1,8 @@
+android/
+ios/
+macos/
+linux/
+web/
+windows/
+
+build/

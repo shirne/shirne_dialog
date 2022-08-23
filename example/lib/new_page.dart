@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
+import 'package:shirne_dialog2/shirne_dialog2.dart';
+
+import 'images.dart';
 
 class NewPage extends StatefulWidget {
   final String title;
@@ -12,16 +14,6 @@ class NewPage extends StatefulWidget {
 }
 
 class _NewPageState extends State<NewPage> {
-  bool isDark = false;
-  final images = <String>[
-    'https://img.shirne.com/website-mapp/1.png',
-    'https://img.shirne.com/website-mapp/2.png',
-    'https://img.shirne.com/website-mapp/3.png',
-    'https://img.shirne.com/website-mapp/4.png',
-    'https://img.shirne.com/website-mapp/5.png',
-    'https://img.shirne.com/website-mapp/6.png',
-  ];
-
   @override
   void initState() {
     super.initState();

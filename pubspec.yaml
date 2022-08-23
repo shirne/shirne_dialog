@@ -1,8 +1,8 @@
-name: shirne_dialog
-description: A package to use alert, confirm, toast, imagePreview, snack and popup within one line code.
+name: shirne_dialog2
+description: A flutter package to use alert, confirm, toast, popup, snack, imagePreview, loading etc.
 version: 2.0.4
 homepage: https://www.shirne.com/demo/easydialog/
-repository: https://github.com/shirne/shirne_dialog
+repository: https://github.com/shirne/shirne_dialog2
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/src/dialog_icons.dart';
+import 'dialog_icons.dart';
 
 /// Provide unified parameter settings for various dialogs
 class MyDialogSetting {

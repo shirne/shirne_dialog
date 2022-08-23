@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-const _fontPackage = 'shirne_dialog';
+const _fontPackage = 'shirne_dialog2';
 
 class DialogIcons {
   static const _fontFamily = 'dicons';

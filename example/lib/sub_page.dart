@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shirne_dialog/shirne_dialog.dart';
+import 'package:shirne_dialog2/shirne_dialog2.dart';
 
-import 'new_page.dart';
+import 'images.dart';
 
 class SubPage extends StatefulWidget {
   final String title;
@@ -15,14 +15,6 @@ class SubPage extends StatefulWidget {
 
 class _SubPageState extends State<SubPage> {
   bool isDark = false;
-  final images = <String>[
-    'https://img.shirne.com/website-mapp/1.png',
-    'https://img.shirne.com/website-mapp/2.png',
-    'https://img.shirne.com/website-mapp/3.png',
-    'https://img.shirne.com/website-mapp/4.png',
-    'https://img.shirne.com/website-mapp/5.png',
-    'https://img.shirne.com/website-mapp/6.png',
-  ];
 
   @override
   Widget build(BuildContext context) {

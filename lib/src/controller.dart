@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../shirne_dialog.dart';
+import 'my_dialog.dart';
 
 /// abstract controller
 abstract class DialogController<T> {

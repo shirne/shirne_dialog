@@ -88,7 +88,7 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.1"
-  shirne_dialog:
+  shirne_dialog2:
     dependency: "direct main"
     description:
       path: ".."
