@@ -110,7 +110,7 @@ class MyDialog {
     String? defaultValue,
     Widget? label,
     Widget Function(BuildContext, TextEditingController)? builder,
-    bool Function(String)? onConfirm,
+    FutureOr<bool> Function(String)? onConfirm,
     String title = '',
     String? buttonText,
     Widget? titleWidget,
@@ -137,7 +137,7 @@ class MyDialog {
   static Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
-    bool Function()? onConfirm,
+    FutureOr<bool> Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     String? cancelText,
@@ -346,7 +346,7 @@ class ShirneDialog {
 
     /// called when confirm button tapped.
     /// if not validate pass the input ,return false pls.
-    bool Function(String)? onConfirm,
+    FutureOr<bool> Function(String)? onConfirm,
     String title = '',
     String? buttonText,
     Widget? titleWidget,
@@ -397,7 +397,7 @@ class ShirneDialog {
 
     /// A confirm button callback.
     /// Modal will hold on only when return false.
-    bool Function()? onConfirm,
+    FutureOr<bool> Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     String? cancelText,
@@ -426,9 +426,10 @@ class ShirneDialog {
         ),
         ElevatedButton(
           onPressed: () async {
-            final result = onConfirm?.call();
+            final navigator = Navigator.of(context);
+            final result = await onConfirm?.call();
             if (result == false) return;
-            Navigator.pop(context, true);
+            navigator.pop(true);
           },
           style: theme?.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
           child: Text(

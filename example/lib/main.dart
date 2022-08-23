@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               })
         ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
@@ -154,58 +154,90 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.alert(const Text('提示信息'));
-                  },
-                  child: const Text('Alert'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.confirm(const Text('是否确认')).then((v) {
-                      if (v ?? false) {
-                        MyDialog.toast('好的');
-                      } else {
-                        MyDialog.toast(
-                          'em...',
-                          style: MyDialog.theme.toastStyle?.bottom(),
-                        );
-                      }
-                    });
-                  },
-                  child: const Text('Confirm'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.prompt(
-                      title: '请输入数字',
-                      onConfirm: (v) {
-                        final s = int.tryParse(v);
-                        if (s == null) {
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.alert(const Text('提示信息'));
+                    },
+                    child: const Text('Alert'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.confirm(const Text('是否确认')).then((v) {
+                        if (v ?? false) {
+                          MyDialog.toast('好的');
+                        } else {
                           MyDialog.toast(
-                            '请输入数字',
-                            style: MyDialog.theme.toastStyle?.top(),
+                            'em...',
+                            style: MyDialog.theme.toastStyle?.bottom(),
                           );
-                          return false;
                         }
-                        return true;
-                      },
-                    ).then((v) {
-                      if (v == null) {
-                        MyDialog.toast('取消了输入');
-                      } else {
-                        MyDialog.toast('输入内容 $v');
-                      }
-                    });
-                  },
-                  child: const Text('Prompt'),
-                ),
-              ],
+                      });
+                    },
+                    child: const Text('Confirm'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.prompt(
+                        title: '请输入数字',
+                        onConfirm: (v) {
+                          final s = int.tryParse(v);
+                          if (s == null) {
+                            MyDialog.toast(
+                              '请输入数字',
+                              style: MyDialog.theme.toastStyle?.top(),
+                            );
+                            return false;
+                          }
+                          return true;
+                        },
+                      ).then((v) {
+                        if (v == null) {
+                          MyDialog.toast('取消了输入');
+                        } else {
+                          MyDialog.toast('输入内容 $v');
+                        }
+                      });
+                    },
+                    child: const Text('Prompt'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.prompt(
+                        title: '请输入数字',
+                        onConfirm: (v) async {
+                          final s = int.tryParse(v);
+                          final c = MyDialog.loading('checking...');
+                          await Future.delayed(const Duration(seconds: 3));
+                          c.close();
+                          if (s == null) {
+                            MyDialog.toast(
+                              '请输入数字',
+                              style: MyDialog.theme.toastStyle?.top(),
+                            );
+                            return false;
+                          }
+                          return true;
+                        },
+                      ).then((v) {
+                        if (v == null) {
+                          MyDialog.toast('取消了输入');
+                        } else {
+                          MyDialog.toast('输入内容 $v');
+                        }
+                      });
+                    },
+                    child: const Text('Prompt Future Verify'),
+                  ),
+                ],
+              ),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
