@@ -24,7 +24,7 @@ You must initialize ShirneDialogTheme on theme.extensions in flutter version 3.0
 
 ## Preview
 
-[Online Demo](https://www.shirne.com/demo/easydialog/)
+[Online Demo](https://shirne.github.io/dialog/)
 
 |Toast|Dialog|ImagePreview|
 |:-:|:-:|:-:|
