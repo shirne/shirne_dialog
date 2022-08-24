@@ -1,5 +1,7 @@
 library controller;
 
+import 'dart:math' show min;
+
 import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -129,8 +131,12 @@ class ProgressController extends OverlayController<double> {
     if (aController == null) {
       super.value = v;
     } else {
-      aController
-          ?.animateTo(
+      if (!aController!.isCompleted) {
+        super.value = aController!.value;
+        aController!.stop();
+      }
+      aController!
+          .animateTo(
         v,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
@@ -142,7 +148,10 @@ class ProgressController extends OverlayController<double> {
   }
 
   @override
-  bool get isClose => value == 1;
+  double get value => min(1, aController?.value ?? _value);
+
+  @override
+  bool get isClose => value >= 1;
 }
 
 class EntryController extends OverlayController<bool> {
