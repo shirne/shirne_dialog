@@ -6,7 +6,7 @@ A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePrevi
     <img src="https://img.shields.io/pub/v/shirne_dialog.svg" alt="pub package" />
 </a>
 
-## function
+## Features
 
 * toast
 * alert

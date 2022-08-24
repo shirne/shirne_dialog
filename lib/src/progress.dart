@@ -12,6 +12,7 @@ class ProgressWidget extends StatefulWidget {
 
   final LoadingStyle? style;
 
+  final Widget Function(BuildContext, double)? builder;
   final void Function(AnimationController)? onListen;
   final VoidCallback? onDispose;
 
@@ -21,6 +22,7 @@ class ProgressWidget extends StatefulWidget {
     this.message,
     this.onListen,
     this.onDispose,
+    this.builder,
     this.style,
   })  : assert(
           !showProgress || (showProgress && onListen != null),
@@ -60,7 +62,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
 
   @override
   Widget build(BuildContext context) {
-    return widget.style?.builder?.call(context, progress) ??
+    return (widget.builder ?? widget.style?.builder)?.call(context, progress) ??
         Container(
           padding: widget.style?.padding,
           decoration: widget.style?.decoration ??

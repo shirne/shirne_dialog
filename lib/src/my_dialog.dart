@@ -275,6 +275,9 @@ class MyDialog {
     String message, {
     bool? showProgress,
     Duration? duration,
+
+    /// Custom builder to cover style.builder
+    Widget Function(BuildContext, double)? builder,
     LoadingStyle? style,
   }) {
     _checkInstance();
@@ -282,6 +285,7 @@ class MyDialog {
       message,
       showProgress: showProgress,
       duration: duration,
+      builder: builder,
       style: style,
     );
   }
@@ -627,6 +631,9 @@ class ShirneDialog {
     String message, {
     bool? showProgress,
     Duration? duration,
+
+    /// Custom builder to cover style.builder
+    Widget Function(BuildContext, double)? builder,
     LoadingStyle? style,
   }) {
     final loadingStyle = (style ?? theme.loadingStyle)?.centerIfNoAlign();
@@ -636,6 +643,7 @@ class ShirneDialog {
       ProgressWidget(
         showProgress: showProgress ?? false,
         message: message,
+        builder: builder,
         style: loadingStyle,
         // ignore: unnecessary_lambdas
         onListen: (ac) {
