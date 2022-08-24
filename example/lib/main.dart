@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:math' as math;
+import 'dart:math' show max;
 
 import 'package:shirne_dialog/shirne_dialog.dart';
 import 'package:flutter/material.dart';
@@ -405,79 +405,101 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.loading('加载中');
-                  },
-                  child: const Text('Loading'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    final controller = MyDialog.loading(
-                      '加载中',
-                      showProgress: true,
-                      duration: Duration.zero,
-                    );
-                    Timer.periodic(const Duration(milliseconds: 500), (timer) {
-                      controller.value += 0.2;
-                      if (controller.value >= 1) {
-                        timer.cancel();
-                      }
-                    });
-                  },
-                  child: const Text('Loading with progress'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    final controller = MyDialog.loading('加载中',
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.loading('加载中');
+                    },
+                    child: const Text('Loading'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      final controller = MyDialog.loading(
+                        '加载中',
                         showProgress: true,
-                        duration: Duration.zero, builder: (context, value) {
-                      final progress = (value * 100).round();
-                      return Material(
-                        elevation: progress % 10,
-                        shape: const CircleBorder(),
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: const [
-                                Colors.white,
-                                Colors.white,
-                                Colors.blue,
-                                Colors.blue,
-                              ],
-                              stops: [
-                                0,
-                                math.max(0, (100 - progress) / 100 - 0.1),
-                                (100 - progress) / 100,
-                                1
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                          child: Text('$progress%'),
-                        ),
+                        duration: Duration.zero,
                       );
-                    });
-                    Timer.periodic(const Duration(milliseconds: 500), (timer) {
-                      controller.value += 0.2;
-                      if (controller.value >= 1) {
-                        timer.cancel();
-                      }
-                    });
-                  },
-                  child: const Text('Loading with Customer'),
-                ),
-              ],
+                      Timer.periodic(const Duration(milliseconds: 500),
+                          (timer) {
+                        controller.value += 0.2;
+
+                        if (controller.value >= 1) {
+                          timer.cancel();
+                        }
+                      });
+                    },
+                    child: const Text('Loading with progress'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      final controller = MyDialog.loading(
+                        '加载中',
+                        showProgress: true,
+                        duration: Duration.zero,
+                        builder: (context, value) {
+                          final progress = (value * 100).round();
+                          return Material(
+                            elevation: progress % 10,
+                            shape: const CircleBorder(),
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: const [
+                                    Colors.white,
+                                    Colors.white,
+                                    Colors.blue,
+                                    Colors.blue,
+                                  ],
+                                  stops: [
+                                    0,
+                                    max(0, (100 - progress) / 100 - 0.1),
+                                    (100 - progress) / 100,
+                                    1
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                              ),
+                              child: Text(
+                                '$progress%',
+                                style: TextStyle(
+                                  color: Color.lerp(
+                                    Colors.black,
+                                    Colors.white,
+                                    value < 0.4
+                                        ? 0
+                                        : (value > 0.5
+                                            ? 1
+                                            : (value - 0.4) * 10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                      Timer.periodic(const Duration(milliseconds: 500),
+                          (timer) {
+                        controller.value += 0.2;
+                        if (controller.value >= 1) {
+                          timer.cancel();
+                        }
+                      });
+                    },
+                    child: const Text('Loading with Customer'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
