@@ -8,15 +8,21 @@ A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePrevi
 
 ## Features
 
-* toast
-* alert
-* confirm
-* prompt [new]
-* modal
-* popup
-* imagePreview
-* snack
-* loading
+- ✅ toast
+- ✅ alert
+- ✅ confirm
+- ✅ prompt [new]
+- ✅ modal
+- ✅ popup
+- ✅ imagePreview
+- ✅ snack
+- ✅ loading
+
+
+- 🚧 imagePreview support hero
+- 🚧 modal adaptive & more style
+- 🚧 popmenu
+- 🚧 guide
 
 ## Notice
 
