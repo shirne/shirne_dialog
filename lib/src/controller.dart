@@ -46,12 +46,10 @@ abstract class OverlayController<T> extends DialogController<T> {
   Widget child;
   OverlayEntry? entry;
   final OverlayState overlay;
-  CombinedAnimationController? controller;
+  CombinedAnimationController controller = CombinedAnimationController();
 
   bool showOverlay;
   Color? overlayColor;
-
-  bool isClosed = false;
 
   OverlayController(
     T value, {
@@ -75,12 +73,7 @@ abstract class OverlayController<T> extends DialogController<T> {
         child: CombinedAnimation(
           config: animate,
           leaveConfig: leaveAnimate,
-          onEntered: (c) {
-            controller = c;
-            if (isClosed) {
-              c.leave();
-            }
-          },
+          controller: controller,
           onDissmiss: remove,
           dismissDuration: Duration.zero,
           child: child,
@@ -93,12 +86,12 @@ abstract class OverlayController<T> extends DialogController<T> {
 
   @override
   void close() {
-    controller?.leave();
-    isClosed = true;
+    controller.leave();
   }
 
   @override
   remove() {
+    controller.dispose();
     entry?.remove();
     dispose();
   }

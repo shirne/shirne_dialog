@@ -1,3 +1,6 @@
+## [4.3.0]
+    * upgrade combined_animation to 0.2.0
+
 ## [4.2.1]
     * fix toast dismiss incorrect
 
