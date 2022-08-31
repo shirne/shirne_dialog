@@ -26,7 +26,9 @@ A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePrevi
 
 ## Notice
 
-You must initialize ShirneDialogTheme on theme.extensions in flutter version 3.0.0
+You must initialize ShirneDialogTheme on theme.extensions between flutter version 3.0.0 - 3.0.4
+
+Above 3.0.5 dialog will use default theme when not provide in ThemeData.extends
 
 ## Preview
 
