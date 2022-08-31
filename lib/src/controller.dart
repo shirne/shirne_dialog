@@ -51,6 +51,8 @@ abstract class OverlayController<T> extends DialogController<T> {
   bool showOverlay;
   Color? overlayColor;
 
+  bool isClosed = false;
+
   OverlayController(
     T value, {
     AnimationConfig? animate,
@@ -75,6 +77,9 @@ abstract class OverlayController<T> extends DialogController<T> {
           leaveConfig: leaveAnimate,
           onEntered: (c) {
             controller = c;
+            if (isClosed) {
+              c.leave();
+            }
           },
           onDissmiss: remove,
           dismissDuration: Duration.zero,
@@ -89,6 +94,7 @@ abstract class OverlayController<T> extends DialogController<T> {
   @override
   void close() {
     controller?.leave();
+    isClosed = true;
   }
 
   @override

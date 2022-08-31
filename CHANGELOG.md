@@ -1,3 +1,6 @@
+## [4.2.1]
+    * fix toast dismiss incorrect
+
 ## [4.2.0]
     * toast & loading & snack reflactor,supported animation
     * add loading theme style & custom builder
