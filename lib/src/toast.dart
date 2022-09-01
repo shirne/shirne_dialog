@@ -81,8 +81,8 @@ class _ToastWidgetState extends State<ToastWidget> {
 
     Future.delayed(
         Duration(
-            milliseconds: widget.duration - _defaultDuration.inMilliseconds),
-        () {
+          milliseconds: widget.duration - _defaultDuration.inMilliseconds,
+        ), () {
       if (!mounted) return;
       setState(() {
         willHide = true;

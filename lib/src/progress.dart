@@ -54,7 +54,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
     super.dispose();
   }
 
-  _onAnimate() {
+  void _onAnimate() {
     setState(() {
       progress = controller.value;
     });

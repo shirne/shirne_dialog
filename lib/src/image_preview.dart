@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 
 import '../shirne_dialog.dart';
 
-final _placementImage = MemoryImage(Uint8List.fromList([
-  71, 73, 70, 56, 55, 97, 1, 0, 1, 0, 240, 0, 0, 0, 0, 0, 201, 69, 38, //
-  33, 249, 4, 1, 0, 0, 1, 0, 44, 0, 0, 0, 00, 1, 0, 1, 0, 0, 2, 2, 76, 1,
-  0,
-  59,
-]));
+final _placementImage = MemoryImage(
+  Uint8List.fromList([
+    71, 73, 70, 56, 55, 97, 1, 0, 1, 0, 240, 0, 0, 0, 0, 0, 201, 69, 38, //
+    33, 249, 4, 1, 0, 0, 1, 0, 44, 0, 0, 0, 00, 1, 0, 1, 0, 0, 2, 2, 76, 1,
+    0,
+    59,
+  ]),
+);
 
 class ImageAutoPreview extends StatefulWidget {
   const ImageAutoPreview({

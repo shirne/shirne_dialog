@@ -9,7 +9,9 @@ abstract class ShirneDialogLocalizations {
 
   static ShirneDialogLocalizations of(BuildContext context) =>
       Localizations.of<ShirneDialogLocalizations>(
-          context, ShirneDialogLocalizations)!;
+        context,
+        ShirneDialogLocalizations,
+      )!;
 
   String get buttonConfirm;
   String get buttonCancel;
@@ -30,14 +32,17 @@ class _ShirneDialogLocalizationsDelegate
   @override
   Future<ShirneDialogLocalizations> load(Locale locale) {
     return _loadedTranslations.putIfAbsent(
-        locale,
-        () => SynchronousFuture<ShirneDialogLocalizations>(
-            _getTranslation(locale)));
+      locale,
+      () => SynchronousFuture<ShirneDialogLocalizations>(
+        _getTranslation(locale),
+      ),
+    );
   }
 
   @override
   bool shouldReload(
-          covariant LocalizationsDelegate<ShirneDialogLocalizations> old) =>
+    covariant LocalizationsDelegate<ShirneDialogLocalizations> old,
+  ) =>
       false;
 
   static ShirneDialogLocalizations _getTranslation(Locale locale) {

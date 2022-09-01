@@ -478,11 +478,9 @@ class ShirneDialog {
       message is Widget
           ? message
           : ListBody(
-              children: message
-                  .toString()
-                  .split('\n')
-                  .map<Widget>(Text.new)
-                  .toList()),
+              children:
+                  message.toString().split('\n').map<Widget>(Text.new).toList(),
+            ),
       [
         ElevatedButton(
           onPressed: () async {
@@ -491,8 +489,9 @@ class ShirneDialog {
             Navigator.pop(context, true);
           },
           style: MyDialog.theme.primaryButtonStyle,
-          child: Text(buttonText ??
-              ShirneDialogLocalizations.of(context).buttonConfirm),
+          child: Text(
+            buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
+          ),
         ),
       ],
       title: title,
@@ -513,34 +512,36 @@ class ShirneDialog {
     Color? barrierColor = Colors.black54,
   }) {
     final style = MyDialog.theme.modalStyle;
-    return modal<T>(AlertDialog(
-      title: titleWidget ?? (title.isEmpty ? null : Text(title)),
-      titlePadding: style?.titlePadding,
-      titleTextStyle: style?.titleTextStyle,
-      content: SingleChildScrollView(
-        child: body,
+    return modal<T>(
+      AlertDialog(
+        title: titleWidget ?? (title.isEmpty ? null : Text(title)),
+        titlePadding: style?.titlePadding,
+        titleTextStyle: style?.titleTextStyle,
+        content: SingleChildScrollView(
+          child: body,
+        ),
+        contentPadding: style?.contentPadding ??
+            const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+        contentTextStyle: style?.contentTextStyle,
+        actions: buttons,
+        actionsPadding: style?.actionsPadding ?? EdgeInsets.zero,
+        actionsAlignment: style?.actionsAlignment,
+        actionsOverflowDirection: style?.actionsOverflowDirection,
+        actionsOverflowButtonSpacing: style?.actionsOverflowButtonSpacing,
+        buttonPadding: style?.buttonPadding,
+        backgroundColor: style?.backgroundColor,
+        elevation: style?.elevation,
+        semanticLabel: style?.semanticLabel,
+        insetPadding: style?.insetPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 40.0,
+              vertical: 24.0,
+            ),
+        clipBehavior: style?.clipBehavior ?? Clip.none,
+        shape: style?.shape,
+        scrollable: style?.scrollable ?? false,
       ),
-      contentPadding: style?.contentPadding ??
-          const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
-      contentTextStyle: style?.contentTextStyle,
-      actions: buttons,
-      actionsPadding: style?.actionsPadding ?? EdgeInsets.zero,
-      actionsAlignment: style?.actionsAlignment,
-      actionsOverflowDirection: style?.actionsOverflowDirection,
-      actionsOverflowButtonSpacing: style?.actionsOverflowButtonSpacing,
-      buttonPadding: style?.buttonPadding,
-      backgroundColor: style?.backgroundColor,
-      elevation: style?.elevation,
-      semanticLabel: style?.semanticLabel,
-      insetPadding: style?.insetPadding ??
-          const EdgeInsets.symmetric(
-            horizontal: 40.0,
-            vertical: 24.0,
-          ),
-      clipBehavior: style?.clipBehavior ?? Clip.none,
-      shape: style?.shape,
-      scrollable: style?.scrollable ?? false,
-    ));
+    );
   }
 
   /// show a custom modal.

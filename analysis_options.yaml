@@ -40,6 +40,8 @@ linter:
     use_enums: true
     use_late_for_private_fields_and_variables: true
     # prefer_expression_function_bodies: true
+    always_declare_return_types: true
+    require_trailing_commas: true
 
     package_api_docs: true
 

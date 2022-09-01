@@ -66,20 +66,22 @@ abstract class OverlayController<T> extends DialogController<T> {
         );
 
   @override
-  open() {
-    entry ??= OverlayEntry(builder: (BuildContext context) {
-      return Container(
-        color: showOverlay ? (overlayColor ?? Colors.black26) : null,
-        child: CombinedAnimation(
-          config: animate,
-          leaveConfig: leaveAnimate,
-          controller: controller,
-          onDismiss: remove,
-          dismissDuration: Duration.zero,
-          child: child,
-        ),
-      );
-    });
+  void open() {
+    entry ??= OverlayEntry(
+      builder: (BuildContext context) {
+        return Container(
+          color: showOverlay ? (overlayColor ?? Colors.black26) : null,
+          child: CombinedAnimation(
+            config: animate,
+            leaveConfig: leaveAnimate,
+            controller: controller,
+            onDismiss: remove,
+            dismissDuration: Duration.zero,
+            child: child,
+          ),
+        );
+      },
+    );
 
     overlay.insert(entry!);
   }
@@ -90,7 +92,7 @@ abstract class OverlayController<T> extends DialogController<T> {
   }
 
   @override
-  remove() {
+  void remove() {
     controller.dispose();
     entry?.remove();
     dispose();

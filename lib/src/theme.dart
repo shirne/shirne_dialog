@@ -102,7 +102,9 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   /// lerp theme
   @override
   ThemeExtension<ShirneDialogTheme> lerp(
-      ThemeExtension<ShirneDialogTheme>? other, double t) {
+    ThemeExtension<ShirneDialogTheme>? other,
+    double t,
+  ) {
     final o = other as ShirneDialogTheme?;
     return ShirneDialogTheme(
       alignTop: Alignment.lerp(alignTop, o?.alignTop, t) ?? alignTop,
@@ -227,9 +229,10 @@ class ModalStyle {
       actionsOverflowDirection:
           t < 0.5 ? a?.actionsOverflowDirection : b?.actionsOverflowDirection,
       actionsOverflowButtonSpacing: ui.lerpDouble(
-          a?.actionsOverflowButtonSpacing ?? 0,
-          b?.actionsOverflowButtonSpacing ?? 0,
-          t),
+        a?.actionsOverflowButtonSpacing ?? 0,
+        b?.actionsOverflowButtonSpacing ?? 0,
+        t,
+      ),
       buttonPadding:
           EdgeInsetsGeometry.lerp(a?.buttonPadding, b?.buttonPadding, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
