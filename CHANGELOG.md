@@ -1,3 +1,6 @@
+## [4.4.0]
+    * upgrade combined_animation to 0.3.0
+
 ## [4.3.0]
     * upgrade combined_animation to 0.2.0
 

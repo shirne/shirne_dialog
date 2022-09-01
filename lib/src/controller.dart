@@ -74,7 +74,7 @@ abstract class OverlayController<T> extends DialogController<T> {
           config: animate,
           leaveConfig: leaveAnimate,
           controller: controller,
-          onDissmiss: remove,
+          onDismiss: remove,
           dismissDuration: Duration.zero,
           child: child,
         ),
