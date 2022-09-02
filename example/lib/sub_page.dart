@@ -20,10 +20,11 @@ class _SubPageState extends State<SubPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -53,6 +54,7 @@ class _SubPageState extends State<SubPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -80,6 +82,7 @@ class _SubPageState extends State<SubPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Wrap(
@@ -103,35 +106,40 @@ class _SubPageState extends State<SubPage> {
                 ),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(const Text('弹出窗内容'));
-                },
-                child: const Text('Popup'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(const Text('弹出窗内容'), height: 100);
-                },
-                child: const Text('Popup height 100'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.popup(
-                      SingleChildScrollView(
-                        child: ListBody(
-                          children: List.generate(
-                              50, (index) => Text('This is row $index')),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.popup(const Text('弹出窗内容'));
+                  },
+                  child: const Text('Popup'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.popup(const Text('弹出窗内容'), height: 100);
+                  },
+                  child: const Text('Popup height 100'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.popup(
+                        SingleChildScrollView(
+                          child: ListBody(
+                            children: List.generate(
+                                50, (index) => Text('This is row $index')),
+                          ),
                         ),
-                      ),
-                      isScrollControlled: true);
-                },
-                child: const Text('Popup with scroll'),
-              ),
-            ]),
+                        isScrollControlled: true);
+                  },
+                  child: const Text('Popup with scroll'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -193,6 +201,7 @@ class _SubPageState extends State<SubPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -220,6 +229,7 @@ class _SubPageState extends State<SubPage> {
                 )
               ],
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

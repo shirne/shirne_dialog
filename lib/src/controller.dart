@@ -6,6 +6,8 @@ import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+typedef WrapperBuilder = Widget Function(BuildContext, Widget);
+
 /// abstract controller
 abstract class DialogController<T> extends ChangeNotifier
     implements ValueListenable<T> {
@@ -48,6 +50,8 @@ abstract class OverlayController<T> extends DialogController<T> {
   final OverlayState overlay;
   CombinedAnimationController controller = CombinedAnimationController();
 
+  WrapperBuilder? wrapperBuilder;
+
   bool showOverlay;
   Color? overlayColor;
 
@@ -58,6 +62,7 @@ abstract class OverlayController<T> extends DialogController<T> {
     required this.overlay,
     required this.child,
     this.showOverlay = false,
+    this.wrapperBuilder,
     this.overlayColor,
   }) : super(
           value,
@@ -69,17 +74,19 @@ abstract class OverlayController<T> extends DialogController<T> {
   void open() {
     entry ??= OverlayEntry(
       builder: (BuildContext context) {
-        return Container(
-          color: showOverlay ? (overlayColor ?? Colors.black26) : null,
-          child: CombinedAnimation(
-            config: animate,
-            leaveConfig: leaveAnimate,
-            controller: controller,
-            onDismiss: remove,
-            dismissDuration: Duration.zero,
-            child: child,
-          ),
+        final animateChild = CombinedAnimation(
+          config: animate,
+          leaveConfig: leaveAnimate,
+          controller: controller,
+          onDismiss: remove,
+          dismissDuration: Duration.zero,
+          child: child,
         );
+        return wrapperBuilder?.call(context, animateChild) ??
+            Container(
+              color: showOverlay ? (overlayColor ?? Colors.black26) : null,
+              child: animateChild,
+            );
       },
     );
 
@@ -105,6 +112,7 @@ class ProgressController extends OverlayController<double> {
   ProgressController(
     Widget child, {
     required OverlayState overlay,
+    WrapperBuilder? wrapperBuilder,
     bool? showOverlay,
     Color? overlayColor,
     AnimationConfig? animate,
@@ -114,6 +122,7 @@ class ProgressController extends OverlayController<double> {
           overlay: overlay,
           showOverlay: showOverlay ?? true,
           overlayColor: overlayColor,
+          wrapperBuilder: wrapperBuilder,
           animate: animate,
           leaveAnimate: leaveAnimate,
           child: child,
@@ -159,6 +168,7 @@ class EntryController extends OverlayController<bool> {
   EntryController(
     Widget child, {
     required OverlayState overlay,
+    WrapperBuilder? wrapperBuilder,
     bool? showOverlay,
     Color? overlayColor,
     AnimationConfig? animate,
@@ -168,6 +178,7 @@ class EntryController extends OverlayController<bool> {
           overlay: overlay,
           showOverlay: showOverlay ?? false,
           overlayColor: overlayColor,
+          wrapperBuilder: wrapperBuilder,
           animate: animate,
           leaveAnimate: leaveAnimate,
           child: child,

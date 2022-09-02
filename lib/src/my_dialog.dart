@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
 
+import 'dropdown.dart';
 import 'localizations.dart';
 import 'controller.dart';
 import 'image_preview.dart';
@@ -298,6 +299,21 @@ class MyDialog {
     _checkInstance();
     return _instance!.overlayModal(
       child,
+      animate: animate,
+      leaveAnimate: leaveAnimate,
+    );
+  }
+
+  static EntryController dropdown(
+    List<Widget> actions, {
+    required Rect origRect,
+    AnimationConfig? animate,
+    AnimationConfig? leaveAnimate,
+  }) {
+    _checkInstance();
+    return _instance!.dropdown(
+      actions,
+      origRect: origRect,
       animate: animate,
       leaveAnimate: leaveAnimate,
     );
@@ -677,16 +693,53 @@ class ShirneDialog {
   /// when controller.value==1, and call controller.remove after animation
   EntryController overlayModal(
     Widget child, {
+    WrapperBuilder? wrapperBuilder,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
     final controller = EntryController(
       child,
       overlay: overlay,
+      wrapperBuilder: wrapperBuilder,
       animate: animate,
       leaveAnimate: leaveAnimate,
     )..open();
 
+    return controller;
+  }
+
+  EntryController dropdown(
+    List<Widget> actions, {
+    required Rect origRect,
+    double? elevation,
+    AnimationConfig? animate,
+    AnimationConfig? leaveAnimate,
+  }) {
+    late final EntryController controller;
+    controller = overlayModal(
+      DropdownWidget(
+        actions: actions,
+        origRect: origRect,
+        elevation: elevation ?? 4.0,
+      ),
+      wrapperBuilder: (context, child) => GestureDetector(
+        onTap: controller.close,
+        child: Container(
+          color: Colors.transparent,
+          child: Stack(
+            children: [
+              Positioned(
+                left: origRect.topLeft.dx,
+                top: origRect.topLeft.dy + origRect.height,
+                child: child,
+              ),
+            ],
+          ),
+        ),
+      ),
+      animate: animate,
+      leaveAnimate: leaveAnimate,
+    );
     return controller;
   }
 

@@ -20,10 +20,11 @@ class _NewPageState extends State<NewPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -53,6 +54,7 @@ class _NewPageState extends State<NewPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -80,6 +82,7 @@ class _NewPageState extends State<NewPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Wrap(
@@ -103,35 +106,41 @@ class _NewPageState extends State<NewPage> {
                 ),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.of(context).popup(const Text('弹出窗内容'));
-                },
-                child: const Text('Popup'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.of(context).popup(const Text('弹出窗内容'), height: 100);
-                },
-                child: const Text('Popup height 100'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  MyDialog.of(context).popup(
-                      SingleChildScrollView(
-                        child: ListBody(
-                          children: List.generate(
-                              50, (index) => Text('This is row $index')),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.of(context).popup(const Text('弹出窗内容'));
+                  },
+                  child: const Text('Popup'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.of(context)
+                        .popup(const Text('弹出窗内容'), height: 100);
+                  },
+                  child: const Text('Popup height 100'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    MyDialog.of(context).popup(
+                        SingleChildScrollView(
+                          child: ListBody(
+                            children: List.generate(
+                                50, (index) => Text('This is row $index')),
+                          ),
                         ),
-                      ),
-                      isScrollControlled: true);
-                },
-                child: const Text('Popup with scroll'),
-              ),
-            ]),
+                        isScrollControlled: true);
+                  },
+                  child: const Text('Popup with scroll'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -193,6 +202,7 @@ class _NewPageState extends State<NewPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -220,6 +230,7 @@ class _NewPageState extends State<NewPage> {
                 )
               ],
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

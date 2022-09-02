@@ -100,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -500,6 +501,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Builder(builder: (context) {
+                  FocusNode focusNode = FocusNode();
+                  return ElevatedButton(
+                    onPressed: () {
+                      print('onPressed');
+                      final renderObject =
+                          focusNode.context!.findRenderObject()!;
+                      late final EntryController controller;
+                      final offset = (renderObject as RenderBox)
+                          .localToGlobal(Offset.zero);
+                      controller = MyDialog.dropdown(
+                        [
+                          GestureDetector(
+                            onTap: () {
+                              controller.close();
+                            },
+                            child: Text('aaa'),
+                          ),
+                          Text('bbb'),
+                        ],
+                        origRect: renderObject.paintBounds
+                            .translate(offset.dx, offset.dy),
+                      );
+                    },
+                    focusNode: focusNode,
+                    child: const Text('Dropdown'),
+                  );
+                }),
+              ],
             ),
           ],
         ),
