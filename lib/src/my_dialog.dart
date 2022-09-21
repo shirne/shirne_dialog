@@ -544,10 +544,19 @@ class ShirneDialog {
           child: body,
         ),
         contentPadding: style?.contentPadding ??
-            const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+            const EdgeInsets.fromLTRB(
+              24.0,
+              20.0,
+              24.0,
+              24.0,
+            ),
         contentTextStyle: style?.contentTextStyle,
         actions: buttons,
-        actionsPadding: style?.actionsPadding ?? EdgeInsets.zero,
+        actionsPadding: style?.actionsPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
         actionsAlignment: style?.actionsAlignment,
         actionsOverflowDirection: style?.actionsOverflowDirection,
         actionsOverflowButtonSpacing: style?.actionsOverflowButtonSpacing,

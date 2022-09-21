@@ -153,7 +153,10 @@ class ModalStyle {
     this.titleTextStyle,
     this.contentPadding = const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
     this.contentTextStyle,
-    this.actionsPadding = EdgeInsets.zero,
+    this.actionsPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 8,
+    ),
     this.actionsAlignment,
     this.actionsOverflowDirection,
     this.actionsOverflowButtonSpacing,
