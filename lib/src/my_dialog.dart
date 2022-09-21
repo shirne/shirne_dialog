@@ -248,8 +248,13 @@ class MyDialog {
     bool isDismissible = true,
     bool isScrollControlled = false,
     double? elevation,
+
+    /// Build a Widget at top of the popup that
+    /// seems to responeding drag to close the popup
+    WidgetBuilder? dragHandlerBuilder,
     bool showClose = true,
     Widget? closeButton,
+    String? closeSemanticsLabel,
   }) {
     _checkInstance();
     return _instance!.popup<T>(
@@ -266,8 +271,10 @@ class MyDialog {
       isDismissible: isDismissible,
       isScrollControlled: isScrollControlled,
       elevation: elevation,
+      dragHandlerBuilder: dragHandlerBuilder,
       showClose: showClose,
       closeButton: closeButton,
+      closeSemanticsLabel: closeSemanticsLabel,
     );
   }
 
@@ -613,6 +620,10 @@ class ShirneDialog {
     bool isDismissible = true,
     bool isScrollControlled = false,
     double? elevation,
+
+    /// Build a Widget at top of the popup that
+    /// seems to responeding drag to close the popup
+    WidgetBuilder? dragHandlerBuilder,
     bool showClose = true,
     Widget? closeButton,
     String? closeSemanticsLabel,
@@ -633,6 +644,7 @@ class ShirneDialog {
           backgroundColor: backgroundColor,
           margin: margin,
           padding: padding,
+          dragHandlerBuilder: dragHandlerBuilder,
           showClose: showClose,
           closeButton: closeButton,
           closeSemanticsLabel: closeSemanticsLabel ?? local.closeSemantics,

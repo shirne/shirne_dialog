@@ -27,11 +27,18 @@ class PopupWidget extends StatefulWidget {
   /// 是否显示关闭按钮
   final bool showClose;
 
+  /// Build a Widget at top of the popup that
+  /// seems to responeding drag to close the popup
+  final WidgetBuilder? dragHandlerBuilder;
+
   /// 指定的关闭按钮组件
   final Widget? closeButton;
-  final Widget? dragHandler;
-  final Color? backgroundColor;
+
+  /// 关闭按钮的语义化
   final String? closeSemanticsLabel;
+
+  /// 组件背景
+  final Color? backgroundColor;
 
   const PopupWidget({
     Key? key,
@@ -44,7 +51,7 @@ class PopupWidget extends StatefulWidget {
     this.padding,
     this.backgroundColor,
     this.showClose = true,
-    this.dragHandler,
+    this.dragHandlerBuilder,
     this.closeButton,
     this.closeSemanticsLabel,
   }) : super(key: key);
@@ -99,7 +106,7 @@ class _PopupWidgetState extends State<PopupWidget> {
             Positioned(
               top: 0,
               child: Center(
-                child: widget.dragHandler ??
+                child: widget.dragHandlerBuilder?.call(context) ??
                     Container(
                       width: 128,
                       height: 6.0,
