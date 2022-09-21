@@ -1,5 +1,6 @@
 ## [4.4.1]
     * add arg dragHandlerBuilder to popup
+    * change ModalStyle.actionsPadding from zero to 8/16
 
 ## [4.4.0]
     * upgrade combined_animation to 0.3.0
