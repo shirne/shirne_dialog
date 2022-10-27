@@ -95,7 +95,9 @@ abstract class OverlayController<T> extends DialogController<T> {
 
   @override
   void close() {
-    controller.leave();
+    if (!controller.isLeaved) {
+      controller.leave();
+    }
   }
 
   @override
@@ -137,7 +139,18 @@ class ProgressController extends OverlayController<double> {
   }
 
   @override
+  void remove() {
+    unbind();
+    super.remove();
+  }
+
+  void complete() {
+    value = 1;
+  }
+
+  @override
   set value(double v) {
+    if (isClose) return;
     if (aController == null) {
       super.value = v;
     } else {
