@@ -510,7 +510,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   FocusNode focusNode = FocusNode();
                   return ElevatedButton(
                     onPressed: () {
-                      print('onPressed');
                       final renderObject =
                           focusNode.context!.findRenderObject()!;
                       late final EntryController controller;
@@ -522,9 +521,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             onTap: () {
                               controller.close();
                             },
-                            child: Text('aaa'),
+                            child: const Text('Menu 1'),
                           ),
-                          Text('bbb'),
+                          const Text('Text'),
                         ],
                         origRect: renderObject.paintBounds
                             .translate(offset.dx, offset.dy),

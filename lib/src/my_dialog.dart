@@ -117,6 +117,7 @@ class MyDialog {
     String? buttonText,
     Widget? titleWidget,
     String? cancelText,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor,
   }) {
@@ -130,6 +131,7 @@ class MyDialog {
       title: title,
       titleWidget: titleWidget,
       cancelText: cancelText,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -143,6 +145,7 @@ class MyDialog {
     String title = '',
     Widget? titleWidget,
     String? cancelText,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor,
   }) {
@@ -154,6 +157,7 @@ class MyDialog {
       title: title,
       titleWidget: titleWidget,
       cancelText: cancelText,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -166,6 +170,7 @@ class MyDialog {
     bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
@@ -176,6 +181,7 @@ class MyDialog {
       onConfirm: onConfirm,
       title: title,
       titleWidget: titleWidget,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -189,6 +195,7 @@ class MyDialog {
     Widget? titleWidget,
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
+    ModalStyle? style,
   }) {
     _checkInstance();
     return _instance!.alertModal<T>(
@@ -196,6 +203,7 @@ class MyDialog {
       buttons,
       title: title,
       titleWidget: titleWidget,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -396,6 +404,7 @@ class ShirneDialog {
     String? buttonText,
     Widget? titleWidget,
     String? cancelText,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor,
   }) async {
@@ -428,6 +437,7 @@ class ShirneDialog {
       title: title,
       titleWidget: titleWidget,
       cancelText: cancelText,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -446,6 +456,7 @@ class ShirneDialog {
     String title = '',
     Widget? titleWidget,
     String? cancelText,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor,
   }) {
@@ -481,6 +492,7 @@ class ShirneDialog {
       ],
       title: title,
       titleWidget: titleWidget,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -494,6 +506,7 @@ class ShirneDialog {
     bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
+    ModalStyle? style,
     bool barrierDismissible = true,
     Color? barrierColor = Colors.black54,
   }) {
@@ -519,6 +532,7 @@ class ShirneDialog {
       ],
       title: title,
       titleWidget: titleWidget,
+      style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -531,48 +545,51 @@ class ShirneDialog {
     List<Widget> buttons, {
     String title = '',
     Widget? titleWidget,
+    ModalStyle? style,
     bool barrierDismissible = false,
     Color? barrierColor = Colors.black54,
   }) {
-    final style = MyDialog.theme.modalStyle;
+    final alertStyle = style ?? MyDialog.theme.modalStyle;
     return modal<T>(
       AlertDialog(
         title: titleWidget ?? (title.isEmpty ? null : Text(title)),
-        titlePadding: style?.titlePadding,
-        titleTextStyle: style?.titleTextStyle,
+        titlePadding: alertStyle?.titlePadding,
+        titleTextStyle: alertStyle?.titleTextStyle,
         content: SingleChildScrollView(
           child: body,
         ),
-        contentPadding: style?.contentPadding ??
+        contentPadding: alertStyle?.contentPadding ??
             const EdgeInsets.fromLTRB(
               24.0,
               20.0,
               24.0,
               24.0,
             ),
-        contentTextStyle: style?.contentTextStyle,
+        contentTextStyle: alertStyle?.contentTextStyle,
         actions: buttons,
-        actionsPadding: style?.actionsPadding ??
+        actionsPadding: alertStyle?.actionsPadding ??
             const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 8,
             ),
-        actionsAlignment: style?.actionsAlignment,
-        actionsOverflowDirection: style?.actionsOverflowDirection,
-        actionsOverflowButtonSpacing: style?.actionsOverflowButtonSpacing,
-        buttonPadding: style?.buttonPadding,
-        backgroundColor: style?.backgroundColor,
-        elevation: style?.elevation,
-        semanticLabel: style?.semanticLabel,
-        insetPadding: style?.insetPadding ??
+        actionsAlignment: alertStyle?.actionsAlignment,
+        actionsOverflowDirection: alertStyle?.actionsOverflowDirection,
+        actionsOverflowButtonSpacing: alertStyle?.actionsOverflowButtonSpacing,
+        buttonPadding: alertStyle?.buttonPadding,
+        backgroundColor: alertStyle?.backgroundColor,
+        elevation: alertStyle?.elevation,
+        semanticLabel: alertStyle?.semanticLabel,
+        insetPadding: alertStyle?.insetPadding ??
             const EdgeInsets.symmetric(
               horizontal: 40.0,
               vertical: 24.0,
             ),
-        clipBehavior: style?.clipBehavior ?? Clip.none,
-        shape: style?.shape,
-        scrollable: style?.scrollable ?? false,
+        clipBehavior: alertStyle?.clipBehavior ?? Clip.none,
+        shape: alertStyle?.shape,
+        scrollable: alertStyle?.scrollable ?? false,
       ),
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
     );
   }
 
