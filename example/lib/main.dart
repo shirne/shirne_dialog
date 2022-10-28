@@ -282,20 +282,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       MyDialog.popup(Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                          Text('弹出窗内容'),
-                        ],
+                        children: List.generate(
+                          12,
+                          (index) => Text('弹出窗内容 $index'),
+                        ),
                       ));
                     },
                     child: const Text('Popup'),
