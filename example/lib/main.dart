@@ -519,6 +519,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         [
                           GestureDetector(
                             onTap: () {
+                              MyDialog.toast('Menu 1 clicked ');
                               controller.close();
                             },
                             child: const Text('Menu 1'),

@@ -66,14 +66,16 @@ class IsosTriangle {
 }
 
 class DropdownBorder extends ShapeBorder {
-  final Color color;
-  final BorderRadius borderRadius;
-  final IsosTriangle corner;
   const DropdownBorder({
     this.color = const Color(0xFFffffff),
     this.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
     this.corner = const IsosTriangle(side: 10, bottom: 10),
   });
+
+  final Color color;
+  final BorderRadius borderRadius;
+  final IsosTriangle corner;
+
   @override
   EdgeInsetsGeometry get dimensions => EdgeInsets.zero;
 
@@ -84,14 +86,12 @@ class DropdownBorder extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    return Path()..addRect(rect);
+    return _getPath(rect);
   }
 
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    final Paint paint = Paint()..color = color;
+  Path _getPath(Rect rect) {
     final height = corner.height;
-    final path = Path()
+    return Path()
       ..addRRect(
         RRect.fromLTRBAndCorners(
           rect.left,
@@ -125,6 +125,12 @@ class DropdownBorder extends ShapeBorder {
           ..close(),
         Offset(rect.width / 2, 0),
       );
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    final Paint paint = Paint()..color = color;
+    final path = _getPath(rect);
 
     canvas.drawPath(path, paint);
   }
