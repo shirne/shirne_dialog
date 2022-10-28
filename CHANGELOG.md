@@ -1,3 +1,7 @@
+## [4.4.2]
+    * add arg style to alert/confirm/prompt
+    * fix dropdown outer path
+
 ## [4.4.1]
     * add arg dragHandlerBuilder to popup
     * change ModalStyle.actionsPadding from zero to 8/16
