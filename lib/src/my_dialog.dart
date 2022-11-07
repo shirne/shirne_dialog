@@ -190,7 +190,7 @@ class MyDialog {
   /// A wrapper of [ShirneDialog.alertModal]
   static Future<T?> alertModal<T>(
     Widget body,
-    List<Widget> buttons, {
+    List<Widget> actions, {
     String title = '',
     Widget? titleWidget,
     bool barrierDismissible = false,
@@ -200,7 +200,7 @@ class MyDialog {
     _checkInstance();
     return _instance!.alertModal<T>(
       body,
-      buttons,
+      actions,
       title: title,
       titleWidget: titleWidget,
       style: style,
@@ -542,7 +542,7 @@ class ShirneDialog {
   /// The modal title will be hidden if `title` isEmpty
   Future<T?> alertModal<T>(
     Widget body,
-    List<Widget> buttons, {
+    List<Widget> actions, {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
@@ -566,7 +566,7 @@ class ShirneDialog {
               24.0,
             ),
         contentTextStyle: alertStyle?.contentTextStyle,
-        actions: buttons,
+        actions: actions,
         actionsPadding: alertStyle?.actionsPadding ??
             const EdgeInsets.symmetric(
               horizontal: 16,
