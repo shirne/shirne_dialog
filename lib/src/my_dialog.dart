@@ -118,7 +118,7 @@ class MyDialog {
     Widget? titleWidget,
     String? cancelText,
     ModalStyle? style,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     Color? barrierColor,
   }) {
     _checkInstance();
@@ -146,7 +146,7 @@ class MyDialog {
     Widget? titleWidget,
     String? cancelText,
     ModalStyle? style,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     Color? barrierColor,
   }) {
     _checkInstance();
@@ -171,8 +171,8 @@ class MyDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
-    bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
   }) {
     _checkInstance();
     return _instance!.alert(
@@ -193,8 +193,8 @@ class MyDialog {
     List<Widget> actions, {
     String title = '',
     Widget? titleWidget,
-    bool barrierDismissible = false,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
     ModalStyle? style,
   }) {
     _checkInstance();
@@ -212,8 +212,8 @@ class MyDialog {
   /// A wrapper of [ShirneDialog.modal]
   static Future<T?> modal<T>(
     Widget modal, {
-    bool barrierDismissible = false,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
   }) {
     _checkInstance();
     return _instance!.modal<T>(
@@ -227,8 +227,8 @@ class MyDialog {
   static Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
-    bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
     Rect? startRect,
   }) {
     _checkInstance();
@@ -244,7 +244,6 @@ class MyDialog {
   /// A wrapper of [ShirneDialog.popup]
   static Future<T?> popup<T>(
     Widget body, {
-    barrierDismissible = false,
     double? height,
     double? maxHeight,
     BoxDecoration? decoration,
@@ -253,21 +252,20 @@ class MyDialog {
     EdgeInsetsGeometry? padding,
     Color? barrierColor,
     Color? backgroundColor,
-    bool isDismissible = true,
-    bool isScrollControlled = false,
+    bool? isDismissible,
+    bool? isScrollControlled,
     double? elevation,
 
     /// Build a Widget at top of the popup that
     /// seems to responeding drag to close the popup
     WidgetBuilder? dragHandlerBuilder,
-    bool showClose = true,
+    bool? showClose,
     Widget? closeButton,
     String? closeSemanticsLabel,
   }) {
     _checkInstance();
     return _instance!.popup<T>(
       body,
-      barrierDismissible: barrierDismissible,
       height: height,
       maxHeight: maxHeight,
       decoration: decoration,
@@ -339,7 +337,7 @@ class MyDialog {
     String message, {
     Duration? duration,
     Widget? icon,
-    IconType iconType = IconType.none,
+    IconType? iconType,
     ToastStyle? style,
   }) {
     _checkInstance();
@@ -405,7 +403,7 @@ class ShirneDialog {
     Widget? titleWidget,
     String? cancelText,
     ModalStyle? style,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     Color? barrierColor,
   }) async {
     final controller = TextEditingController(text: defaultValue);
@@ -457,7 +455,7 @@ class ShirneDialog {
     Widget? titleWidget,
     String? cancelText,
     ModalStyle? style,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     Color? barrierColor,
   }) {
     return alertModal<bool>(
@@ -507,8 +505,8 @@ class ShirneDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
-    bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
   }) {
     return alertModal<bool>(
       message is Widget
@@ -546,8 +544,8 @@ class ShirneDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
-    bool barrierDismissible = false,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
   }) {
     final alertStyle = style ?? MyDialog.theme.modalStyle;
     return modal<T>(
@@ -588,21 +586,21 @@ class ShirneDialog {
         shape: alertStyle?.shape,
         scrollable: alertStyle?.scrollable ?? false,
       ),
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible ?? false,
+      barrierColor: barrierColor ?? Colors.black54,
     );
   }
 
   /// show a custom modal.
   Future<T?> modal<T>(
     Widget modal, {
-    bool barrierDismissible = false,
-    Color? barrierColor = Colors.black54,
+    bool? barrierDismissible,
+    Color? barrierColor,
   }) {
     return showDialog<T>(
       context: context,
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible ?? false,
+      barrierColor: barrierColor ?? Colors.black54,
       builder: (BuildContext context) {
         return modal;
       },
@@ -612,13 +610,13 @@ class ShirneDialog {
   Future<T?> imagePreview<T>(
     List<String> images, {
     String? currentImage,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     Color? barrierColor,
     Rect? startRect,
   }) {
     return showDialog<T>(
       context: context,
-      barrierDismissible: barrierDismissible,
+      barrierDismissible: barrierDismissible ?? true,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
         return ImagePreviewWidget(
@@ -634,7 +632,6 @@ class ShirneDialog {
   /// show a modal popup with `body` witch width will fill the screen
   Future<T?> popup<T>(
     Widget body, {
-    barrierDismissible = false,
     double? height,
     double? maxHeight,
     BoxDecoration? decoration,
@@ -643,14 +640,14 @@ class ShirneDialog {
     EdgeInsetsGeometry? padding,
     Color? barrierColor,
     Color? backgroundColor,
-    bool isDismissible = true,
-    bool isScrollControlled = false,
+    bool? isDismissible,
+    bool? isScrollControlled,
     double? elevation,
 
     /// Build a Widget at top of the popup that
     /// seems to responeding drag to close the popup
     WidgetBuilder? dragHandlerBuilder,
-    bool showClose = true,
+    bool? showClose,
     Widget? closeButton,
     String? closeSemanticsLabel,
   }) {
@@ -658,8 +655,8 @@ class ShirneDialog {
       backgroundColor: Colors.transparent,
       barrierColor: barrierColor,
       elevation: elevation,
-      isDismissible: isDismissible,
-      isScrollControlled: isScrollControlled,
+      isDismissible: isDismissible ?? true,
+      isScrollControlled: isScrollControlled ?? false,
       context: context,
       builder: (BuildContext context) {
         return PopupWidget(
@@ -671,7 +668,7 @@ class ShirneDialog {
           margin: margin,
           padding: padding,
           dragHandlerBuilder: dragHandlerBuilder,
-          showClose: showClose,
+          showClose: showClose ?? true,
           closeButton: closeButton,
           closeSemanticsLabel: closeSemanticsLabel ?? local.closeSemantics,
           child: body,
@@ -788,14 +785,14 @@ class ShirneDialog {
     String message, {
     Duration? duration,
     Widget? icon,
-    IconType iconType = IconType.none,
+    IconType? iconType,
     ToastStyle? style,
   }) {
     final toastStyle = (style ?? theme.toastStyle)?.bottomIfNoAlign();
     final controller = overlayModal(
       ToastWidget(
         message,
-        icon: icon ?? MyDialog.getIcon(iconType),
+        icon: icon ?? MyDialog.getIcon(iconType ?? IconType.none),
         style: toastStyle,
       ),
       animate: toastStyle?.enterAnimation,
