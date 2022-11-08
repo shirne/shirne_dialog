@@ -1,3 +1,6 @@
+## [4.4.3]
+    * remove popup barrierDismissible(unused)
+    * improve default value
 ## [4.4.2]
     * add arg style to alert/confirm/prompt
     * fix dropdown outer path
