@@ -1,3 +1,5 @@
+## [4.5.0]
+    * update for 3.7
 ## [4.4.3]
     * remove popup barrierDismissible(unused)
     * improve default value

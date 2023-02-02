@@ -382,7 +382,7 @@ class ShirneDialog {
   ShirneDialogLocalizations get local => ShirneDialogLocalizations.of(context);
 
   OverlayState get overlay =>
-      Overlay.of(context) ?? MyDialog.navigatorKey.currentState!.overlay!;
+      MyDialog.navigatorKey.currentState?.overlay ?? Overlay.of(context);
 
   ShirneDialog._(this.context);
 
