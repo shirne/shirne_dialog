@@ -1,5 +1,6 @@
 ## [4.5.0]
     * update for 3.7
+    * dart version
 ## [4.4.3]
     * remove popup barrierDismissible(unused)
     * improve default value
