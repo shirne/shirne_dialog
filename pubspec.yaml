@@ -5,7 +5,7 @@ homepage: https://shirne.github.io/dialog/
 repository: https://github.com/shirne/shirne_dialog
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
   flutter:
