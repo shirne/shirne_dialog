@@ -320,6 +320,8 @@ class MyDialog {
   static EntryController dropdown(
     List<Widget> actions, {
     required Rect origRect,
+    HitTestBehavior? backdropBehavior,
+    Color? backdropColor,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -327,6 +329,8 @@ class MyDialog {
     return _instance!.dropdown(
       actions,
       origRect: origRect,
+      backdropBehavior: backdropBehavior,
+      backdropColor: backdropColor,
       animate: animate,
       leaveAnimate: leaveAnimate,
     );
@@ -749,6 +753,8 @@ class ShirneDialog {
     List<Widget> actions, {
     required Rect origRect,
     double? elevation,
+    HitTestBehavior? backdropBehavior,
+    Color? backdropColor,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -761,8 +767,9 @@ class ShirneDialog {
       ),
       wrapperBuilder: (context, child) => GestureDetector(
         onTap: controller.close,
+        behavior: backdropBehavior ?? HitTestBehavior.translucent,
         child: Container(
-          color: Colors.transparent,
+          color: backdropColor,
           child: Stack(
             children: [
               Positioned(
