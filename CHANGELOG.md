@@ -1,5 +1,5 @@
-## [4.5.1]
-    * add imagePreview
+## [4.5.2]
+    * add screenshots
 ## [4.5.0]
     * update for 3.7
     * dart version
