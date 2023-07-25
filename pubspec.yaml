@@ -3,7 +3,9 @@ description: A flutter package to use alert, toast, popup, snack, imagePreview, 
 version: 4.5.1
 homepage: https://shirne.github.io/dialog/
 repository: https://github.com/shirne/shirne_dialog
-imagePreview: https://github.com/shirne/shirne_dialog/blob/master/preview/dialog.gif
+screenshots: 
+  - description: 'list of features with some toasts'
+    path: screenshots/preview.jpg
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
