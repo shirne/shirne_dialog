@@ -456,14 +456,39 @@ class ToastStyle extends AnimatedOverlayStyle {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final BorderRadius? borderRadius;
+  final Axis? direction;
+  final TextStyle? textStyle;
+  final IconThemeData? iconTheme;
 
   const ToastStyle({
     this.backgroundColor,
     this.foregroundColor,
     this.borderRadius,
+    this.direction,
+    this.textStyle,
+    this.iconTheme,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : super(enterAnimation, leaveAnimation);
+
+  const ToastStyle.vertical({
+    Color? backgroundColor,
+    Color? foregroundColor,
+    BorderRadius? borderRadius,
+    TextStyle? textStyle,
+    IconThemeData? iconTheme,
+    AnimationConfig? enterAnimation,
+    AnimationConfig? leaveAnimation,
+  }) : this(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          borderRadius: borderRadius,
+          textStyle: textStyle,
+          iconTheme: iconTheme ?? const IconThemeData(size: 80),
+          direction: Axis.vertical,
+          enterAnimation: enterAnimation,
+          leaveAnimation: leaveAnimation,
+        );
 
   /// Set align style for animation if do not contains align
   @override
@@ -508,6 +533,9 @@ class ToastStyle extends AnimatedOverlayStyle {
     Color? backgroundColor,
     Color? foregroundColor,
     BorderRadius? borderRadius,
+    Axis? direction,
+    TextStyle? textStyle,
+    IconThemeData? iconTheme,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) =>
@@ -515,6 +543,9 @@ class ToastStyle extends AnimatedOverlayStyle {
         backgroundColor: backgroundColor ?? this.backgroundColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         borderRadius: borderRadius ?? this.borderRadius,
+        direction: direction ?? this.direction,
+        textStyle: textStyle ?? this.textStyle,
+        iconTheme: iconTheme ?? this.iconTheme,
         enterAnimation: enterAnimation ?? this.enterAnimation,
         leaveAnimation: leaveAnimation ?? this.leaveAnimation,
       );
@@ -525,6 +556,9 @@ class ToastStyle extends AnimatedOverlayStyle {
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
+      direction: t < 0.5 ? a?.direction : b?.direction,
+      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      iconTheme: IconThemeData.lerp(a?.iconTheme, b?.iconTheme, t),
       enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
       leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );

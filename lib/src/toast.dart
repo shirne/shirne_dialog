@@ -128,12 +128,26 @@ class _ToastWidgetState extends State<ToastWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final text = Text(
-      widget.message,
-      style: TextStyle(
-        color: widget.style?.foregroundColor ?? Colors.white,
-      ),
-    );
+    Widget child = Text(widget.message);
+
+    if (widget.icon != null) {
+      child = IconTheme(
+        data: (widget.style?.iconTheme ?? const IconThemeData.fallback())
+            .copyWith(
+          color: widget.style?.foregroundColor ?? Colors.white,
+        ),
+        child: Flex(
+          mainAxisSize: MainAxisSize.min,
+          direction: widget.style?.direction ?? Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.icon!,
+            const SizedBox(width: 15),
+            child,
+          ],
+        ),
+      );
+    }
 
     return IgnorePointer(
       ignoring: true,
@@ -157,16 +171,14 @@ class _ToastWidgetState extends State<ToastWidget> {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Material(
             color: Colors.transparent,
-            child: widget.icon == null
-                ? text
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      widget.icon!,
-                      const SizedBox(width: 15),
-                      text,
-                    ],
-                  ),
+            child: DefaultTextStyle(
+              style: (widget.style?.textStyle ??
+                      DefaultTextStyle.of(context).style)
+                  .copyWith(
+                color: widget.style?.foregroundColor ?? Colors.white,
+              ),
+              child: child,
+            ),
           ),
         ),
       ),
