@@ -172,9 +172,7 @@ class _ToastWidgetState extends State<ToastWidget> {
           child: Material(
             color: Colors.transparent,
             child: DefaultTextStyle(
-              style: (widget.style?.textStyle ??
-                      DefaultTextStyle.of(context).style)
-                  .copyWith(
+              style: (widget.style?.textStyle ?? const TextStyle()).copyWith(
                 color: widget.style?.foregroundColor ?? Colors.white,
               ),
               child: child,

@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'images.dart';
-import 'new_page.dart';
-import 'sub_page.dart';
+import 'toast_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -110,26 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return const SubPage(title: 'sub page');
+                          return const ToastPage(title: 'Custom style page');
                         },
                       ),
                     );
                   },
-                  child: const Text('子页'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const NewPage(title: '动态调用示例');
-                        },
-                      ),
-                    );
-                  },
-                  child: const Text('动态调用示例'),
+                  child: const Text('自定义样式'),
                 ),
               ],
             ),
