@@ -24,6 +24,32 @@ enum IconType {
   help,
 }
 
+typedef ActionButtonBuilder = Widget Function(Function(), ButtonStyle?, Widget);
+
+Widget primaryButtonBuilder(
+  Function() onPressed,
+  ButtonStyle? style,
+  Widget child,
+) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: style,
+    child: child,
+  );
+}
+
+Widget defaultButtonBuilder(
+  Function() onPressed,
+  ButtonStyle? style,
+  Widget child,
+) {
+  return TextButton(
+    onPressed: onPressed,
+    style: style,
+    child: child,
+  );
+}
+
 /// static class to call alert, confirm, toast etc.
 /// ** Must use navigatorKey Or call initialize with a context in Navigator **
 class MyDialog {
@@ -403,8 +429,10 @@ class ShirneDialog {
     /// if not validate pass the input ,return false pls.
     FutureOr<bool> Function(String)? onConfirm,
     String title = '',
+    ActionButtonBuilder? button,
     String? buttonText,
     Widget? titleWidget,
+    ActionButtonBuilder? cancelButton,
     String? cancelText,
     ModalStyle? style,
     bool? barrierDismissible,
@@ -435,9 +463,11 @@ class ShirneDialog {
       onConfirm: () {
         return onConfirm?.call(controller.text) ?? true;
       },
+      button: button,
       buttonText: buttonText,
       title: title,
       titleWidget: titleWidget,
+      cancelButton: cancelButton,
       cancelText: cancelText,
       style: style,
       barrierDismissible: barrierDismissible,
@@ -450,6 +480,7 @@ class ShirneDialog {
   /// the [message] may be a [Widget] or [String]
   Future<bool?> confirm(
     dynamic message, {
+    ActionButtonBuilder? button,
     String? buttonText,
 
     /// A confirm button callback.
@@ -457,6 +488,7 @@ class ShirneDialog {
     FutureOr<bool> Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
+    ActionButtonBuilder? cancelButton,
     String? cancelText,
     ModalStyle? style,
     bool? barrierDismissible,
@@ -470,24 +502,24 @@ class ShirneDialog {
                   message.toString().split('\n').map<Widget>(Text.new).toList(),
             ),
       [
-        TextButton(
-          onPressed: () {
+        (cancelButton ?? defaultButtonBuilder).call(
+          () {
             Navigator.pop(context, false);
           },
-          style: theme.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
-          child: Text(
+          theme.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
+          Text(
             cancelText ?? local.buttonCancel,
           ),
         ),
-        ElevatedButton(
-          onPressed: () async {
+        (button ?? primaryButtonBuilder).call(
+          () async {
             final navigator = Navigator.of(context);
             final result = await onConfirm?.call();
             if (result == false) return;
             navigator.pop(true);
           },
-          style: theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
-          child: Text(
+          theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
+          Text(
             buttonText ?? local.buttonConfirm,
           ),
         ),
@@ -526,7 +558,7 @@ class ShirneDialog {
             if (result == false) return;
             Navigator.pop(context, true);
           },
-          style: MyDialog.theme.primaryButtonStyle,
+          style: theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
           child: Text(
             buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
           ),
@@ -534,7 +566,7 @@ class ShirneDialog {
       ],
       title: title,
       titleWidget: titleWidget,
-      style: style,
+      style: style ?? theme.alertStyle ?? MyDialog.theme.alertStyle,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -551,33 +583,32 @@ class ShirneDialog {
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
-    final alertStyle = style ?? MyDialog.theme.modalStyle;
+    final alertStyle = style ?? theme.modalStyle ?? MyDialog.theme.modalStyle;
+    if (alertStyle?.scrollable ?? false) {
+      body = SingleChildScrollView(
+        padding: alertStyle?.contentPadding,
+        child: body,
+      );
+    } else if (alertStyle?.contentPadding != null) {
+      body = Padding(
+        padding: alertStyle!.contentPadding,
+        child: body,
+      );
+    }
+    body = DefaultTextStyle(
+      style: alertStyle?.contentTextStyle ??
+          Theme.of(context).textTheme.titleMedium ??
+          const TextStyle(),
+      child: body,
+    );
+
     return modal<T>(
-      AlertDialog(
+      SimpleDialog(
         title: titleWidget ?? (title.isEmpty ? null : Text(title)),
-        titlePadding: alertStyle?.titlePadding,
+        titlePadding: alertStyle?.titlePadding ??
+            const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
         titleTextStyle: alertStyle?.titleTextStyle,
-        content: SingleChildScrollView(
-          child: body,
-        ),
-        contentPadding: alertStyle?.contentPadding ??
-            const EdgeInsets.fromLTRB(
-              24.0,
-              20.0,
-              24.0,
-              24.0,
-            ),
-        contentTextStyle: alertStyle?.contentTextStyle,
-        actions: actions,
-        actionsPadding: alertStyle?.actionsPadding ??
-            const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-        actionsAlignment: alertStyle?.actionsAlignment,
-        actionsOverflowDirection: alertStyle?.actionsOverflowDirection,
-        actionsOverflowButtonSpacing: alertStyle?.actionsOverflowButtonSpacing,
-        buttonPadding: alertStyle?.buttonPadding,
+        contentPadding: EdgeInsets.zero,
         backgroundColor: alertStyle?.backgroundColor,
         elevation: alertStyle?.elevation,
         semanticLabel: alertStyle?.semanticLabel,
@@ -588,7 +619,22 @@ class ShirneDialog {
             ),
         clipBehavior: alertStyle?.clipBehavior ?? Clip.none,
         shape: alertStyle?.shape,
-        scrollable: alertStyle?.scrollable ?? false,
+        children: [
+          body,
+          Padding(
+            padding: alertStyle?.actionsPadding ?? EdgeInsets.zero,
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment:
+                    alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
+                children: (alertStyle?.expandedAction ?? false)
+                    ? actions.map((e) => Expanded(child: e)).toList()
+                    : actions,
+              ),
+            ),
+          )
+        ],
       ),
       barrierDismissible: barrierDismissible ?? false,
       barrierColor: barrierColor ?? Colors.black54,

@@ -29,6 +29,15 @@ class _ToastPageState extends State<ToastPage> {
                 curve: Curves.easeOut,
               ),
             ),
+            alertStyle: ModalStyle(
+              actionsPadding: EdgeInsets.all(8),
+              expandedAction: true,
+            ),
+            modalStyle: ModalStyle(
+              expandedAction: true,
+              actionsPadding: EdgeInsets.zero,
+              buttonPadding: EdgeInsets.zero,
+            ),
           ),
         ],
       ),
@@ -98,14 +107,14 @@ class ToastInnerPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.alert(const Text('提示信息'));
+                    MyDialog.of(context).alert(const Text('提示信息'));
                   },
                   child: const Text('Alert'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.confirm(const Text('是否确认')).then((v) {
+                    MyDialog.of(context).confirm(const Text('是否确认')).then((v) {
                       if (v ?? false) {
                         MyDialog.toast('好的');
                       } else {

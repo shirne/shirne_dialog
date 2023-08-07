@@ -32,6 +32,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final ButtonStyle? primaryButtonStyle;
   final ButtonStyle? cancelButtonStyle;
 
+  final ModalStyle? alertStyle;
   final ModalStyle? modalStyle;
   final ToastStyle? toastStyle;
   final SnackStyle? snackStyle;
@@ -62,6 +63,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     ),
     this.primaryButtonStyle,
     this.cancelButtonStyle,
+    this.alertStyle,
     this.modalStyle = const ModalStyle(),
     this.toastStyle = const ToastStyle(),
     this.snackStyle = const SnackStyle(),
@@ -81,6 +83,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     Icon? iconHelp,
     ButtonStyle? primaryButtonStyle,
     ButtonStyle? cancelButtonStyle,
+    ModalStyle? alertStyle,
     ModalStyle? modalStyle,
     LoadingStyle? loadingStyle,
   }) {
@@ -94,6 +97,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       iconHelp: iconHelp ?? this.iconHelp,
       primaryButtonStyle: primaryButtonStyle ?? this.primaryButtonStyle,
       cancelButtonStyle: cancelButtonStyle ?? this.cancelButtonStyle,
+      alertStyle: alertStyle ?? this.alertStyle,
       modalStyle: modalStyle ?? this.modalStyle,
       loadingStyle: loadingStyle ?? this.loadingStyle,
     );
@@ -121,6 +125,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       cancelButtonStyle:
           ButtonStyle.lerp(cancelButtonStyle, o?.cancelButtonStyle, t) ??
               cancelButtonStyle,
+      alertStyle: ModalStyle.lerp(alertStyle, o?.alertStyle, t),
       modalStyle: ModalStyle.lerp(modalStyle, o?.modalStyle, t),
       toastStyle: ToastStyle.lerp(toastStyle, o?.toastStyle, t),
       snackStyle: SnackStyle.lerp(snackStyle, o?.snackStyle, t),
@@ -131,23 +136,6 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
 
 /// Style for modal
 class ModalStyle {
-  final EdgeInsetsGeometry? titlePadding;
-  final TextStyle? titleTextStyle;
-  final EdgeInsets contentPadding;
-  final TextStyle? contentTextStyle;
-  final EdgeInsetsGeometry actionsPadding;
-  final MainAxisAlignment? actionsAlignment;
-  final VerticalDirection? actionsOverflowDirection;
-  final double? actionsOverflowButtonSpacing;
-  final EdgeInsetsGeometry? buttonPadding;
-  final Color? backgroundColor;
-  final double? elevation;
-  final String? semanticLabel;
-  final EdgeInsets insetPadding;
-  final Clip clipBehavior;
-  final ShapeBorder? shape;
-  final bool scrollable;
-
   const ModalStyle({
     this.titlePadding,
     this.titleTextStyle,
@@ -171,7 +159,27 @@ class ModalStyle {
     this.clipBehavior = Clip.none,
     this.shape,
     this.scrollable = false,
+    this.expandedAction = false,
   });
+
+  final EdgeInsetsGeometry? titlePadding;
+  final TextStyle? titleTextStyle;
+  final EdgeInsets contentPadding;
+  final TextStyle? contentTextStyle;
+  final EdgeInsetsGeometry actionsPadding;
+  final MainAxisAlignment? actionsAlignment;
+  final VerticalDirection? actionsOverflowDirection;
+  final double? actionsOverflowButtonSpacing;
+  final EdgeInsetsGeometry? buttonPadding;
+  final Color? backgroundColor;
+  final double? elevation;
+  final String? semanticLabel;
+  final EdgeInsets insetPadding;
+  final Clip clipBehavior;
+  final ShapeBorder? shape;
+  final bool scrollable;
+
+  final bool expandedAction;
 
   /// Creates a copy of this style
   /// but with the given fields replaced with the new values.
@@ -192,6 +200,7 @@ class ModalStyle {
     Clip? clipBehavior,
     ShapeBorder? shape,
     bool? scrollable,
+    bool? expandedAction,
   }) =>
       ModalStyle(
         titlePadding: titlePadding ?? this.titlePadding,
@@ -212,6 +221,7 @@ class ModalStyle {
         clipBehavior: clipBehavior ?? this.clipBehavior,
         shape: shape ?? this.shape,
         scrollable: scrollable ?? this.scrollable,
+        expandedAction: expandedAction ?? this.expandedAction,
       );
 
   /// lerp ModalStyle
@@ -246,6 +256,8 @@ class ModalStyle {
       clipBehavior: (t < 0.5 ? a?.clipBehavior : b?.clipBehavior) ?? Clip.none,
       shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
       scrollable: (t < 0.5 ? a?.scrollable : b?.scrollable) ?? false,
+      expandedAction:
+          (t < 0.5 ? a?.expandedAction : b?.expandedAction) ?? false,
     );
   }
 }
