@@ -1,3 +1,5 @@
+## [4.6.0]
+    * improve styles
 ## [4.5.2]
     * add screenshots
 ## [4.5.0]
