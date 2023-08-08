@@ -15,8 +15,8 @@ class _ToastPageState extends State<ToastPage> {
     return Theme(
       data: Theme.of(context).copyWith(
         extensions: [
-          const ShirneDialogTheme(
-            toastStyle: ToastStyle(
+          ShirneDialogTheme(
+            toastStyle: const ToastStyle(
               direction: Axis.vertical,
               iconTheme: IconThemeData(size: 80),
               textStyle: TextStyle(fontSize: 16),
@@ -29,15 +29,15 @@ class _ToastPageState extends State<ToastPage> {
                 curve: Curves.easeOut,
               ),
             ),
-            alertStyle: ModalStyle(
+            defaultButtonStyle: TextButton.styleFrom(
+              shape: const RoundedRectangleBorder(),
+              foregroundColor: Colors.black87,
+            ),
+            alertStyle: const ModalStyle(
               actionsPadding: EdgeInsets.all(8),
               expandedAction: true,
             ),
-            modalStyle: ModalStyle(
-              expandedAction: true,
-              actionsPadding: EdgeInsets.zero,
-              buttonPadding: EdgeInsets.zero,
-            ),
+            modalStyle: ModalStyle.separated(),
           ),
         ],
       ),
@@ -56,6 +56,7 @@ class ToastInnerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dialog = MyDialog.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -65,39 +66,38 @@ class ToastInnerPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
               children: [
                 ElevatedButton(
                   onPressed: () {
                     // 如果样式是挂载在MaterialApp的theme上的话
                     // 可以直接使用MyDialog.toast
-                    MyDialog.of(context).toast(
+                    dialog.toast(
                       '提示信息',
                       icon: const Icon(Icons.mobile_friendly),
                     );
                   },
-                  child: const Text('Toast'),
+                  child: const Text('Toast with custom icon'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).toast(
+                    dialog.toast(
                       '提示信息',
                       iconType: IconType.warning,
                     );
                   },
-                  child: const Text('Toast Top'),
+                  child: const Text('Toast warning'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).toast(
+                    dialog.toast(
                       '操作成功',
                       iconType: IconType.success,
                     );
                   },
-                  child: const Text('Toast with Icon'),
+                  child: const Text('Toast success'),
                 ),
               ],
             ),
@@ -107,20 +107,20 @@ class ToastInnerPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).alert(const Text('提示信息'));
+                    dialog.alert(const Text('提示信息'));
                   },
                   child: const Text('Alert'),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
-                    MyDialog.of(context).confirm(const Text('是否确认')).then((v) {
+                    dialog.confirm(const Text('是否确认')).then((v) {
                       if (v ?? false) {
-                        MyDialog.toast('好的');
+                        dialog.toast('好的');
                       } else {
-                        MyDialog.of(context).toast(
+                        dialog.toast(
                           'em...',
-                          style: MyDialog.theme.toastStyle?.bottom(),
+                          style: dialog.theme.toastStyle?.bottom(),
                         );
                       }
                     });

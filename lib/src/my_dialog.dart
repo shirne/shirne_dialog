@@ -24,32 +24,6 @@ enum IconType {
   help,
 }
 
-typedef ActionButtonBuilder = Widget Function(Function(), ButtonStyle?, Widget);
-
-Widget primaryButtonBuilder(
-  Function() onPressed,
-  ButtonStyle? style,
-  Widget child,
-) {
-  return ElevatedButton(
-    onPressed: onPressed,
-    style: style,
-    child: child,
-  );
-}
-
-Widget defaultButtonBuilder(
-  Function() onPressed,
-  ButtonStyle? style,
-  Widget child,
-) {
-  return TextButton(
-    onPressed: onPressed,
-    style: style,
-    child: child,
-  );
-}
-
 /// static class to call alert, confirm, toast etc.
 /// ** Must use navigatorKey Or call initialize with a context in Navigator **
 class MyDialog {
@@ -502,23 +476,37 @@ class ShirneDialog {
                   message.toString().split('\n').map<Widget>(Text.new).toList(),
             ),
       [
-        (cancelButton ?? defaultButtonBuilder).call(
+        (cancelButton ??
+                style?.defaultBuilder ??
+                theme.modalStyle?.defaultBuilder ??
+                defaultButtonBuilder)
+            .call(
           () {
             Navigator.pop(context, false);
           },
-          theme.cancelButtonStyle ?? MyDialog.theme.cancelButtonStyle,
+          style?.defaultButtonStyle ??
+              theme.modalStyle?.defaultButtonStyle ??
+              theme.defaultButtonStyle ??
+              MyDialog.theme.defaultButtonStyle,
           Text(
             cancelText ?? local.buttonCancel,
           ),
         ),
-        (button ?? primaryButtonBuilder).call(
+        (button ??
+                style?.primaryBuilder ??
+                theme.modalStyle?.primaryBuilder ??
+                primaryButtonBuilder)
+            .call(
           () async {
             final navigator = Navigator.of(context);
             final result = await onConfirm?.call();
             if (result == false) return;
             navigator.pop(true);
           },
-          theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
+          style?.primaryButtonStyle ??
+              theme.modalStyle?.primaryButtonStyle ??
+              theme.primaryButtonStyle ??
+              MyDialog.theme.primaryButtonStyle,
           Text(
             buttonText ?? local.buttonConfirm,
           ),
@@ -536,6 +524,7 @@ class ShirneDialog {
   /// the `message` may be a [Widget] or [String]
   Future<bool?> alert(
     message, {
+    ActionButtonBuilder? button,
     String? buttonText,
     bool Function()? onConfirm,
     String title = '',
@@ -552,14 +541,21 @@ class ShirneDialog {
                   message.toString().split('\n').map<Widget>(Text.new).toList(),
             ),
       [
-        ElevatedButton(
-          onPressed: () async {
+        (button ??
+                style?.primaryBuilder ??
+                (theme.alertStyle ?? theme.modalStyle)?.primaryBuilder ??
+                primaryButtonBuilder)
+            .call(
+          () async {
             final result = onConfirm?.call();
             if (result == false) return;
             Navigator.pop(context, true);
           },
-          style: theme.primaryButtonStyle ?? MyDialog.theme.primaryButtonStyle,
-          child: Text(
+          style?.primaryButtonStyle ??
+              (theme.alertStyle ?? theme.modalStyle)?.primaryButtonStyle ??
+              theme.primaryButtonStyle ??
+              MyDialog.theme.primaryButtonStyle,
+          Text(
             buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
           ),
         ),
@@ -612,11 +608,7 @@ class ShirneDialog {
         backgroundColor: alertStyle?.backgroundColor,
         elevation: alertStyle?.elevation,
         semanticLabel: alertStyle?.semanticLabel,
-        insetPadding: alertStyle?.insetPadding ??
-            const EdgeInsets.symmetric(
-              horizontal: 40.0,
-              vertical: 24.0,
-            ),
+        insetPadding: alertStyle?.insetPadding ?? defaultInsetPadding,
         clipBehavior: alertStyle?.clipBehavior ?? Clip.none,
         shape: alertStyle?.shape,
         children: [
@@ -624,13 +616,37 @@ class ShirneDialog {
           Padding(
             padding: alertStyle?.actionsPadding ?? EdgeInsets.zero,
             child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment:
-                    alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
-                children: (alertStyle?.expandedAction ?? false)
-                    ? actions.map((e) => Expanded(child: e)).toList()
-                    : actions,
+              child: CustomPaint(
+                foregroundPainter: ButtonSeparatorPainter(
+                  alertStyle?.actionsSeparator,
+                  actions.length,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment:
+                      alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
+                  children: (alertStyle?.expandedAction ?? false)
+                      ? actions
+                          .map(
+                            (e) => Expanded(
+                              child: Padding(
+                                padding: alertStyle?.buttonPadding ??
+                                    EdgeInsets.zero,
+                                child: e,
+                              ),
+                            ),
+                          )
+                          .toList()
+                      : actions
+                          .map(
+                            (e) => Padding(
+                              padding:
+                                  alertStyle?.buttonPadding ?? EdgeInsets.zero,
+                              child: e,
+                            ),
+                          )
+                          .toList(),
+                ),
               ),
             ),
           )

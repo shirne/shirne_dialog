@@ -6,6 +6,36 @@ import 'package:flutter/material.dart';
 import 'dialog_icons.dart';
 import 'my_dialog.dart';
 
+const defaultContentPadding = EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
+const defaultInsetPadding =
+    EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0);
+
+typedef ActionButtonBuilder = Widget Function(Function(), ButtonStyle?, Widget);
+
+Widget primaryButtonBuilder(
+  Function() onPressed,
+  ButtonStyle? style,
+  Widget child,
+) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: style,
+    child: child,
+  );
+}
+
+Widget defaultButtonBuilder(
+  Function() onPressed,
+  ButtonStyle? style,
+  Widget child,
+) {
+  return TextButton(
+    onPressed: onPressed,
+    style: style,
+    child: child,
+  );
+}
+
 /// Provide unified parameter settings for various dialogs
 class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   /// detault top position for [MyDialog.toast]
@@ -30,7 +60,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final Widget iconHelp;
 
   final ButtonStyle? primaryButtonStyle;
-  final ButtonStyle? cancelButtonStyle;
+  final ButtonStyle? defaultButtonStyle;
 
   final ModalStyle? alertStyle;
   final ModalStyle? modalStyle;
@@ -62,7 +92,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       color: Colors.blue,
     ),
     this.primaryButtonStyle,
-    this.cancelButtonStyle,
+    this.defaultButtonStyle,
     this.alertStyle,
     this.modalStyle = const ModalStyle(),
     this.toastStyle = const ToastStyle(),
@@ -82,7 +112,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     Icon? iconInfo,
     Icon? iconHelp,
     ButtonStyle? primaryButtonStyle,
-    ButtonStyle? cancelButtonStyle,
+    ButtonStyle? defaultButtonStyle,
     ModalStyle? alertStyle,
     ModalStyle? modalStyle,
     LoadingStyle? loadingStyle,
@@ -96,7 +126,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       iconInfo: iconInfo ?? this.iconInfo,
       iconHelp: iconHelp ?? this.iconHelp,
       primaryButtonStyle: primaryButtonStyle ?? this.primaryButtonStyle,
-      cancelButtonStyle: cancelButtonStyle ?? this.cancelButtonStyle,
+      defaultButtonStyle: defaultButtonStyle ?? this.defaultButtonStyle,
       alertStyle: alertStyle ?? this.alertStyle,
       modalStyle: modalStyle ?? this.modalStyle,
       loadingStyle: loadingStyle ?? this.loadingStyle,
@@ -122,9 +152,9 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       primaryButtonStyle:
           ButtonStyle.lerp(primaryButtonStyle, o?.primaryButtonStyle, t) ??
               primaryButtonStyle,
-      cancelButtonStyle:
-          ButtonStyle.lerp(cancelButtonStyle, o?.cancelButtonStyle, t) ??
-              cancelButtonStyle,
+      defaultButtonStyle:
+          ButtonStyle.lerp(defaultButtonStyle, o?.defaultButtonStyle, t) ??
+              defaultButtonStyle,
       alertStyle: ModalStyle.lerp(alertStyle, o?.alertStyle, t),
       modalStyle: ModalStyle.lerp(modalStyle, o?.modalStyle, t),
       toastStyle: ToastStyle.lerp(toastStyle, o?.toastStyle, t),
@@ -139,38 +169,81 @@ class ModalStyle {
   const ModalStyle({
     this.titlePadding,
     this.titleTextStyle,
-    this.contentPadding = const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+    this.contentPadding = defaultContentPadding,
     this.contentTextStyle,
     this.actionsPadding = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 8,
     ),
     this.actionsAlignment,
-    this.actionsOverflowDirection,
-    this.actionsOverflowButtonSpacing,
     this.buttonPadding,
+    this.actionsSeparator,
+    this.primaryBuilder,
+    this.defaultBuilder,
+    this.primaryButtonStyle,
+    this.defaultButtonStyle,
     this.backgroundColor,
     this.elevation,
     this.semanticLabel,
-    this.insetPadding = const EdgeInsets.symmetric(
-      horizontal: 40.0,
-      vertical: 24.0,
-    ),
+    this.insetPadding = defaultInsetPadding,
     this.clipBehavior = Clip.none,
     this.shape,
     this.scrollable = false,
     this.expandedAction = false,
   });
 
+  ModalStyle.separated({
+    EdgeInsetsGeometry? titlePadding,
+    TextStyle? titleTextStyle,
+    EdgeInsetsGeometry? contentPadding,
+    TextStyle? contentTextStyle,
+    Color? backgroundColor,
+    double? elevation,
+    String? semanticLabel,
+    EdgeInsets? insetPadding,
+    BorderSide? separator,
+    Clip clipBehavior = Clip.none,
+    ShapeBorder? shape,
+    bool? scrollable,
+  }) : this(
+          titlePadding: titlePadding,
+          titleTextStyle: titleTextStyle,
+          contentPadding: contentPadding ?? defaultContentPadding,
+          contentTextStyle: contentTextStyle,
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          semanticLabel: semanticLabel,
+          insetPadding: insetPadding ?? defaultInsetPadding,
+          expandedAction: true,
+          actionsPadding: EdgeInsets.zero,
+          buttonPadding: EdgeInsets.zero,
+          actionsSeparator:
+              separator ?? const BorderSide(color: Colors.grey, width: 0.5),
+          primaryBuilder: defaultButtonBuilder,
+          defaultButtonStyle: TextButton.styleFrom(
+            shape: const RoundedRectangleBorder(),
+            foregroundColor: Colors.black87,
+          ),
+          primaryButtonStyle: TextButton.styleFrom(
+            shape: const RoundedRectangleBorder(),
+          ),
+          clipBehavior: clipBehavior,
+          shape: shape,
+          scrollable: scrollable ?? false,
+        );
+
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleTextStyle;
-  final EdgeInsets contentPadding;
+  final EdgeInsetsGeometry contentPadding;
   final TextStyle? contentTextStyle;
+  final BorderSide? actionsSeparator;
   final EdgeInsetsGeometry actionsPadding;
   final MainAxisAlignment? actionsAlignment;
-  final VerticalDirection? actionsOverflowDirection;
-  final double? actionsOverflowButtonSpacing;
   final EdgeInsetsGeometry? buttonPadding;
+  final ActionButtonBuilder? primaryBuilder;
+  final ActionButtonBuilder? defaultBuilder;
+  final ButtonStyle? primaryButtonStyle;
+  final ButtonStyle? defaultButtonStyle;
   final Color? backgroundColor;
   final double? elevation;
   final String? semanticLabel;
@@ -186,13 +259,18 @@ class ModalStyle {
   ModalStyle copyWith({
     EdgeInsetsGeometry? titlePadding,
     TextStyle? titleTextStyle,
-    EdgeInsets? contentPadding,
+    EdgeInsetsGeometry? contentPadding,
     TextStyle? contentTextStyle,
+    BorderSide? actionsSeparator,
     EdgeInsetsGeometry? actionsPadding,
     MainAxisAlignment? actionsAlignment,
     VerticalDirection? actionsOverflowDirection,
     double? actionsOverflowButtonSpacing,
     EdgeInsetsGeometry? buttonPadding,
+    ActionButtonBuilder? primaryBuilder,
+    ActionButtonBuilder? defaultBuilder,
+    ButtonStyle? primaryButtonStyle,
+    ButtonStyle? defaultButtonStyle,
     Color? backgroundColor,
     double? elevation,
     String? semanticLabel,
@@ -207,13 +285,14 @@ class ModalStyle {
         titleTextStyle: titleTextStyle ?? this.titleTextStyle,
         contentPadding: contentPadding ?? this.contentPadding,
         contentTextStyle: contentTextStyle ?? this.contentTextStyle,
+        actionsSeparator: actionsSeparator ?? this.actionsSeparator,
         actionsPadding: actionsPadding ?? this.actionsPadding,
         actionsAlignment: actionsAlignment ?? this.actionsAlignment,
-        actionsOverflowDirection:
-            actionsOverflowDirection ?? this.actionsOverflowDirection,
-        actionsOverflowButtonSpacing:
-            actionsOverflowButtonSpacing ?? this.actionsOverflowButtonSpacing,
         buttonPadding: buttonPadding ?? this.buttonPadding,
+        primaryBuilder: primaryBuilder ?? this.primaryBuilder,
+        defaultBuilder: defaultBuilder ?? this.defaultBuilder,
+        primaryButtonStyle: primaryButtonStyle ?? this.primaryButtonStyle,
+        defaultButtonStyle: defaultButtonStyle ?? this.defaultButtonStyle,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         elevation: elevation ?? this.elevation,
         semanticLabel: semanticLabel ?? this.semanticLabel,
@@ -231,23 +310,23 @@ class ModalStyle {
           EdgeInsetsGeometry.lerp(a?.titlePadding, b?.titlePadding, t),
       titleTextStyle: TextStyle.lerp(a?.titleTextStyle, b?.titleTextStyle, t),
       contentPadding:
-          EdgeInsets.lerp(a?.contentPadding, b?.contentPadding, t) ??
+          EdgeInsetsGeometry.lerp(a?.contentPadding, b?.contentPadding, t) ??
               EdgeInsets.zero,
       contentTextStyle:
           TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
+      actionsSeparator: BorderSide.lerp(
+        a?.actionsSeparator ?? BorderSide.none,
+        b?.actionsSeparator ?? BorderSide.none,
+        t,
+      ),
       actionsPadding:
           EdgeInsetsGeometry.lerp(a?.actionsPadding, b?.actionsPadding, t) ??
               EdgeInsets.zero,
       actionsAlignment: t < 0.5 ? a?.actionsAlignment : b?.actionsAlignment,
-      actionsOverflowDirection:
-          t < 0.5 ? a?.actionsOverflowDirection : b?.actionsOverflowDirection,
-      actionsOverflowButtonSpacing: ui.lerpDouble(
-        a?.actionsOverflowButtonSpacing ?? 0,
-        b?.actionsOverflowButtonSpacing ?? 0,
-        t,
-      ),
       buttonPadding:
           EdgeInsetsGeometry.lerp(a?.buttonPadding, b?.buttonPadding, t),
+      primaryBuilder: t < 0.5 ? a?.primaryBuilder : b?.primaryBuilder,
+      defaultBuilder: t < 0.5 ? a?.defaultBuilder : b?.defaultBuilder,
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       elevation: ui.lerpDouble(a?.elevation, b?.elevation, t),
       semanticLabel: t < 0.5 ? a?.semanticLabel : b?.semanticLabel,
@@ -669,4 +748,35 @@ class SnackStyle extends AnimatedOverlayStyle {
       leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );
   }
+}
+
+class ButtonSeparatorPainter extends CustomPainter {
+  ButtonSeparatorPainter(this.border, this.buttonCount);
+
+  final BorderSide? border;
+  final int buttonCount;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (border != null) {
+      final paint = Paint()..color = border!.color;
+      canvas.drawLine(
+        Offset.zero,
+        Offset(size.width, 0),
+        paint,
+      );
+      final w = size.width / buttonCount;
+      for (int i = 1; i < buttonCount; i++) {
+        canvas.drawLine(
+          Offset(w * i, 0),
+          Offset(w * i, size.height),
+          paint,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant ButtonSeparatorPainter oldDelegate) =>
+      oldDelegate.border != border;
 }

@@ -1,5 +1,11 @@
 ## [4.6.0]
-    * improve styles
+    * rename cancelButtonStyle to defaultButtonStyle
+    * refactor modalDialog
+        * change AlertDialog to SimpleDialog to support customize action buttons
+        * add ShirneDialogTheme.alertStyle
+        * add ModalStyle.expandedAction
+        * remove actionsOverflowDirection and actionsOverflowButtonSpacing
+        * add ModalStyle.separated to custom dialog actions style
 ## [4.5.2]
     * add screenshots
 ## [4.5.0]
