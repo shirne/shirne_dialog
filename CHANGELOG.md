@@ -1,3 +1,5 @@
+## [4.6.1]
+    * add ShirneDialogLocalizations.register
 ## [4.6.0]
     * rename cancelButtonStyle to defaultButtonStyle
     * refactor modalDialog

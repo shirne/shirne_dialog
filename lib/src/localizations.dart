@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-const kShirneDialogSupportedLanguages = {'en', 'zh'};
+final _shirneDialogSupportedLanguages = {'en', 'zh'};
 
 abstract class ShirneDialogLocalizations {
   static const LocalizationsDelegate<ShirneDialogLocalizations> delegate =
@@ -12,6 +12,20 @@ abstract class ShirneDialogLocalizations {
         context,
         ShirneDialogLocalizations,
       )!;
+
+  /// Register a new language translations
+  static void register(
+    Locale locale,
+    ShirneDialogLocalizations Function() loader,
+  ) {
+    _shirneDialogSupportedLanguages.add(locale.languageCode);
+    _ShirneDialogLocalizationsDelegate._loadedTranslations.putIfAbsent(
+      locale,
+      () => SynchronousFuture<ShirneDialogLocalizations>(
+        loader(),
+      ),
+    );
+  }
 
   String get buttonConfirm;
   String get buttonCancel;
@@ -24,7 +38,7 @@ class _ShirneDialogLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      kShirneDialogSupportedLanguages.contains(locale.languageCode);
+      _shirneDialogSupportedLanguages.contains(locale.languageCode);
 
   static final Map<Locale, Future<ShirneDialogLocalizations>>
       _loadedTranslations = <Locale, Future<ShirneDialogLocalizations>>{};
