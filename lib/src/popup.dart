@@ -2,6 +2,8 @@ library shirne_dialog;
 
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 /// A popup Widget wrapper
 class PopupWidget extends StatefulWidget {
   /// 弹出内容
@@ -14,44 +16,20 @@ class PopupWidget extends StatefulWidget {
   final double? maxHeight;
 
   /// 自定义的弹窗背景样式
-  final BoxDecoration? decoration;
-
-  /// 弹出层背景样式中的左上和右上的圆角
-  final double? borderRadius;
-
-  final EdgeInsetsGeometry? margin;
-
-  /// 内容区的内边距
-  final EdgeInsetsGeometry? padding;
-
-  /// 是否显示关闭按钮
-  final bool showClose;
-
-  /// Build a Widget at top of the popup that
-  /// seems to responeding drag to close the popup
-  final WidgetBuilder? dragHandlerBuilder;
-
-  /// 指定的关闭按钮组件
-  final Widget? closeButton;
+  final PopupStyle? style;
 
   /// 关闭按钮的语义化
   final String? closeSemanticsLabel;
 
-  /// 组件背景
-  final Color? backgroundColor;
+  /// 指定的关闭按钮组件
+  final Widget? closeButton;
 
   const PopupWidget({
     Key? key,
     this.child,
     this.height,
     this.maxHeight,
-    this.decoration,
-    this.borderRadius,
-    this.margin,
-    this.padding,
-    this.backgroundColor,
-    this.showClose = true,
-    this.dragHandlerBuilder,
+    this.style,
     this.closeButton,
     this.closeSemanticsLabel,
   }) : super(key: key);
@@ -90,14 +68,14 @@ class _PopupWidgetState extends State<PopupWidget> {
       ),
       child: Container(
         height: height,
-        margin: widget.margin,
-        decoration: widget.decoration ??
+        margin: widget.style?.margin,
+        decoration: widget.style?.decoration ??
             BoxDecoration(
-              color: widget.backgroundColor ??
+              color: widget.style?.backgroundColor ??
                   Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(widget.borderRadius ?? 16.0),
-                topRight: Radius.circular(widget.borderRadius ?? 16.0),
+                topLeft: Radius.circular(widget.style?.borderRadius ?? 16.0),
+                topRight: Radius.circular(widget.style?.borderRadius ?? 16.0),
               ),
             ),
         child: Stack(
@@ -106,7 +84,7 @@ class _PopupWidgetState extends State<PopupWidget> {
             Positioned(
               top: 0,
               child: Center(
-                child: widget.dragHandlerBuilder?.call(context) ??
+                child: widget.style?.dragHandlerBuilder?.call(context) ??
                     Container(
                       width: 128,
                       height: 6.0,
@@ -119,7 +97,7 @@ class _PopupWidgetState extends State<PopupWidget> {
               ),
             ),
             Padding(
-              padding: widget.padding ??
+              padding: widget.style?.padding ??
                   const EdgeInsets.only(
                     left: 16.0,
                     right: 16.0,
@@ -128,7 +106,7 @@ class _PopupWidgetState extends State<PopupWidget> {
                   ),
               child: widget.child,
             ),
-            if (widget.showClose)
+            if (widget.style?.showClose ?? true)
               Positioned(
                 top: 0,
                 right: 0,
@@ -136,18 +114,19 @@ class _PopupWidgetState extends State<PopupWidget> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Semantics(
-                    button: true,
-                    label: widget.closeSemanticsLabel ?? 'close',
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: widget.closeButton ??
-                          const Icon(
-                            Icons.cancel,
-                            color: Colors.black38,
-                          ),
-                    ),
-                  ),
+                  child: widget.style?.closeButtonBuilder?.call(context) ??
+                      Semantics(
+                        button: true,
+                        label: widget.closeSemanticsLabel ?? 'close',
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: widget.closeButton ??
+                              const Icon(
+                                Icons.cancel,
+                                color: Colors.black38,
+                              ),
+                        ),
+                      ),
                 ),
               )
           ],

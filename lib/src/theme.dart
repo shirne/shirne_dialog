@@ -66,6 +66,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final ModalStyle? modalStyle;
   final ToastStyle? toastStyle;
   final SnackStyle? snackStyle;
+  final PopupStyle? popupStyle;
   final LoadingStyle? loadingStyle;
 
   const ShirneDialogTheme({
@@ -97,6 +98,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     this.modalStyle = const ModalStyle(),
     this.toastStyle = const ToastStyle(),
     this.snackStyle = const SnackStyle(),
+    this.popupStyle = const PopupStyle(),
     this.loadingStyle = const LoadingStyle(),
   });
 
@@ -779,4 +781,96 @@ class ButtonSeparatorPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant ButtonSeparatorPainter oldDelegate) =>
       oldDelegate.border != border;
+}
+
+class PopupStyle {
+  const PopupStyle({
+    this.barrierColor,
+    this.elevation,
+    this.isDismissible,
+    this.decoration,
+    this.borderRadius,
+    this.margin,
+    this.padding,
+    this.backgroundColor,
+    this.showClose = true,
+    this.dragHandlerBuilder,
+    this.closeButtonBuilder,
+  });
+
+  final Color? barrierColor;
+  final double? elevation;
+  final bool? isDismissible;
+
+  /// Customize popup box decoration
+  final BoxDecoration? decoration;
+
+  /// Customize popup box's border radius when decoration is not specified
+  final double? borderRadius;
+
+  final EdgeInsetsGeometry? margin;
+
+  /// 内容区的内边距
+  final EdgeInsetsGeometry? padding;
+
+  /// 组件背景
+  final Color? backgroundColor;
+
+  /// 是否显示关闭按钮
+  final bool showClose;
+
+  /// Build a Widget at top of the popup that
+  /// seems to responeding drag to close the popup
+  final WidgetBuilder? dragHandlerBuilder;
+
+  /// Close button builder
+  final WidgetBuilder? closeButtonBuilder;
+
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  PopupStyle copyWith({
+    Color? barrierColor,
+    double? elevation,
+    bool? isDismissible,
+    BoxDecoration? decoration,
+    double? borderRadius,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    Color? backgroundColor,
+    bool? showClose,
+    WidgetBuilder? dragHandlerBuilder,
+    WidgetBuilder? closeButtonBuilder,
+  }) =>
+      PopupStyle(
+        barrierColor: barrierColor ?? this.barrierColor,
+        elevation: elevation ?? this.elevation,
+        isDismissible: isDismissible ?? this.isDismissible,
+        decoration: decoration ?? this.decoration,
+        borderRadius: borderRadius ?? this.borderRadius,
+        margin: margin ?? this.margin,
+        padding: padding ?? this.padding,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        showClose: showClose ?? this.showClose,
+        dragHandlerBuilder: dragHandlerBuilder ?? this.dragHandlerBuilder,
+        closeButtonBuilder: closeButtonBuilder ?? this.closeButtonBuilder,
+      );
+
+  /// lerp two SnackStyle
+  static PopupStyle lerp(PopupStyle? a, PopupStyle? b, double t) {
+    return PopupStyle(
+      barrierColor: Color.lerp(a?.barrierColor, b?.barrierColor, t),
+      elevation: ui.lerpDouble(a?.elevation, b?.elevation, t),
+      isDismissible: t < 0.5 ? a?.isDismissible : b?.isDismissible,
+      decoration: BoxDecoration.lerp(a?.decoration, b?.decoration, t),
+      borderRadius: ui.lerpDouble(a?.borderRadius, b?.borderRadius, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      margin: EdgeInsetsGeometry.lerp(a?.margin, b?.margin, t),
+      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      showClose: (t < 0.5 ? a?.showClose : b?.showClose) ?? false,
+      dragHandlerBuilder:
+          t < 0.5 ? a?.dragHandlerBuilder : b?.dragHandlerBuilder,
+      closeButtonBuilder:
+          t < 0.5 ? a?.closeButtonBuilder : b?.closeButtonBuilder,
+    );
+  }
 }

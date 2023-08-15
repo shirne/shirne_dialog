@@ -714,27 +714,33 @@ class ShirneDialog {
     /// seems to responeding drag to close the popup
     WidgetBuilder? dragHandlerBuilder,
     bool? showClose,
+    PopupStyle? style,
     Widget? closeButton,
     String? closeSemanticsLabel,
   }) {
+    final popupStyle = style ??
+        theme.popupStyle ??
+        MyDialog.theme.popupStyle ??
+        const PopupStyle();
     return showModalBottomSheet<T>(
       backgroundColor: Colors.transparent,
-      barrierColor: barrierColor,
-      elevation: elevation,
-      isDismissible: isDismissible ?? true,
+      barrierColor: barrierColor ?? popupStyle.barrierColor,
+      elevation: elevation ?? popupStyle.elevation,
+      isDismissible: isDismissible ?? popupStyle.isDismissible ?? true,
       isScrollControlled: isScrollControlled ?? false,
       context: context,
       builder: (BuildContext context) {
         return PopupWidget(
           height: height,
           maxHeight: maxHeight,
-          decoration: decoration,
-          borderRadius: borderRadius,
-          backgroundColor: backgroundColor,
-          margin: margin,
-          padding: padding,
-          dragHandlerBuilder: dragHandlerBuilder,
-          showClose: showClose ?? true,
+          style: popupStyle.copyWith(
+            decoration: decoration,
+            borderRadius: borderRadius,
+            margin: margin,
+            padding: padding,
+            backgroundColor: backgroundColor,
+            showClose: showClose,
+          ),
           closeButton: closeButton,
           closeSemanticsLabel: closeSemanticsLabel ?? local.closeSemantics,
           child: body,
