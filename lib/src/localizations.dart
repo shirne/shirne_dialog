@@ -61,8 +61,8 @@ class _ShirneDialogLocalizationsDelegate
 
   static ShirneDialogLocalizations _getTranslation(Locale locale) {
     switch (locale.languageCode) {
-      case 'cn':
-        return ShirneDialogLocalizationsCn();
+      case 'zh':
+        return ShirneDialogLocalizationsZh();
       case 'en':
       default:
         return ShirneDialogLocalizationsEn();
@@ -70,7 +70,7 @@ class _ShirneDialogLocalizationsDelegate
   }
 }
 
-class ShirneDialogLocalizationsCn extends ShirneDialogLocalizations {
+class ShirneDialogLocalizationsZh extends ShirneDialogLocalizations {
   @override
   String get buttonCancel => '取消';
 
