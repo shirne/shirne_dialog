@@ -1,3 +1,6 @@
+## [4.6.3]
+    * fix locale
+    
 ## [4.6.2]
     * add popup style
 ## [4.6.1]
