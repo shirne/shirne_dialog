@@ -1,3 +1,5 @@
+## [4.6.5]
+    * fix buttonPadding
 ## [4.6.4]
     * add textBodyAlignment form alert & confirm
     * add buttonPadding for ModalStyle.separated
