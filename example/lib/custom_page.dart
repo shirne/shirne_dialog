@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
-class ToastPage extends StatefulWidget {
+class CustomPage extends StatefulWidget {
   final String title;
-  const ToastPage({Key? key, this.title = ''}) : super(key: key);
+  const CustomPage({Key? key, this.title = ''}) : super(key: key);
 
   @override
-  State<ToastPage> createState() => _ToastPageState();
+  State<CustomPage> createState() => _CustomPageState();
 }
 
-class _ToastPageState extends State<ToastPage> {
+class _CustomPageState extends State<CustomPage> {
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -36,8 +36,11 @@ class _ToastPageState extends State<ToastPage> {
             alertStyle: const ModalStyle(
               actionsPadding: EdgeInsets.all(8),
               expandedAction: true,
+              buttonPadding: EdgeInsets.symmetric(vertical: 4),
             ),
-            modalStyle: ModalStyle.separated(),
+            modalStyle: ModalStyle.separated(
+              buttonPadding: const EdgeInsets.symmetric(vertical: 4),
+            ),
           ),
         ],
       ),

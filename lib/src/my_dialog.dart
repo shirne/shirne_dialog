@@ -476,6 +476,7 @@ class ShirneDialog {
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
+    final localStyle = style ?? theme.modalStyle;
     return alertModal<bool>(
       message is Widget
           ? message
@@ -486,39 +487,36 @@ class ShirneDialog {
               children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [
-        (cancelButton ??
-                style?.defaultBuilder ??
-                theme.modalStyle?.defaultBuilder ??
-                defaultButtonBuilder)
+        (cancelButton ?? localStyle?.defaultBuilder ?? defaultButtonBuilder)
             .call(
           () {
             Navigator.pop(context, false);
           },
-          style?.defaultButtonStyle ??
-              theme.modalStyle?.defaultButtonStyle ??
+          localStyle?.defaultButtonStyle ??
               theme.defaultButtonStyle ??
               MyDialog.theme.defaultButtonStyle,
-          Text(
-            cancelText ?? local.buttonCancel,
+          Padding(
+            padding: style?.buttonPadding ?? EdgeInsets.zero,
+            child: Text(
+              cancelText ?? local.buttonCancel,
+            ),
           ),
         ),
-        (button ??
-                style?.primaryBuilder ??
-                theme.modalStyle?.primaryBuilder ??
-                primaryButtonBuilder)
-            .call(
+        (button ?? localStyle?.primaryBuilder ?? primaryButtonBuilder).call(
           () async {
             final navigator = Navigator.of(context);
             final result = await onConfirm?.call();
             if (result == false) return;
             navigator.pop(true);
           },
-          style?.primaryButtonStyle ??
-              theme.modalStyle?.primaryButtonStyle ??
+          localStyle?.primaryButtonStyle ??
               theme.primaryButtonStyle ??
               MyDialog.theme.primaryButtonStyle,
-          Text(
-            buttonText ?? local.buttonConfirm,
+          Padding(
+            padding: localStyle?.buttonPadding ?? EdgeInsets.zero,
+            child: Text(
+              buttonText ?? local.buttonConfirm,
+            ),
           ),
         ),
       ],
@@ -544,6 +542,7 @@ class ShirneDialog {
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
+    final localStyle = style ?? theme.alertStyle ?? theme.modalStyle;
     return alertModal<bool>(
       message is Widget
           ? message
@@ -554,22 +553,20 @@ class ShirneDialog {
               children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [
-        (button ??
-                style?.primaryBuilder ??
-                (theme.alertStyle ?? theme.modalStyle)?.primaryBuilder ??
-                primaryButtonBuilder)
-            .call(
+        (button ?? localStyle?.primaryBuilder ?? primaryButtonBuilder).call(
           () async {
             final result = onConfirm?.call();
             if (result == false) return;
             Navigator.pop(context, true);
           },
-          style?.primaryButtonStyle ??
-              (theme.alertStyle ?? theme.modalStyle)?.primaryButtonStyle ??
+          localStyle?.primaryButtonStyle ??
               theme.primaryButtonStyle ??
               MyDialog.theme.primaryButtonStyle,
-          Text(
-            buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
+          Padding(
+            padding: localStyle?.buttonPadding ?? EdgeInsets.zero,
+            child: Text(
+              buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
+            ),
           ),
         ),
       ],
@@ -640,23 +637,9 @@ class ShirneDialog {
                       alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
                   children: (alertStyle?.expandedAction ?? false)
                       ? [
-                          for (var e in actions)
-                            Expanded(
-                              child: Padding(
-                                padding: alertStyle?.buttonPadding ??
-                                    EdgeInsets.zero,
-                                child: e,
-                              ),
-                            ),
+                          for (var e in actions) Expanded(child: e),
                         ]
-                      : [
-                          for (var e in actions)
-                            Padding(
-                              padding:
-                                  alertStyle?.buttonPadding ?? EdgeInsets.zero,
-                              child: e,
-                            ),
-                        ],
+                      : actions,
                 ),
               ),
             ),

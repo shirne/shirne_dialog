@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'images.dart';
-import 'toast_page.dart';
+import 'custom_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +44,11 @@ class MyAppState extends State<MyApp> {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('zh', 'CN'),
+        Locale('zh'),
       ],
       navigatorKey: MyDialog.navigatorKey,
       theme: theme,
@@ -109,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return const ToastPage(title: 'Custom style page');
+                          return const CustomPage(title: 'Custom style page');
                         },
                       ),
                     );
