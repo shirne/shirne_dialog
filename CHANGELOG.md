@@ -1,3 +1,8 @@
+## [4.6.4]
+    * add textBodyAlignment form alert & confirm
+    * add buttonPadding for ModalStyle.separated
+    * improve message split
+
 ## [4.6.3]
     * fix locale
     
