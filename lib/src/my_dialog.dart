@@ -450,10 +450,18 @@ class ShirneDialog {
     return result == true ? controller.text : null;
   }
 
+  List<String> _splitMessage(dynamic message) {
+    if (message is List) {
+      return message.map<String>((e) => '$e').toList();
+    }
+    return '$message'.split('\n');
+  }
+
   /// show a confirm Modal box.
   /// the [message] may be a [Widget] or [String]
   Future<bool?> confirm(
     dynamic message, {
+    CrossAxisAlignment? textBodyAlignment,
     ActionButtonBuilder? button,
     String? buttonText,
 
@@ -471,9 +479,11 @@ class ShirneDialog {
     return alertModal<bool>(
       message is Widget
           ? message
-          : ListBody(
-              children:
-                  message.toString().split('\n').map<Widget>(Text.new).toList(),
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  textBodyAlignment ?? CrossAxisAlignment.center,
+              children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [
         (cancelButton ??
@@ -523,7 +533,8 @@ class ShirneDialog {
   /// show a small modal with one button which text is `buttonText`.
   /// the `message` may be a [Widget] or [String]
   Future<bool?> alert(
-    message, {
+    dynamic message, {
+    CrossAxisAlignment? textBodyAlignment,
     ActionButtonBuilder? button,
     String? buttonText,
     bool Function()? onConfirm,
@@ -536,9 +547,11 @@ class ShirneDialog {
     return alertModal<bool>(
       message is Widget
           ? message
-          : ListBody(
-              children:
-                  message.toString().split('\n').map<Widget>(Text.new).toList(),
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  textBodyAlignment ?? CrossAxisAlignment.center,
+              children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [
         (button ??
@@ -626,26 +639,24 @@ class ShirneDialog {
                   mainAxisAlignment:
                       alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
                   children: (alertStyle?.expandedAction ?? false)
-                      ? actions
-                          .map(
-                            (e) => Expanded(
+                      ? [
+                          for (var e in actions)
+                            Expanded(
                               child: Padding(
                                 padding: alertStyle?.buttonPadding ??
                                     EdgeInsets.zero,
                                 child: e,
                               ),
                             ),
-                          )
-                          .toList()
-                      : actions
-                          .map(
-                            (e) => Padding(
+                        ]
+                      : [
+                          for (var e in actions)
+                            Padding(
                               padding:
                                   alertStyle?.buttonPadding ?? EdgeInsets.zero,
                               child: e,
                             ),
-                          )
-                          .toList(),
+                        ],
                 ),
               ),
             ),
