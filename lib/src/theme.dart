@@ -203,6 +203,7 @@ class ModalStyle {
     double? elevation,
     String? semanticLabel,
     EdgeInsets? insetPadding,
+    EdgeInsetsGeometry? buttonPadding,
     BorderSide? separator,
     Clip clipBehavior = Clip.none,
     ShapeBorder? shape,
@@ -218,13 +219,13 @@ class ModalStyle {
           insetPadding: insetPadding ?? defaultInsetPadding,
           expandedAction: true,
           actionsPadding: EdgeInsets.zero,
-          buttonPadding: EdgeInsets.zero,
+          buttonPadding: buttonPadding ?? EdgeInsets.zero,
           actionsSeparator:
-              separator ?? const BorderSide(color: Colors.grey, width: 0.5),
+              separator ?? BorderSide(color: Colors.grey.shade300, width: 0.5),
           primaryBuilder: defaultButtonBuilder,
           defaultButtonStyle: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(),
-            foregroundColor: Colors.black87,
+            foregroundColor: Colors.grey.shade700,
           ),
           primaryButtonStyle: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(),
