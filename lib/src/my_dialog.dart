@@ -482,8 +482,9 @@ class ShirneDialog {
           ? message
           : Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment:
-                  textBodyAlignment ?? CrossAxisAlignment.center,
+              crossAxisAlignment: textBodyAlignment ??
+                  localStyle?.textBodyAlignment ??
+                  CrossAxisAlignment.center,
               children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [
@@ -548,8 +549,9 @@ class ShirneDialog {
           ? message
           : Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment:
-                  textBodyAlignment ?? CrossAxisAlignment.center,
+              crossAxisAlignment: textBodyAlignment ??
+                  localStyle?.textBodyAlignment ??
+                  CrossAxisAlignment.center,
               children: _splitMessage(message).map<Widget>(Text.new).toList(),
             ),
       [

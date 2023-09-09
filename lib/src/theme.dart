@@ -173,6 +173,7 @@ class ModalStyle {
     this.titleTextStyle,
     this.contentPadding = defaultContentPadding,
     this.contentTextStyle,
+    this.textBodyAlignment,
     this.actionsPadding = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 8,
@@ -199,6 +200,7 @@ class ModalStyle {
     TextStyle? titleTextStyle,
     EdgeInsetsGeometry? contentPadding,
     TextStyle? contentTextStyle,
+    CrossAxisAlignment? textBodyAlignment,
     Color? backgroundColor,
     double? elevation,
     String? semanticLabel,
@@ -213,6 +215,7 @@ class ModalStyle {
           titleTextStyle: titleTextStyle,
           contentPadding: contentPadding ?? defaultContentPadding,
           contentTextStyle: contentTextStyle,
+          textBodyAlignment: textBodyAlignment,
           backgroundColor: backgroundColor,
           elevation: elevation,
           semanticLabel: semanticLabel,
@@ -238,6 +241,7 @@ class ModalStyle {
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleTextStyle;
   final EdgeInsetsGeometry contentPadding;
+  final CrossAxisAlignment? textBodyAlignment;
   final TextStyle? contentTextStyle;
   final BorderSide? actionsSeparator;
   final EdgeInsetsGeometry actionsPadding;
@@ -264,6 +268,7 @@ class ModalStyle {
     TextStyle? titleTextStyle,
     EdgeInsetsGeometry? contentPadding,
     TextStyle? contentTextStyle,
+    CrossAxisAlignment? textBodyAlignment,
     BorderSide? actionsSeparator,
     EdgeInsetsGeometry? actionsPadding,
     MainAxisAlignment? actionsAlignment,
@@ -288,6 +293,7 @@ class ModalStyle {
         titleTextStyle: titleTextStyle ?? this.titleTextStyle,
         contentPadding: contentPadding ?? this.contentPadding,
         contentTextStyle: contentTextStyle ?? this.contentTextStyle,
+        textBodyAlignment: textBodyAlignment ?? this.textBodyAlignment,
         actionsSeparator: actionsSeparator ?? this.actionsSeparator,
         actionsPadding: actionsPadding ?? this.actionsPadding,
         actionsAlignment: actionsAlignment ?? this.actionsAlignment,
@@ -317,6 +323,7 @@ class ModalStyle {
               EdgeInsets.zero,
       contentTextStyle:
           TextStyle.lerp(a?.contentTextStyle, b?.contentTextStyle, t),
+      textBodyAlignment: t < 0.5 ? a?.textBodyAlignment : b?.textBodyAlignment,
       actionsSeparator: BorderSide.lerp(
         a?.actionsSeparator ?? BorderSide.none,
         b?.actionsSeparator ?? BorderSide.none,
@@ -434,17 +441,6 @@ abstract class AnimatedOverlayStyle {
 }
 
 class LoadingStyle extends AnimatedOverlayStyle {
-  final bool showOverlay;
-  final Color? overlayColor;
-  final BoxDecoration? decoration;
-  final EdgeInsetsGeometry padding;
-  final double strokeWidth;
-  final Animation<Color?>? valueColor;
-  final Color? color;
-  final Color? backgroundColor;
-
-  final Widget Function(BuildContext, double)? builder;
-
   const LoadingStyle({
     this.showOverlay = true,
     this.overlayColor,
@@ -460,6 +456,17 @@ class LoadingStyle extends AnimatedOverlayStyle {
   })  : padding = padding ?? const EdgeInsets.all(16),
         strokeWidth = strokeWidth ?? 4,
         super(enterAnimation, leaveAnimation);
+
+  final bool showOverlay;
+  final Color? overlayColor;
+  final BoxDecoration? decoration;
+  final EdgeInsetsGeometry padding;
+  final double strokeWidth;
+  final Animation<Color?>? valueColor;
+  final Color? color;
+  final Color? backgroundColor;
+
+  final Widget Function(BuildContext, double)? builder;
 
   /// Set align style for animation if do not contains align
   @override
@@ -547,13 +554,6 @@ class LoadingStyle extends AnimatedOverlayStyle {
 
 /// Style for [ToastWidget]
 class ToastStyle extends AnimatedOverlayStyle {
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final BorderRadius? borderRadius;
-  final Axis? direction;
-  final TextStyle? textStyle;
-  final IconThemeData? iconTheme;
-
   const ToastStyle({
     this.backgroundColor,
     this.foregroundColor,
@@ -561,6 +561,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     this.direction,
     this.textStyle,
     this.iconTheme,
+    this.iconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : super(enterAnimation, leaveAnimation);
@@ -571,6 +572,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     BorderRadius? borderRadius,
     TextStyle? textStyle,
     IconThemeData? iconTheme,
+    EdgeInsetsGeometry? iconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : this(
@@ -579,10 +581,19 @@ class ToastStyle extends AnimatedOverlayStyle {
           borderRadius: borderRadius,
           textStyle: textStyle,
           iconTheme: iconTheme ?? const IconThemeData(size: 80),
+          iconPadding: iconPadding,
           direction: Axis.vertical,
           enterAnimation: enterAnimation,
           leaveAnimation: leaveAnimation,
         );
+
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final BorderRadius? borderRadius;
+  final Axis? direction;
+  final TextStyle? textStyle;
+  final IconThemeData? iconTheme;
+  final EdgeInsetsGeometry? iconPadding;
 
   /// Set align style for animation if do not contains align
   @override
@@ -630,6 +641,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     Axis? direction,
     TextStyle? textStyle,
     IconThemeData? iconTheme,
+    EdgeInsetsGeometry? iconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) =>
@@ -640,6 +652,7 @@ class ToastStyle extends AnimatedOverlayStyle {
         direction: direction ?? this.direction,
         textStyle: textStyle ?? this.textStyle,
         iconTheme: iconTheme ?? this.iconTheme,
+        iconPadding: iconPadding ?? this.iconPadding,
         enterAnimation: enterAnimation ?? this.enterAnimation,
         leaveAnimation: leaveAnimation ?? this.leaveAnimation,
       );
@@ -653,6 +666,7 @@ class ToastStyle extends AnimatedOverlayStyle {
       direction: t < 0.5 ? a?.direction : b?.direction,
       textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
       iconTheme: IconThemeData.lerp(a?.iconTheme, b?.iconTheme, t),
+      iconPadding: EdgeInsetsGeometry.lerp(a?.iconPadding, b?.iconPadding, t),
       enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
       leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );

@@ -141,7 +141,10 @@ class _ToastWidgetState extends State<ToastWidget> {
           direction: widget.style?.direction ?? Axis.horizontal,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            widget.icon!,
+            Padding(
+              padding: style.iconPadding ?? EdgeInsets.zero,
+              child: widget.icon,
+            ),
             const SizedBox(width: 15),
             child,
           ],
