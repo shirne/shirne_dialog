@@ -1,3 +1,6 @@
+## [4.6.6]
+    * add ToastStyle.iconPadding
+    * add ModalStyle.textBodyAlignment
 ## [4.6.5]
     * fix buttonPadding
 ## [4.6.4]
