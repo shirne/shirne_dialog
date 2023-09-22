@@ -1,4 +1,4 @@
-## [4.6.6]
+## [4.6.7]
     * fix loading close error
 ## [4.6.6]
     * add ToastStyle.iconPadding
