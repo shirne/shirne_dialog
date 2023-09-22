@@ -1,4 +1,6 @@
 ## [4.6.6]
+    * fix loading close error
+## [4.6.6]
     * add ToastStyle.iconPadding
     * add ModalStyle.textBodyAlignment
 ## [4.6.5]
