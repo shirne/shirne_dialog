@@ -144,7 +144,11 @@ class ProgressController extends OverlayController<double> {
     super.remove();
   }
 
+  bool completed = false;
+
   void complete() {
+    if (completed) return;
+    completed = true;
     value = 1;
   }
 
@@ -174,7 +178,7 @@ class ProgressController extends OverlayController<double> {
   double get value => min(1, aController?.value ?? _value);
 
   @override
-  bool get isClose => value >= 1;
+  bool get isClose => completed || value >= 1;
 }
 
 class EntryController extends OverlayController<bool> {
