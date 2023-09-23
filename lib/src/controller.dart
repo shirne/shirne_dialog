@@ -178,7 +178,7 @@ class ProgressController extends OverlayController<double> {
   double get value => min(1, aController?.value ?? _value);
 
   @override
-  bool get isClose => completed || value >= 1;
+  bool get isClose => value >= 1;
 }
 
 class EntryController extends OverlayController<bool> {
