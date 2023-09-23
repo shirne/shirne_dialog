@@ -15,6 +15,7 @@ abstract class DialogController<T> extends ChangeNotifier
 
   bool get isClose;
   bool _isClosed = false;
+  bool get isClosed => _isClosed;
 
   AnimationConfig animate;
   AnimationConfig leaveAnimate;
@@ -29,13 +30,17 @@ abstract class DialogController<T> extends ChangeNotifier
             AnimationConfig.fadeAndZoomOut;
 
   void open();
-  void close();
+
+  @mustCallSuper
+  void close() {
+    _isClosed = true;
+  }
+
   void remove();
 
   set value(v) {
     _value = v;
     if (_isClosed) return;
-    _isClosed = isClose;
     notifyListeners();
     if (isClose) {
       close();
@@ -75,6 +80,7 @@ abstract class OverlayController<T> extends DialogController<T> {
 
   @override
   void open() {
+    if (isClosed) return;
     entry ??= OverlayEntry(
       builder: (BuildContext context) {
         final animateChild = CombinedAnimation(
@@ -98,7 +104,11 @@ abstract class OverlayController<T> extends DialogController<T> {
 
   @override
   void close() {
-    if (!controller.isLeaved) {
+    super.close();
+
+    if (!controller.isEntered) {
+      remove();
+    } else if (!controller.isLeaved) {
       controller.leave();
     }
   }

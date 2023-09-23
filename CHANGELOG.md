@@ -1,3 +1,5 @@
+## [4.6.9]
+    * fix close ignored when not inited
 ## [4.6.8]
     * fix loading close error
 ## [4.6.6]
