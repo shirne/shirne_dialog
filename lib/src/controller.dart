@@ -14,6 +14,7 @@ abstract class DialogController<T> extends ChangeNotifier
   T _value;
 
   bool get isClose;
+  bool _isClosed = false;
 
   AnimationConfig animate;
   AnimationConfig leaveAnimate;
@@ -33,6 +34,8 @@ abstract class DialogController<T> extends ChangeNotifier
 
   set value(v) {
     _value = v;
+    if (_isClosed) return;
+    _isClosed = isClose;
     notifyListeners();
     if (isClose) {
       close();
@@ -144,11 +147,7 @@ class ProgressController extends OverlayController<double> {
     super.remove();
   }
 
-  bool completed = false;
-
   void complete() {
-    if (completed) return;
-    completed = true;
     value = 1;
   }
 
