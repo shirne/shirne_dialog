@@ -1,3 +1,5 @@
+## [4.6.10]
+    * fix snack message overflow
 ## [4.6.9]
     * fix close ignored when not inited
 ## [4.6.8]
