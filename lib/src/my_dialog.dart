@@ -639,13 +639,13 @@ class ShirneDialog {
                       alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
                   children: (alertStyle?.expandedAction ?? false)
                       ? [
-                          for (var e in actions) Expanded(child: e),
+                          for (final e in actions) Expanded(child: e),
                         ]
                       : actions,
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
       barrierDismissible: barrierDismissible ?? false,

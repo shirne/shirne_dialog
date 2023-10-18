@@ -55,14 +55,14 @@ class _SnackWidgetState extends State<SnackWidget>
                   colors: [
                     Color.fromRGBO(54, 54, 54, 1),
                     Color.fromRGBO(16, 16, 16, 1),
-                    Colors.black
+                    Colors.black,
                   ],
                   stops: [0, 0.6, 1],
                   transform: GradientRotation(math.pi * 0.47),
                 ),
             shape: BoxShape.rectangle,
             boxShadow: const [
-              BoxShadow(color: Colors.black38, blurRadius: 3, spreadRadius: 2)
+              BoxShadow(color: Colors.black38, blurRadius: 3, spreadRadius: 2),
             ],
             borderRadius:
                 widget.style?.borderRadius ?? BorderRadius.circular(5),
@@ -78,6 +78,7 @@ class _SnackWidgetState extends State<SnackWidget>
             Expanded(
               child: Text(
                 widget.message,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: widget.style?.foregroundColor ?? Colors.white,
                   fontSize: 16,
@@ -85,7 +86,7 @@ class _SnackWidgetState extends State<SnackWidget>
               ),
             ),
             const SizedBox(width: 16),
-            if (widget.action != null) widget.action!
+            if (widget.action != null) widget.action!,
           ],
         ),
       ),

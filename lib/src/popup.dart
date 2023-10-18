@@ -128,7 +128,7 @@ class _PopupWidgetState extends State<PopupWidget> {
                         ),
                       ),
                 ),
-              )
+              ),
           ],
         ),
       ),
