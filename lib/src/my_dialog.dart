@@ -363,6 +363,7 @@ class MyDialog {
   /// A wrapper of [ShirneDialog.snack]
   static EntryController snack(
     dynamic message, {
+    VoidCallback? onTap,
     Widget? action,
     Duration? duration,
     Alignment? align,
@@ -372,6 +373,7 @@ class MyDialog {
     _checkInstance();
     return _instance!.snack(
       message,
+      onTap: onTap,
       action: action,
       duration: duration,
       align: align,
@@ -895,6 +897,7 @@ class ShirneDialog {
   EntryController snack(
     /// [SnackWidget] Or [String]
     dynamic message, {
+    VoidCallback? onTap,
     Widget? action,
     Duration? duration,
     Alignment? align,
@@ -905,14 +908,26 @@ class ShirneDialog {
     final snackStyle = (style ?? theme.snackStyle)?.bottomIfNoAlign(
       isAnimate: true,
     );
-    final controller = overlayModal(
-      message is Widget
-          ? message
-          : SnackWidget(
-              message,
-              action: action,
-              maxWidth: width,
-              style: snackStyle,
+    final child = message is Widget
+        ? message
+        : SnackWidget(
+            message,
+            action: action,
+            maxWidth: width,
+            style: snackStyle,
+          );
+    EntryController? controller;
+    controller = overlayModal(
+      onTap == null
+          ? child
+          : GestureDetector(
+              onTap: () {
+                onTap.call();
+                if (!controller!.isClosed) {
+                  controller.close();
+                }
+              },
+              child: child,
             ),
       animate: snackStyle?.enterAnimation ??
           AnimationConfig.fadeIn.copyWith(
@@ -923,7 +938,7 @@ class ShirneDialog {
     );
 
     Future.delayed(duration ?? const Duration(seconds: 3)).then((value) {
-      if (!controller.isClosed) {
+      if (!controller!.isClosed) {
         controller.close();
       }
     });
