@@ -681,6 +681,7 @@ class SnackStyle extends AnimatedOverlayStyle {
     this.contentPadding,
     this.gradient,
     this.decoration,
+    this.elevation = 4,
     this.backgroundColor,
     this.foregroundColor,
     this.borderRadius,
@@ -693,6 +694,7 @@ class SnackStyle extends AnimatedOverlayStyle {
   final EdgeInsetsGeometry? contentPadding;
   final Gradient? gradient;
   final BoxDecoration? decoration;
+  final double? elevation;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final BorderRadius? borderRadius;
@@ -744,6 +746,7 @@ class SnackStyle extends AnimatedOverlayStyle {
     EdgeInsetsGeometry? contentPadding,
     Color? backgroundColor,
     Color? foregroundColor,
+    double? elevation,
     BorderRadius? borderRadius,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
@@ -756,6 +759,7 @@ class SnackStyle extends AnimatedOverlayStyle {
         contentPadding: contentPadding ?? this.contentPadding,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
+        elevation: elevation ?? this.elevation,
         borderRadius: borderRadius ?? this.borderRadius,
         enterAnimation: enterAnimation ?? this.enterAnimation,
         leaveAnimation: leaveAnimation ?? this.leaveAnimation,
@@ -773,6 +777,7 @@ class SnackStyle extends AnimatedOverlayStyle {
         b?.contentPadding,
         t,
       ),
+      elevation: ui.lerpDouble(a?.elevation, b?.elevation, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),

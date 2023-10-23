@@ -355,30 +355,55 @@ class _MyHomePageState extends State<MyHomePage> {
                   ElevatedButton(
                     onPressed: () {
                       EntryController? controller;
-                      controller = MyDialog.snack('多个操作',
-                          action: ListBody(
-                            mainAxis: Axis.horizontal,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  controller?.close();
-                                },
-                                child: const Text(
-                                  '取消',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                      controller = MyDialog.snack(
+                        const SnackWidget(
+                          '提示信息',
+                          description: '备注信息',
+                          icon: Icon(Icons.abc),
+                        ),
+                        action: TextButton(
+                          onPressed: () {
+                            controller?.close();
+                          },
+                          child: const Text(
+                            '确认',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('Snack with Desc'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      EntryController? controller;
+                      controller = MyDialog.snack(
+                        '多个操作',
+                        action: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                controller?.close();
+                              },
+                              child: const Text(
+                                '取消',
+                                style: TextStyle(color: Colors.white),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  MyDialog.toast('好的好的');
-                                },
-                                child: const Text(
-                                  '确认',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                MyDialog.toast('好的好的');
+                              },
+                              child: const Text(
+                                '确认',
+                                style: TextStyle(color: Colors.white),
                               ),
-                            ],
-                          ));
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: const Text('Snack with Actions'),
                   ),

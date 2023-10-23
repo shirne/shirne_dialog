@@ -41,7 +41,7 @@ class _SnackWidgetState extends State<SnackWidget>
   double maxWidth(BuildContext context) {
     final width = widget.maxWidth ??
         widget.style?.maxWidth ??
-        math.min(700.0, MediaQuery.of(context).size.width * 0.7);
+        math.min(700.0, MediaQuery.of(context).size.width - 32);
     if (width > 1) {
       return width;
     }
@@ -53,79 +53,94 @@ class _SnackWidgetState extends State<SnackWidget>
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
-    return Container(
-      decoration: widget.style?.decoration ??
-          BoxDecoration(
-            color: widget.style?.backgroundColor ?? colorScheme.inverseSurface,
-            gradient: widget.style?.gradient ??
-                const LinearGradient(
-                  colors: [
-                    Color.fromRGBO(54, 54, 54, 1),
-                    Color.fromRGBO(16, 16, 16, 1),
-                    Colors.black,
-                  ],
-                  stops: [0, 0.6, 1],
-                  transform: GradientRotation(math.pi * 0.47),
-                ),
-            shape: BoxShape.rectangle,
-            boxShadow: const [
-              BoxShadow(color: Colors.black38, blurRadius: 3, spreadRadius: 2),
-            ],
-            borderRadius:
-                widget.style?.borderRadius ?? BorderRadius.circular(5),
-          ),
-      padding: widget.style?.contentPadding ?? const EdgeInsets.all(8),
-      constraints: BoxConstraints.loose(
-        Size(maxWidth(context), widget.style?.height ?? double.infinity),
-      ),
-      child: Material(
-        color: Colors.transparent,
+    final fgColor =
+        widget.style?.foregroundColor ?? colorScheme.onInverseSurface;
+    final borderRadius = widget.style?.borderRadius ?? BorderRadius.circular(4);
+    return Material(
+      color: Colors.transparent,
+      elevation: widget.style?.elevation ?? 4,
+      borderRadius: borderRadius,
+      child: Container(
+        decoration: widget.style?.decoration ??
+            BoxDecoration(
+              color:
+                  widget.style?.backgroundColor ?? colorScheme.inverseSurface,
+              gradient: widget.style?.gradient,
+              shape: BoxShape.rectangle,
+              borderRadius: borderRadius,
+            ),
+        padding: widget.style?.contentPadding ?? const EdgeInsets.all(8),
+        constraints: BoxConstraints.loose(
+          Size(maxWidth(context), widget.style?.height ?? double.infinity),
+        ),
         child: DefaultTextStyle(
           style: TextStyle(
-            color:
-                widget.style?.foregroundColor ?? colorScheme.onInverseSurface,
+            color: fgColor,
           ),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                if (widget.icon != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: widget.icon!,
-                  ),
-                if (widget.description == null)
-                  Expanded(
-                    child: Text(
-                      widget.message,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyMedium,
-                    ),
-                  )
-                else
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          widget.message,
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.bodyMedium,
+          child: IconTheme(
+            data: IconThemeData(
+              color: fgColor,
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  if (widget.icon != null)
+                    if (widget.icon is Icon)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: widget.icon!,
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          widget.description!,
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.bodySmall,
+                      )
+                    else
+                      widget.icon!,
+                  if (widget.description == null)
+                    Expanded(
+                      child: Text(
+                        widget.message,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: fgColor,
                         ),
-                      ],
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.message,
+                            overflow: TextOverflow.ellipsis,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: fgColor,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.description!,
+                            overflow: TextOverflow.ellipsis,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: fgColor.withAlpha(
+                                (fgColor.alpha * 0.6).toInt(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                if (widget.action != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: widget.action!,
-                  ),
-              ],
+                  if (widget.action != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: widget.action!,
+                    ),
+                ],
+              ),
             ),
           ),
         ),

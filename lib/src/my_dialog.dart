@@ -362,7 +362,7 @@ class MyDialog {
 
   /// A wrapper of [ShirneDialog.snack]
   static EntryController snack(
-    String message, {
+    dynamic message, {
     Widget? action,
     Duration? duration,
     Alignment? align,
@@ -893,22 +893,27 @@ class ShirneDialog {
 
   /// show a [SnackBar] like Widget but use a diy Widget with [OverlayEntry]
   EntryController snack(
-    String message, {
+    /// [SnackWidget] Or [String]
+    dynamic message, {
     Widget? action,
     Duration? duration,
     Alignment? align,
     double? width,
     SnackStyle? style,
   }) {
-    final snackStyle =
-        (style ?? theme.snackStyle)?.bottomIfNoAlign(isAnimate: true);
+    assert(message is Widget || message is String);
+    final snackStyle = (style ?? theme.snackStyle)?.bottomIfNoAlign(
+      isAnimate: true,
+    );
     final controller = overlayModal(
-      SnackWidget(
-        message,
-        action: action,
-        maxWidth: width,
-        style: snackStyle,
-      ),
+      message is Widget
+          ? message
+          : SnackWidget(
+              message,
+              action: action,
+              maxWidth: width,
+              style: snackStyle,
+            ),
       animate: snackStyle?.enterAnimation ??
           AnimationConfig.fadeIn.copyWith(
             startAlign: const Alignment(0, -1.2),
