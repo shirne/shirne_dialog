@@ -1,3 +1,7 @@
+## [4.7.0]
+    * Add TextStyle for alert & confirm 's actions
+    * Improve SnackBar's style
+
 ## [4.6.10]
     * fix snack message overflow
 ## [4.6.9]
