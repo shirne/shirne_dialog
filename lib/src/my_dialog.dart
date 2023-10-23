@@ -918,7 +918,9 @@ class ShirneDialog {
     );
 
     Future.delayed(duration ?? const Duration(seconds: 3)).then((value) {
-      controller.close();
+      if (!controller.isClosed) {
+        controller.close();
+      }
     });
 
     return controller;
