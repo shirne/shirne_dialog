@@ -141,10 +141,12 @@ class MyDialog {
   static Future<bool?> confirm(
     dynamic message, {
     String? buttonText,
+    TextStyle? buttonStyle,
     FutureOr<bool> Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
     String? cancelText,
+    TextStyle? cancelStyle,
     ModalStyle? style,
     bool? barrierDismissible,
     Color? barrierColor,
@@ -153,10 +155,12 @@ class MyDialog {
     return _instance!.confirm(
       message,
       buttonText: buttonText,
+      buttonStyle: buttonStyle,
       onConfirm: onConfirm,
       title: title,
       titleWidget: titleWidget,
       cancelText: cancelText,
+      cancelStyle: cancelStyle,
       style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -167,6 +171,7 @@ class MyDialog {
   static Future<bool?> alert(
     message, {
     String? buttonText,
+    TextStyle? buttonStyle,
     bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
@@ -178,6 +183,7 @@ class MyDialog {
     return _instance!.alert(
       message,
       buttonText: buttonText,
+      buttonStyle: buttonStyle,
       onConfirm: onConfirm,
       title: title,
       titleWidget: titleWidget,
@@ -405,9 +411,11 @@ class ShirneDialog {
     String title = '',
     ActionButtonBuilder? button,
     String? buttonText,
+    TextStyle? buttonStyle,
     Widget? titleWidget,
     ActionButtonBuilder? cancelButton,
     String? cancelText,
+    TextStyle? cancelStyle,
     ModalStyle? style,
     bool? barrierDismissible,
     Color? barrierColor,
@@ -439,10 +447,12 @@ class ShirneDialog {
       },
       button: button,
       buttonText: buttonText,
+      buttonStyle: buttonStyle,
       title: title,
       titleWidget: titleWidget,
       cancelButton: cancelButton,
       cancelText: cancelText,
+      cancelStyle: cancelStyle,
       style: style,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -464,6 +474,7 @@ class ShirneDialog {
     CrossAxisAlignment? textBodyAlignment,
     ActionButtonBuilder? button,
     String? buttonText,
+    TextStyle? buttonStyle,
 
     /// A confirm button callback.
     /// Modal will hold on only when return false.
@@ -472,6 +483,7 @@ class ShirneDialog {
     Widget? titleWidget,
     ActionButtonBuilder? cancelButton,
     String? cancelText,
+    TextStyle? cancelStyle,
     ModalStyle? style,
     bool? barrierDismissible,
     Color? barrierColor,
@@ -500,6 +512,7 @@ class ShirneDialog {
             padding: style?.buttonPadding ?? EdgeInsets.zero,
             child: Text(
               cancelText ?? local.buttonCancel,
+              style: cancelStyle,
             ),
           ),
         ),
@@ -517,6 +530,7 @@ class ShirneDialog {
             padding: localStyle?.buttonPadding ?? EdgeInsets.zero,
             child: Text(
               buttonText ?? local.buttonConfirm,
+              style: buttonStyle,
             ),
           ),
         ),
@@ -536,6 +550,7 @@ class ShirneDialog {
     CrossAxisAlignment? textBodyAlignment,
     ActionButtonBuilder? button,
     String? buttonText,
+    TextStyle? buttonStyle,
     bool Function()? onConfirm,
     String title = '',
     Widget? titleWidget,
@@ -568,6 +583,7 @@ class ShirneDialog {
             padding: localStyle?.buttonPadding ?? EdgeInsets.zero,
             child: Text(
               buttonText ?? ShirneDialogLocalizations.of(context).buttonConfirm,
+              style: buttonStyle,
             ),
           ),
         ),
@@ -591,20 +607,20 @@ class ShirneDialog {
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
-    final alertStyle = style ?? theme.modalStyle ?? MyDialog.theme.modalStyle;
-    if (alertStyle?.scrollable ?? false) {
+    final mStyle = style ?? theme.modalStyle ?? MyDialog.theme.modalStyle;
+    if (mStyle?.scrollable ?? false) {
       body = SingleChildScrollView(
-        padding: alertStyle?.contentPadding,
+        padding: mStyle?.contentPadding,
         child: body,
       );
-    } else if (alertStyle?.contentPadding != null) {
+    } else if (mStyle?.contentPadding != null) {
       body = Padding(
-        padding: alertStyle!.contentPadding,
+        padding: mStyle!.contentPadding,
         child: body,
       );
     }
     body = DefaultTextStyle(
-      style: alertStyle?.contentTextStyle ??
+      style: mStyle?.contentTextStyle ??
           Theme.of(context).textTheme.titleMedium ??
           const TextStyle(),
       child: body,
@@ -613,31 +629,31 @@ class ShirneDialog {
     return modal<T>(
       SimpleDialog(
         title: titleWidget ?? (title.isEmpty ? null : Text(title)),
-        titlePadding: alertStyle?.titlePadding ??
+        titlePadding: mStyle?.titlePadding ??
             const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
-        titleTextStyle: alertStyle?.titleTextStyle,
+        titleTextStyle: mStyle?.titleTextStyle,
         contentPadding: EdgeInsets.zero,
-        backgroundColor: alertStyle?.backgroundColor,
-        elevation: alertStyle?.elevation,
-        semanticLabel: alertStyle?.semanticLabel,
-        insetPadding: alertStyle?.insetPadding ?? defaultInsetPadding,
-        clipBehavior: alertStyle?.clipBehavior ?? Clip.none,
-        shape: alertStyle?.shape,
+        backgroundColor: mStyle?.backgroundColor,
+        elevation: mStyle?.elevation,
+        semanticLabel: mStyle?.semanticLabel,
+        insetPadding: mStyle?.insetPadding ?? defaultInsetPadding,
+        clipBehavior: mStyle?.clipBehavior ?? Clip.none,
+        shape: mStyle?.shape,
         children: [
           body,
           Padding(
-            padding: alertStyle?.actionsPadding ?? EdgeInsets.zero,
+            padding: mStyle?.actionsPadding ?? EdgeInsets.zero,
             child: IntrinsicHeight(
               child: CustomPaint(
                 foregroundPainter: ButtonSeparatorPainter(
-                  alertStyle?.actionsSeparator,
+                  mStyle?.actionsSeparator,
                   actions.length,
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment:
-                      alertStyle?.actionsAlignment ?? MainAxisAlignment.end,
-                  children: (alertStyle?.expandedAction ?? false)
+                      mStyle?.actionsAlignment ?? MainAxisAlignment.end,
+                  children: (mStyle?.expandedAction ?? false)
                       ? [
                           for (final e in actions) Expanded(child: e),
                         ]
