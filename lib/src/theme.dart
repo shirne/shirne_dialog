@@ -38,37 +38,6 @@ Widget defaultButtonBuilder(
 
 /// Provide unified parameter settings for various dialogs
 class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
-  /// detault top position for [MyDialog.toast]
-  final Alignment alignTop;
-
-  /// default bottom position for [MyDialog.toast]
-  final Alignment alignBottom;
-
-  /// success icon for [MyDialog.toast]
-  final Widget iconSuccess;
-
-  /// error icon for [MyDialog.toast]
-  final Widget iconError;
-
-  /// warning icon for [MyDialog.toast]
-  final Widget iconWarning;
-
-  /// info icon for [MyDialog.toast]
-  final Widget iconInfo;
-
-  /// help icon for [MyDialog.toast]
-  final Widget iconHelp;
-
-  final ButtonStyle? primaryButtonStyle;
-  final ButtonStyle? defaultButtonStyle;
-
-  final ModalStyle? alertStyle;
-  final ModalStyle? modalStyle;
-  final ToastStyle? toastStyle;
-  final SnackStyle? snackStyle;
-  final PopupStyle? popupStyle;
-  final LoadingStyle? loadingStyle;
-
   const ShirneDialogTheme({
     this.alignTop = const Alignment(0.0, -0.7),
     this.alignBottom = const Alignment(0.0, 0.7),
@@ -101,6 +70,37 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     this.popupStyle = const PopupStyle(),
     this.loadingStyle = const LoadingStyle(),
   });
+
+  /// detault top position for [MyDialog.toast]
+  final Alignment alignTop;
+
+  /// default bottom position for [MyDialog.toast]
+  final Alignment alignBottom;
+
+  /// success icon for [MyDialog.toast]
+  final Widget iconSuccess;
+
+  /// error icon for [MyDialog.toast]
+  final Widget iconError;
+
+  /// warning icon for [MyDialog.toast]
+  final Widget iconWarning;
+
+  /// info icon for [MyDialog.toast]
+  final Widget iconInfo;
+
+  /// help icon for [MyDialog.toast]
+  final Widget iconHelp;
+
+  final ButtonStyle? primaryButtonStyle;
+  final ButtonStyle? defaultButtonStyle;
+
+  final ModalStyle? alertStyle;
+  final ModalStyle? modalStyle;
+  final ToastStyle? toastStyle;
+  final SnackStyle? snackStyle;
+  final PopupStyle? popupStyle;
+  final LoadingStyle? loadingStyle;
 
   /// Creates a copy of this theme
   /// but with the given fields replaced with the new values.
@@ -675,14 +675,10 @@ class ToastStyle extends AnimatedOverlayStyle {
 
 /// Style for [SnackWidget]
 class SnackStyle extends AnimatedOverlayStyle {
-  final Gradient? gradient;
-  final BoxDecoration? decoration;
-  final double? height;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final BorderRadius? borderRadius;
   const SnackStyle({
     this.height,
+    this.maxWidth,
+    this.contentPadding,
     this.gradient,
     this.decoration,
     this.backgroundColor,
@@ -691,6 +687,15 @@ class SnackStyle extends AnimatedOverlayStyle {
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : super(enterAnimation, leaveAnimation);
+
+  final double? height;
+  final double? maxWidth;
+  final EdgeInsetsGeometry? contentPadding;
+  final Gradient? gradient;
+  final BoxDecoration? decoration;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final BorderRadius? borderRadius;
 
   /// Set align style for animation if do not contains align
   @override
@@ -735,6 +740,8 @@ class SnackStyle extends AnimatedOverlayStyle {
     Gradient? gradient,
     BoxDecoration? decoration,
     double? height,
+    double? maxWidth,
+    EdgeInsetsGeometry? contentPadding,
     Color? backgroundColor,
     Color? foregroundColor,
     BorderRadius? borderRadius,
@@ -745,6 +752,8 @@ class SnackStyle extends AnimatedOverlayStyle {
         gradient: gradient ?? this.gradient,
         decoration: decoration ?? this.decoration,
         height: height ?? this.height,
+        maxWidth: maxWidth ?? this.maxWidth,
+        contentPadding: contentPadding ?? this.contentPadding,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         borderRadius: borderRadius ?? this.borderRadius,
@@ -758,6 +767,12 @@ class SnackStyle extends AnimatedOverlayStyle {
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
       decoration: BoxDecoration.lerp(a?.decoration, b?.decoration, t),
       height: ui.lerpDouble(a?.height, b?.height, t),
+      maxWidth: ui.lerpDouble(a?.maxWidth, b?.maxWidth, t),
+      contentPadding: EdgeInsetsGeometry.lerp(
+        a?.contentPadding,
+        b?.contentPadding,
+        t,
+      ),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
       borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),

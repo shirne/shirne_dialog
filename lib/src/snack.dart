@@ -8,21 +8,25 @@ import 'theme.dart';
 
 /// a [SnickBar] like Widget
 class SnackWidget extends StatefulWidget {
+  const SnackWidget(
+    this.message, {
+    Key? key,
+    this.icon,
+    this.description,
+    this.action,
+    this.maxWidth,
+    this.style,
+  }) : super(key: key);
+
   final String message;
+  final Widget? icon;
+  final String? description;
 
   /// dismiss time, in millionseconds
   final Widget? action;
   final double? maxWidth;
 
   final SnackStyle? style;
-
-  const SnackWidget(
-    this.message, {
-    Key? key,
-    this.action,
-    this.maxWidth,
-    this.style,
-  }) : super(key: key);
 
   @override
   State<SnackWidget> createState() => _SnackWidgetState();
@@ -36,6 +40,7 @@ class _SnackWidgetState extends State<SnackWidget>
 
   double maxWidth(BuildContext context) {
     final width = widget.maxWidth ??
+        widget.style?.maxWidth ??
         math.min(700.0, MediaQuery.of(context).size.width * 0.7);
     if (width > 1) {
       return width;
@@ -45,11 +50,13 @@ class _SnackWidgetState extends State<SnackWidget>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
     return Container(
       decoration: widget.style?.decoration ??
           BoxDecoration(
-            color: widget.style?.backgroundColor ??
-                const Color.fromRGBO(0, 0, 0, 0.8),
+            color: widget.style?.backgroundColor ?? colorScheme.inverseSurface,
             gradient: widget.style?.gradient ??
                 const LinearGradient(
                   colors: [
@@ -67,27 +74,60 @@ class _SnackWidgetState extends State<SnackWidget>
             borderRadius:
                 widget.style?.borderRadius ?? BorderRadius.circular(5),
           ),
-      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 5),
-      height: widget.style?.height ?? 45,
-      width: maxWidth(context),
+      padding: widget.style?.contentPadding ?? const EdgeInsets.all(8),
+      constraints: BoxConstraints.loose(
+        Size(maxWidth(context), widget.style?.height ?? double.infinity),
+      ),
       child: Material(
         color: Colors.transparent,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                widget.message,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: widget.style?.foregroundColor ?? Colors.white,
-                  fontSize: 16,
-                ),
-              ),
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color:
+                widget.style?.foregroundColor ?? colorScheme.onInverseSurface,
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                if (widget.icon != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: widget.icon!,
+                  ),
+                if (widget.description == null)
+                  Expanded(
+                    child: Text(
+                      widget.message,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodyMedium,
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.message,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.description!,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                if (widget.action != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: widget.action!,
+                  ),
+              ],
             ),
-            const SizedBox(width: 16),
-            if (widget.action != null) widget.action!,
-          ],
+          ),
         ),
       ),
     );
