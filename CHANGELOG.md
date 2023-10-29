@@ -1,3 +1,7 @@
+## [4.7.1]
+    * Improve dropdown
+    * fix EntryController.close
+
 ## [4.7.0]
     * Add TextStyle for alert & confirm 's actions
     * Improve SnackBar's style
