@@ -49,8 +49,8 @@ Recommanded usage
 
 // Or use Mydialog.navigatorKey with MaterialApp
 // and set theme for dialog
- MaterialApp(
-    //...
+MaterialApp(
+    // ...
     navigatorKey: MyDialog.navigatorKey,
     localizationsDelegates:[
         ShirneDialogLocalizations.delegate,
@@ -61,8 +61,23 @@ Recommanded usage
         GlobalCupertinoLocalizations.delegate,
     ],
     theme: ThemeData.light().copyWith(extensions: [const ShirneDialogTheme()]);
-    //...
- );
+    // ...
+);
+
+// Use with MaterialApp.router
+MaterialApp.router(
+    routerDelegate: AppRouterDelegate(),
+);
+class AppRouterDelegate<T> extends RouterDelegate<T> with PopNavigatorRouterDelegateMixin{
+  
+  @override
+  GlobalKey<NavigatorState>? get navigatorKey => MyDialog.navigatorKey;
+
+  // ...
+}
+
+// Use with Getx
+MyDialog.navigatorKey = Get.key;
  
 
 // call in anywhere
