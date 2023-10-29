@@ -10,5 +10,6 @@ export 'src/popup.dart';
 export 'src/progress.dart';
 export 'src/snack.dart';
 export 'src/toast.dart';
+export 'src/dropdown.dart';
 
 export 'package:combined_animation/combined_animation.dart';

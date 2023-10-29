@@ -104,17 +104,20 @@ abstract class OverlayController<T> extends DialogController<T> {
 
   @override
   void close() {
-    super.close();
-
+    if (isClosed) return;
     if (!controller.isEntered) {
       remove();
     } else if (!controller.isLeaved) {
       controller.leave();
     }
+    super.close();
   }
 
+  bool _isRemoved = false;
   @override
   void remove() {
+    if (_isRemoved) return;
+    _isRemoved = true;
     controller.dispose();
     entry?.remove();
     dispose();

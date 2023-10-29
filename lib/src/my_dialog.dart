@@ -328,6 +328,8 @@ class MyDialog {
     required Rect origRect,
     HitTestBehavior? backdropBehavior,
     Color? backdropColor,
+    EdgeInsets? padding,
+    Set<DropDownLayoutPosition>? position,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -337,6 +339,8 @@ class MyDialog {
       origRect: origRect,
       backdropBehavior: backdropBehavior,
       backdropColor: backdropColor,
+      padding: padding,
+      position: position,
       animate: animate,
       leaveAnimate: leaveAnimate,
     );
@@ -837,6 +841,8 @@ class ShirneDialog {
     double? elevation,
     HitTestBehavior? backdropBehavior,
     Color? backdropColor,
+    EdgeInsets? padding,
+    Set<DropDownLayoutPosition>? position,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -845,6 +851,8 @@ class ShirneDialog {
       DropdownWidget(
         actions: actions,
         origRect: origRect,
+        padding: padding ?? const EdgeInsets.all(8),
+        position: position,
         elevation: elevation ?? 4.0,
       ),
       wrapperBuilder: (context, child) => GestureDetector(
@@ -852,15 +860,7 @@ class ShirneDialog {
         behavior: backdropBehavior ?? HitTestBehavior.translucent,
         child: Container(
           color: backdropColor,
-          child: Stack(
-            children: [
-              Positioned(
-                left: origRect.topLeft.dx,
-                top: origRect.topLeft.dy + origRect.height,
-                child: child,
-              ),
-            ],
-          ),
+          child: child,
         ),
       ),
       animate: animate,

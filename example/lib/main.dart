@@ -508,38 +508,128 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Builder(builder: (context) {
-                  FocusNode focusNode = FocusNode();
-                  return ElevatedButton(
-                    onPressed: () {
-                      final renderObject =
-                          focusNode.context!.findRenderObject()!;
-                      late final EntryController controller;
-                      final offset = (renderObject as RenderBox)
-                          .localToGlobal(Offset.zero);
-                      controller = MyDialog.dropdown(
-                        [
-                          GestureDetector(
-                            onTap: () {
-                              MyDialog.toast('Menu 1 clicked ');
-                              controller.close();
-                            },
-                            child: const Text('Menu 1'),
-                          ),
-                          const Text('Text'),
-                        ],
-                        origRect: renderObject.paintBounds
-                            .translate(offset.dx, offset.dy),
-                      );
-                    },
-                    focusNode: focusNode,
-                    child: const Text('Dropdown'),
-                  );
-                }),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Builder(builder: (context) {
+                    FocusNode focusNode = FocusNode();
+                    return ElevatedButton(
+                      onPressed: () {
+                        final renderObject =
+                            focusNode.context!.findRenderObject()!;
+                        late final EntryController controller;
+                        final offset = (renderObject as RenderBox)
+                            .localToGlobal(Offset.zero);
+                        controller = MyDialog.dropdown(
+                            [
+                              GestureDetector(
+                                onTap: () {
+                                  MyDialog.toast('Menu 1 clicked ');
+                                  controller.close();
+                                },
+                                child: const Text('Menu 1'),
+                              ),
+                              const Text('Text'),
+                            ],
+                            origRect: renderObject.paintBounds
+                                .translate(offset.dx, offset.dy),
+                            position: {DropDownLayoutPosition.right});
+                      },
+                      focusNode: focusNode,
+                      child: const Text('Dropdown'),
+                    );
+                  }),
+                  const SizedBox(width: 10),
+                  Builder(builder: (context) {
+                    FocusNode focusNode = FocusNode();
+                    return ElevatedButton(
+                      onPressed: () {
+                        final renderObject =
+                            focusNode.context!.findRenderObject()!;
+                        late final EntryController controller;
+                        final offset = (renderObject as RenderBox)
+                            .localToGlobal(Offset.zero);
+                        controller = MyDialog.dropdown(
+                          [
+                            GestureDetector(
+                              onTap: () {
+                                MyDialog.toast('Menu 1 clicked ');
+                                controller.close();
+                              },
+                              child: const Text('Menu 1'),
+                            ),
+                            const Text('Text'),
+                          ],
+                          origRect: renderObject.paintBounds
+                              .translate(offset.dx, offset.dy),
+                        );
+                      },
+                      focusNode: focusNode,
+                      child: const Text('Dropdown'),
+                    );
+                  }),
+                  const SizedBox(width: 10),
+                  Builder(builder: (context) {
+                    FocusNode focusNode = FocusNode();
+                    return ElevatedButton(
+                      onPressed: () {
+                        final renderObject =
+                            focusNode.context!.findRenderObject()!;
+                        late final EntryController controller;
+                        final offset = (renderObject as RenderBox)
+                            .localToGlobal(Offset.zero);
+                        controller = MyDialog.dropdown(
+                            [
+                              GestureDetector(
+                                onTap: () {
+                                  MyDialog.toast('Menu 1 clicked ');
+                                  controller.close();
+                                },
+                                child: const Text('Menu 1'),
+                              ),
+                              const Text('Text'),
+                            ],
+                            origRect: renderObject.paintBounds
+                                .translate(offset.dx, offset.dy),
+                            position: {DropDownLayoutPosition.bottom});
+                      },
+                      focusNode: focusNode,
+                      child: const Text('Dropdown'),
+                    );
+                  }),
+                  const SizedBox(width: 10),
+                  Builder(builder: (context) {
+                    FocusNode focusNode = FocusNode();
+                    return ElevatedButton(
+                      onPressed: () {
+                        final renderObject =
+                            focusNode.context!.findRenderObject()!;
+                        late final EntryController controller;
+                        final offset = (renderObject as RenderBox)
+                            .localToGlobal(Offset.zero);
+                        controller = MyDialog.dropdown(
+                            [
+                              GestureDetector(
+                                onTap: () {
+                                  MyDialog.toast('Menu 1 clicked ');
+                                  controller.close();
+                                },
+                                child: const Text('Menu 1'),
+                              ),
+                              const Text('Text'),
+                            ],
+                            origRect: renderObject.paintBounds
+                                .translate(offset.dx, offset.dy),
+                            position: {DropDownLayoutPosition.left});
+                      },
+                      focusNode: focusNode,
+                      child: const Text('Dropdown'),
+                    );
+                  }),
+                ],
+              ),
             ),
           ],
         ),
