@@ -6,6 +6,11 @@ repository: https://github.com/shirne/shirne_dialog
 screenshots: 
   - description: 'list of features with some toasts'
     path: screenshots/preview.jpg
+topics:
+  - dialog
+  - toast
+  - alert
+  - comfirm
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
