@@ -326,6 +326,7 @@ class MyDialog {
   static EntryController dropdown(
     List<Widget> actions, {
     required Rect origRect,
+    CrossAxisAlignment? actionAlignment,
     HitTestBehavior? backdropBehavior,
     Color? backdropColor,
     EdgeInsets? padding,
@@ -337,6 +338,7 @@ class MyDialog {
     return _instance!.dropdown(
       actions,
       origRect: origRect,
+      actionAlignment: actionAlignment,
       backdropBehavior: backdropBehavior,
       backdropColor: backdropColor,
       padding: padding,
