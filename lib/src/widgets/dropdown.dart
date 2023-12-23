@@ -48,10 +48,17 @@ class _DropdownWidgetState extends State<DropdownWidget> {
       ),
       child: GestureDetector(
         onTap: () {},
-        child: CombinedAnimation(
-          config: widget.animate ?? AnimationConfig.fadeIn,
-          leaveConfig: widget.leaveAnimate,
-          //controller: controller,
+        child: ValueListenableBuilder<DropDownLayoutPosition>(
+          valueListenable: layoutPositionNotifier,
+          builder: (context, value, child) {
+            return CombinedAnimation(
+              config: widget.animate ??
+                  AnimationConfig.enter(align: value.startAlign),
+              leaveConfig: widget.leaveAnimate,
+              //controller: controller,
+              child: child!,
+            );
+          },
           child: Material(
             color: Colors.transparent,
             borderOnForeground: false,
@@ -245,6 +252,19 @@ enum DropDownLayoutPosition {
     }
   }
 
+  Alignment get startAlign {
+    switch (this) {
+      case top:
+        return const Alignment(0, 0.3);
+      case left:
+        return const Alignment(0.3, 0);
+      case right:
+        return const Alignment(-0.3, 0);
+      case bottom:
+        return const Alignment(0, -0.3);
+    }
+  }
+
   static const auto = {bottom, top, right, left};
   static const vertical = {bottom, top};
   static const horizontal = {bottom, top};
@@ -322,7 +342,9 @@ class _DropDownLayout extends SingleChildLayoutDelegate {
       constraintsSets.entries.first,
       bigger,
     );
-    layoutPositionNotifier.value = _resolved!.key;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      layoutPositionNotifier.value = _resolved!.key;
+    });
     return _resolved!;
   }
 

@@ -1,3 +1,7 @@
+## [4.7.3]
+    * improve code style
+    * improve dropdown animate
+
 ## [4.7.2]
     * add actionAlignment for dropdown
 
