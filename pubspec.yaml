@@ -9,8 +9,7 @@ screenshots:
 topics:
   - dialog
   - toast
-  - alert
-  - comfirm
+  - prompt
   - snack
   - dropdown
 
