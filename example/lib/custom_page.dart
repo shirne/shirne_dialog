@@ -34,11 +34,11 @@ class _CustomPageState extends State<CustomPage> {
               shape: const RoundedRectangleBorder(),
               foregroundColor: Colors.black87,
             ),
-            alertStyle: const ModalStyle(
-              actionsPadding: EdgeInsets.all(8),
-              expandedAction: true,
-              buttonPadding: EdgeInsets.symmetric(vertical: 4),
-            ),
+            // alertStyle: const ModalStyle(
+            //   actionsPadding: EdgeInsets.all(8),
+            //   expandedAction: true,
+            //   buttonPadding: EdgeInsets.symmetric(vertical: 4),
+            // ),
             modalStyle: ModalStyle.separated(
               buttonPadding: const EdgeInsets.symmetric(vertical: 4),
             ),

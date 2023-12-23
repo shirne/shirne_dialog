@@ -838,6 +838,7 @@ class ShirneDialog {
   EntryController dropdown(
     List<Widget> actions, {
     required Rect origRect,
+    CrossAxisAlignment? actionAlignment,
     double? elevation,
     HitTestBehavior? backdropBehavior,
     Color? backdropColor,
@@ -853,6 +854,7 @@ class ShirneDialog {
         origRect: origRect,
         padding: padding ?? const EdgeInsets.all(8),
         position: position,
+        actionAlignment: actionAlignment,
         elevation: elevation ?? 4.0,
       ),
       wrapperBuilder: (context, child) => GestureDetector(

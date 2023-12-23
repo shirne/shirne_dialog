@@ -1,3 +1,6 @@
+## [4.7.2]
+    * add actionAlignment for dropdown
+
 ## [4.7.1]
     * Improve dropdown
     * fix EntryController.close
