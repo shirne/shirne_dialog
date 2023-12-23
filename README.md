@@ -17,11 +17,11 @@ A flutter package to use alert, confirm, prompt, toast, popup, snack, imagePrevi
 - ✅ imagePreview
 - ✅ snack
 - ✅ loading
+- ✅ dropdown [new]
 
 
 - 🚧 imagePreview support hero
 - 🚧 modal adaptive & more style
-- 🚧 popmenu
 - 🚧 guide
 
 ## Notice
