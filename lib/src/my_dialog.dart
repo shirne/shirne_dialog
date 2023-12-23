@@ -5,15 +5,15 @@ import 'dart:async';
 import 'package:combined_animation/combined_animation.dart';
 import 'package:flutter/material.dart';
 
-import 'dropdown.dart';
+import 'widgets/dropdown.dart';
 import 'localizations.dart';
 import 'controller.dart';
-import 'image_preview.dart';
-import 'popup.dart';
-import 'progress.dart';
-import 'snack.dart';
+import 'widgets/image_preview.dart';
+import 'widgets/progress.dart';
+import 'widgets/popup.dart';
+import 'widgets/snack.dart';
 import 'theme.dart';
-import 'toast.dart';
+import 'widgets/toast.dart';
 
 enum IconType {
   none,

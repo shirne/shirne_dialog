@@ -30,6 +30,6 @@ dev_dependencies:
 
 flutter:
   fonts:
-    - family: dicons
+    - family: shirne_dialog_icons
       fonts:
         - asset: assets/fonts/icons.ttf

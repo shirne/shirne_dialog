@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import '../shirne_dialog.dart';
+import '../../shirne_dialog.dart';
 
 final _placementImage = MemoryImage(
   Uint8List.fromList([

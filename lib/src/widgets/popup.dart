@@ -2,7 +2,7 @@ library shirne_dialog;
 
 import 'package:flutter/material.dart';
 
-import 'theme.dart';
+import '../theme.dart';
 
 /// A popup Widget wrapper
 class PopupWidget extends StatefulWidget {

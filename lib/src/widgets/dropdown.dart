@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-import '../shirne_dialog.dart';
+import '../../shirne_dialog.dart';
 
 class DropdownWidget extends StatefulWidget {
   const DropdownWidget({

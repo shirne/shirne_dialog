@@ -4,8 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'my_dialog.dart';
-import 'theme.dart';
+import '../my_dialog.dart';
+import '../theme.dart';
 
 const _defaultDuration = Duration(milliseconds: 300);
 

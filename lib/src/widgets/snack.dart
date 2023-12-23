@@ -4,7 +4,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'theme.dart';
+import '../theme.dart';
 
 /// a [SnickBar] like Widget
 class SnackWidget extends StatefulWidget {

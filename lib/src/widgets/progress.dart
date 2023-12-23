@@ -2,7 +2,7 @@ library shirne_dialog;
 
 import 'package:flutter/material.dart';
 
-import 'theme.dart';
+import '../theme.dart';
 
 /// a progress Widget
 class ProgressWidget extends StatefulWidget {
