@@ -858,6 +858,8 @@ class ShirneDialog {
         position: position,
         actionAlignment: actionAlignment,
         elevation: elevation ?? 4.0,
+        animate: AnimationConfig.fadeIn,
+        leaveAnimate: AnimationConfig.fadeOut,
       ),
       wrapperBuilder: (context, child) => GestureDetector(
         onTap: controller.close,
@@ -867,8 +869,8 @@ class ShirneDialog {
           child: child,
         ),
       ),
-      animate: animate,
-      leaveAnimate: leaveAnimate,
+      animate: AnimationConfig.fadeIn,
+      leaveAnimate: AnimationConfig.fadeOut,
     );
     return controller;
   }

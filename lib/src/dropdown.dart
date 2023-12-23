@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+import '../shirne_dialog.dart';
+
 class DropdownWidget extends StatefulWidget {
   const DropdownWidget({
     super.key,
@@ -10,6 +12,8 @@ class DropdownWidget extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.position,
     this.elevation = 3.0,
+    this.animate,
+    this.leaveAnimate,
   });
 
   final double elevation;
@@ -18,6 +22,8 @@ class DropdownWidget extends StatefulWidget {
   final CrossAxisAlignment? actionAlignment;
   final EdgeInsets padding;
   final Set<DropDownLayoutPosition>? position;
+  final AnimationConfig? animate;
+  final AnimationConfig? leaveAnimate;
 
   @override
   State<DropdownWidget> createState() => _DropdownWidgetState();
@@ -42,23 +48,28 @@ class _DropdownWidgetState extends State<DropdownWidget> {
       ),
       child: GestureDetector(
         onTap: () {},
-        child: Material(
-          color: Colors.transparent,
-          borderOnForeground: false,
-          elevation: widget.elevation,
-          shape: DropdownBorder(
-            color: Theme.of(context).colorScheme.surface,
-            corner: triangle,
-            cornerPosition: layoutPositionNotifier,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            constraints: BoxConstraints(minWidth: widget.origRect.width),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment:
-                  widget.actionAlignment ?? CrossAxisAlignment.center,
-              children: widget.actions,
+        child: CombinedAnimation(
+          config: widget.animate ?? AnimationConfig.fadeIn,
+          leaveConfig: widget.leaveAnimate,
+          //controller: controller,
+          child: Material(
+            color: Colors.transparent,
+            borderOnForeground: false,
+            elevation: widget.elevation,
+            shape: DropdownBorder(
+              color: Theme.of(context).colorScheme.surface,
+              corner: triangle,
+              cornerPosition: layoutPositionNotifier,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              constraints: BoxConstraints(minWidth: widget.origRect.width),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment:
+                    widget.actionAlignment ?? CrossAxisAlignment.center,
+                children: widget.actions,
+              ),
             ),
           ),
         ),
