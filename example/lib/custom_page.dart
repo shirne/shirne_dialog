@@ -138,7 +138,7 @@ class ToastInnerPage extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
-              children: [
+              children: const [
                 Center(
                   child: ToastWidget(
                     '测试消息',
