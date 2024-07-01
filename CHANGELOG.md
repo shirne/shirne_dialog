@@ -1,3 +1,6 @@
+## [4.7.4]
+    * The message of loading can be null
+
 ## [4.7.3]
     * improve code style
     * improve dropdown animate

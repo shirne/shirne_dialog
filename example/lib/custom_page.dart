@@ -134,6 +134,44 @@ class ToastInnerPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
+            GridView(
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              children: [
+                Center(
+                  child: ToastWidget(
+                    '测试消息',
+                  ),
+                ),
+                Center(
+                  child: SnackWidget('testaa'),
+                ),
+                Center(
+                  child: ToastWidget(
+                    '测试消息',
+                    icon: Icon(DialogIcons.checkmarkFill),
+                  ),
+                ),
+                Center(
+                  child: SnackWidget('testaa'),
+                ),
+                Center(
+                  child: ToastWidget(
+                    '测试消息',
+                    style: ToastStyle(
+                      direction: Axis.vertical,
+                      iconPadding: EdgeInsets.all(24),
+                      iconTheme: IconThemeData(size: 42),
+                    ),
+                    icon: Icon(DialogIcons.checkmarkFill),
+                  ),
+                ),
+                Center(
+                  child: SnackWidget('testaa'),
+                ),
+              ],
+            ),
           ],
         ),
       ),

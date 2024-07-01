@@ -83,15 +83,16 @@ class _ProgressWidgetState extends State<ProgressWidget>
                     ),
                 strokeWidth: widget.style?.strokeWidth ?? 4,
               ),
-              const SizedBox(height: 10),
-              Text(
-                widget.message!,
-                style: const TextStyle(
-                  color: Colors.black54,
-                  decoration: TextDecoration.none,
-                  fontSize: 14,
+              if (widget.message != null) const SizedBox(height: 10),
+              if (widget.message != null)
+                Text(
+                  widget.message!,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    decoration: TextDecoration.none,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
             ],
           ),
         );

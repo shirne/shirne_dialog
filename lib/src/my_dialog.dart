@@ -292,7 +292,7 @@ class MyDialog {
 
   /// A wrapper of [ShirneDialog.loading]
   static ProgressController loading(
-    String message, {
+    String? message, {
     bool? showProgress,
     Duration? duration,
 
@@ -772,7 +772,7 @@ class ShirneDialog {
   /// show a loading progress within an [OverlayEntry].
   /// keep in `time` seconds or manual control it's status by pass 0 to `time`
   ProgressController loading(
-    String message, {
+    String? message, {
     bool? showProgress,
     Duration? duration,
 
