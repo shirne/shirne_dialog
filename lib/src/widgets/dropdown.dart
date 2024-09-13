@@ -9,7 +9,8 @@ class DropdownWidget extends StatefulWidget {
     required this.origRect,
     required this.actions,
     this.actionAlignment,
-    this.padding = EdgeInsets.zero,
+    this.padding = const EdgeInsets.all(8),
+    this.margin = EdgeInsets.zero,
     this.position,
     this.elevation = 3.0,
     this.animate,
@@ -21,6 +22,7 @@ class DropdownWidget extends StatefulWidget {
   final List<Widget> actions;
   final CrossAxisAlignment? actionAlignment;
   final EdgeInsets padding;
+  final EdgeInsets margin;
   final Set<DropDownLayoutPosition>? position;
   final AnimationConfig? animate;
   final AnimationConfig? leaveAnimate;
@@ -41,7 +43,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
     return CustomSingleChildLayout(
       delegate: _DropDownLayout(
         origRect: widget.origRect,
-        padding: widget.padding,
+        padding: widget.margin,
         position: widget.position,
         cornerHeight: triangle.height,
         layoutPositionNotifier: layoutPositionNotifier,
@@ -69,7 +71,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
               cornerPosition: layoutPositionNotifier,
             ),
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: widget.padding,
               constraints: BoxConstraints(minWidth: widget.origRect.width),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

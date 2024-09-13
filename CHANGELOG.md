@@ -1,3 +1,7 @@
+## [4.8.0]
+    * change dropdown padding => margin
+    * add dropdown padding
+
 ## [4.7.5]
     * fix dropdown offset
 
