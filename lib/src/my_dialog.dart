@@ -849,6 +849,13 @@ class ShirneDialog {
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
+    final globalOffset = context.findRenderObject() as RenderBox?;
+    if (globalOffset != null) {
+      final offset = globalOffset.localToGlobal(Offset.zero);
+      if (offset != Offset.zero) {
+        origRect = origRect.translate(-offset.dx, -offset.dy);
+      }
+    }
     late final EntryController controller;
     controller = overlayModal(
       DropdownWidget(
