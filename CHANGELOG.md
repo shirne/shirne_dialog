@@ -1,3 +1,6 @@
+## [4.7.5]
+    * fix dropdown offset
+
 ## [4.7.4]
     * The message of loading can be null
 
