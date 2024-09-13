@@ -70,14 +70,16 @@ class _DropdownWidgetState extends State<DropdownWidget> {
               corner: triangle,
               cornerPosition: layoutPositionNotifier,
             ),
-            child: Container(
-              padding: widget.padding,
-              constraints: BoxConstraints(minWidth: widget.origRect.width),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment:
-                    widget.actionAlignment ?? CrossAxisAlignment.center,
-                children: widget.actions,
+            child: IntrinsicWidth(
+              child: Container(
+                padding: widget.padding,
+                constraints: BoxConstraints(minWidth: widget.origRect.width),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment:
+                      widget.actionAlignment ?? CrossAxisAlignment.center,
+                  children: widget.actions,
+                ),
               ),
             ),
           ),
