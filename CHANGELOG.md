@@ -1,3 +1,7 @@
+## [4.8.1]
+    * add IntrisicWidth for Menu Box
+    * add BuildContext to auto get Rect for dropdown
+
 ## [4.8.0]
     * change dropdown padding => margin
     * add dropdown padding

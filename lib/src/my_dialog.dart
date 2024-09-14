@@ -325,7 +325,8 @@ class MyDialog {
 
   static EntryController dropdown(
     List<Widget> actions, {
-    required Rect origRect,
+    Rect? origRect,
+    BuildContext? context,
     CrossAxisAlignment? actionAlignment,
     HitTestBehavior? backdropBehavior,
     Color? backdropColor,
@@ -339,6 +340,7 @@ class MyDialog {
     return _instance!.dropdown(
       actions,
       origRect: origRect,
+      context: context,
       actionAlignment: actionAlignment,
       backdropBehavior: backdropBehavior,
       backdropColor: backdropColor,
@@ -840,7 +842,8 @@ class ShirneDialog {
 
   EntryController dropdown(
     List<Widget> actions, {
-    required Rect origRect,
+    Rect? origRect,
+    BuildContext? context,
     CrossAxisAlignment? actionAlignment,
     double? elevation,
     HitTestBehavior? backdropBehavior,
@@ -851,7 +854,21 @@ class ShirneDialog {
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
-    final globalOffset = context.findRenderObject() as RenderBox?;
+    assert(
+      origRect != null || context != null,
+      "MyDialog.dropdown Must provide an origRect Or a Context",
+    );
+    if (origRect == null) {
+      final renderObj = context?.findRenderObject() as RenderBox?;
+
+      if (renderObj == null) {
+        throw Exception("context must have a RenderBox");
+      }
+
+      origRect =
+          renderObj.localToGlobal(Offset.zero) & renderObj.paintBounds.size;
+    }
+    final globalOffset = this.context.findRenderObject() as RenderBox?;
     if (globalOffset != null) {
       final offset = globalOffset.localToGlobal(Offset.zero);
       if (offset != Offset.zero) {
