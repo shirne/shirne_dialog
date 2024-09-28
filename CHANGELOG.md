@@ -1,3 +1,7 @@
+## [4.8.2]
+    * hide buttons while actions is empty in dialog
+    * add close button for modal dialog
+
 ## [4.8.1]
     * add IntrisicWidth for Menu Box
     * add BuildContext to auto get Rect for dropdown
