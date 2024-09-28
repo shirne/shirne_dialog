@@ -148,6 +148,8 @@ class MyDialog {
     String? cancelText,
     TextStyle? cancelStyle,
     ModalStyle? style,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
@@ -162,6 +164,8 @@ class MyDialog {
       cancelText: cancelText,
       cancelStyle: cancelStyle,
       style: style,
+      withClose: withClose,
+      closeIcon: closeIcon,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -176,6 +180,8 @@ class MyDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
@@ -188,6 +194,8 @@ class MyDialog {
       title: title,
       titleWidget: titleWidget,
       style: style,
+      withClose: withClose,
+      closeIcon: closeIcon,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -199,6 +207,8 @@ class MyDialog {
     List<Widget> actions, {
     String title = '',
     Widget? titleWidget,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
     ModalStyle? style,
@@ -210,6 +220,8 @@ class MyDialog {
       title: title,
       titleWidget: titleWidget,
       style: style,
+      withClose: withClose,
+      closeIcon: closeIcon,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -496,6 +508,8 @@ class ShirneDialog {
     String? cancelText,
     TextStyle? cancelStyle,
     ModalStyle? style,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
@@ -549,6 +563,8 @@ class ShirneDialog {
       title: title,
       titleWidget: titleWidget,
       style: style,
+      withClose: withClose,
+      closeIcon: closeIcon,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -566,6 +582,8 @@ class ShirneDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
@@ -602,6 +620,8 @@ class ShirneDialog {
       title: title,
       titleWidget: titleWidget,
       style: style ?? theme.alertStyle ?? MyDialog.theme.alertStyle,
+      withClose: withClose,
+      closeIcon: closeIcon,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
     );
@@ -615,6 +635,8 @@ class ShirneDialog {
     String title = '',
     Widget? titleWidget,
     ModalStyle? style,
+    bool withClose = false,
+    Widget? closeIcon,
     bool? barrierDismissible,
     Color? barrierColor,
   }) {
@@ -628,6 +650,31 @@ class ShirneDialog {
       body = Padding(
         padding: mStyle!.contentPadding,
         child: body,
+      );
+    }
+    if (withClose) {
+      body = Stack(
+        children: [
+          body,
+          Positioned(
+            right: 0,
+            top: 0,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop(null);
+              },
+              // TODO 匹配窗口圆角
+              // borderRadius: const BorderRadius.only(
+              //   topRight: Radius.circular(28),
+              // ),
+              child: closeIcon ??
+                  const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Icon(Icons.close),
+                  ),
+            ),
+          ),
+        ],
       );
     }
     body = DefaultTextStyle(
@@ -652,27 +699,28 @@ class ShirneDialog {
         shape: mStyle?.shape,
         children: [
           body,
-          Padding(
-            padding: mStyle?.actionsPadding ?? EdgeInsets.zero,
-            child: IntrinsicHeight(
-              child: CustomPaint(
-                foregroundPainter: ButtonSeparatorPainter(
-                  mStyle?.actionsSeparator,
-                  actions.length,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment:
-                      mStyle?.actionsAlignment ?? MainAxisAlignment.end,
-                  children: (mStyle?.expandedAction ?? false)
-                      ? [
-                          for (final e in actions) Expanded(child: e),
-                        ]
-                      : actions,
+          if (actions.isNotEmpty)
+            Padding(
+              padding: mStyle?.actionsPadding ?? EdgeInsets.zero,
+              child: IntrinsicHeight(
+                child: CustomPaint(
+                  foregroundPainter: ButtonSeparatorPainter(
+                    mStyle?.actionsSeparator,
+                    actions.length,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment:
+                        mStyle?.actionsAlignment ?? MainAxisAlignment.end,
+                    children: (mStyle?.expandedAction ?? false)
+                        ? [
+                            for (final e in actions) Expanded(child: e),
+                          ]
+                        : actions,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
       barrierDismissible: barrierDismissible ?? false,

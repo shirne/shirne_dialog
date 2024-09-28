@@ -111,7 +111,7 @@ class ToastInnerPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    dialog.alert(const Text('提示信息'));
+                    dialog.alert(const Text('提示信息'), withClose: true);
                   },
                   child: const Text('Alert'),
                 ),
