@@ -12,6 +12,7 @@ class DropdownWidget extends StatefulWidget {
     this.padding = const EdgeInsets.all(8),
     this.margin = EdgeInsets.zero,
     this.position,
+    this.triangle = const IsosTriangle(side: 10, bottom: 10),
     this.elevation = 3.0,
     this.animate,
     this.leaveAnimate,
@@ -24,6 +25,7 @@ class DropdownWidget extends StatefulWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
   final Set<DropDownLayoutPosition>? position;
+  final IsosTriangle triangle;
   final AnimationConfig? animate;
   final AnimationConfig? leaveAnimate;
 
@@ -36,8 +38,6 @@ class _DropdownWidgetState extends State<DropdownWidget> {
     DropDownLayoutPosition.bottom,
   );
 
-  final triangle = const IsosTriangle(side: 10, bottom: 10);
-
   @override
   Widget build(BuildContext context) {
     return CustomSingleChildLayout(
@@ -45,7 +45,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
         origRect: widget.origRect,
         padding: widget.margin,
         position: widget.position,
-        cornerHeight: triangle.height,
+        cornerHeight: widget.triangle.height,
         layoutPositionNotifier: layoutPositionNotifier,
       ),
       child: GestureDetector(
@@ -64,7 +64,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                 elevation: widget.elevation,
                 shape: DropdownBorder(
                   color: Theme.of(context).colorScheme.surface,
-                  corner: triangle,
+                  corner: widget.triangle,
                   cornerPosition: value,
                 ),
                 child: child!,

@@ -345,6 +345,7 @@ class MyDialog {
     EdgeInsets? padding,
     EdgeInsets? margin,
     Set<DropDownLayoutPosition>? position,
+    IsosTriangle? triangle,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -358,6 +359,7 @@ class MyDialog {
       backdropColor: backdropColor,
       padding: padding,
       position: position,
+      triangle: triangle,
       animate: animate,
       leaveAnimate: leaveAnimate,
     );
@@ -899,6 +901,7 @@ class ShirneDialog {
     EdgeInsets? padding,
     EdgeInsets? margin,
     Set<DropDownLayoutPosition>? position,
+    IsosTriangle? triangle,
     AnimationConfig? animate,
     AnimationConfig? leaveAnimate,
   }) {
@@ -931,6 +934,7 @@ class ShirneDialog {
         padding: padding ?? const EdgeInsets.all(8),
         margin: margin ?? const EdgeInsets.all(8),
         position: position,
+        triangle: triangle ?? const IsosTriangle(side: 10, bottom: 10),
         actionAlignment: actionAlignment,
         elevation: elevation ?? 4.0,
         animate: AnimationConfig.fadeIn,
