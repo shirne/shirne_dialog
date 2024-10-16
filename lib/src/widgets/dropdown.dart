@@ -101,7 +101,7 @@ class IsosTriangle {
   final Radius radius;
 
   double get height =>
-      math.pow(math.pow(side, 2) + math.pow(bottom / 2, 2), 0.5).toDouble();
+      math.pow(math.pow(side, 2) - math.pow(bottom / 2, 2), 0.5).toDouble();
 
   IsosTriangle operator *(double t) {
     return IsosTriangle(
