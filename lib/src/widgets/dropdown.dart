@@ -58,28 +58,28 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                   AnimationConfig.enter(align: value.startAlign),
               leaveConfig: widget.leaveAnimate,
               //controller: controller,
-              child: child!,
+              child: Material(
+                color: Colors.transparent,
+                borderOnForeground: false,
+                elevation: widget.elevation,
+                shape: DropdownBorder(
+                  color: Theme.of(context).colorScheme.surface,
+                  corner: triangle,
+                  cornerPosition: value,
+                ),
+                child: child!,
+              ),
             );
           },
-          child: Material(
-            color: Colors.transparent,
-            borderOnForeground: false,
-            elevation: widget.elevation,
-            shape: DropdownBorder(
-              color: Theme.of(context).colorScheme.surface,
-              corner: triangle,
-              cornerPosition: layoutPositionNotifier,
-            ),
-            child: IntrinsicWidth(
-              child: Container(
-                padding: widget.padding,
-                constraints: BoxConstraints(minWidth: widget.origRect.width),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment:
-                      widget.actionAlignment ?? CrossAxisAlignment.center,
-                  children: widget.actions,
-                ),
+          child: IntrinsicWidth(
+            child: Container(
+              padding: widget.padding,
+              constraints: BoxConstraints(minWidth: widget.origRect.width),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment:
+                    widget.actionAlignment ?? CrossAxisAlignment.center,
+                children: widget.actions,
               ),
             ),
           ),
@@ -123,11 +123,11 @@ class DropdownBorder extends ShapeBorder {
   final Color color;
   final BorderRadius borderRadius;
   final IsosTriangle corner;
-  final ValueNotifier<DropDownLayoutPosition> cornerPosition;
+  final DropDownLayoutPosition cornerPosition;
 
   @override
   EdgeInsetsGeometry get dimensions {
-    final p = cornerPosition.value.flipped;
+    final p = cornerPosition.flipped;
     final height = corner.height;
     switch (p) {
       case DropDownLayoutPosition.top:
@@ -173,7 +173,7 @@ class DropdownBorder extends ShapeBorder {
       ..close();
     Matrix4? transform;
     Offset position;
-    final p = cornerPosition.value.flipped;
+    final p = cornerPosition.flipped;
     switch (p) {
       case DropDownLayoutPosition.top:
         position = Offset(rect.width / 2, 0);
