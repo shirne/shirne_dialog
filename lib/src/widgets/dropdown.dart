@@ -8,6 +8,7 @@ class DropdownWidget extends StatefulWidget {
     super.key,
     required this.origRect,
     required this.actions,
+    this.constraints,
     this.actionAlignment,
     this.padding = const EdgeInsets.all(8),
     this.margin = EdgeInsets.zero,
@@ -20,6 +21,7 @@ class DropdownWidget extends StatefulWidget {
 
   final double elevation;
   final Rect origRect;
+  final BoxConstraints? constraints;
   final List<Widget> actions;
   final CrossAxisAlignment? actionAlignment;
   final EdgeInsets padding;
@@ -74,7 +76,8 @@ class _DropdownWidgetState extends State<DropdownWidget> {
           child: IntrinsicWidth(
             child: Container(
               padding: widget.padding,
-              constraints: BoxConstraints(minWidth: widget.origRect.width),
+              constraints: widget.constraints ??
+                  BoxConstraints(minWidth: widget.origRect.width),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment:

@@ -1,3 +1,6 @@
+## [4.8.3]
+    * add constraints for dropdown
+
 ## [4.8.2]
     * hide buttons while actions is empty in dialog
     * add close button for modal dialog

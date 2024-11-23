@@ -338,6 +338,7 @@ class MyDialog {
   static EntryController dropdown(
     List<Widget> actions, {
     Rect? origRect,
+    BoxConstraints? constraints,
     BuildContext? context,
     CrossAxisAlignment? actionAlignment,
     HitTestBehavior? backdropBehavior,
@@ -353,6 +354,7 @@ class MyDialog {
     return _instance!.dropdown(
       actions,
       origRect: origRect,
+      constraints: constraints,
       context: context,
       actionAlignment: actionAlignment,
       backdropBehavior: backdropBehavior,
@@ -893,6 +895,7 @@ class ShirneDialog {
   EntryController dropdown(
     List<Widget> actions, {
     Rect? origRect,
+    BoxConstraints? constraints,
     BuildContext? context,
     CrossAxisAlignment? actionAlignment,
     double? elevation,
@@ -931,6 +934,7 @@ class ShirneDialog {
       DropdownWidget(
         actions: actions,
         origRect: origRect,
+        constraints: constraints,
         padding: padding ?? const EdgeInsets.all(8),
         margin: margin ?? const EdgeInsets.all(8),
         position: position,
