@@ -342,10 +342,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () {
                             controller?.close();
                           },
-                          child: const Text(
-                            '确认',
-                            style: TextStyle(color: Colors.white),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
                           ),
+                          child: const Text('确认'),
                         ),
                       );
                     },
@@ -365,10 +365,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () {
                             controller?.close();
                           },
-                          child: const Text(
-                            '确认',
-                            style: TextStyle(color: Colors.white),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
                           ),
+                          child: const Text('确认'),
                         ),
                       );
                     },
@@ -387,19 +387,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               onPressed: () {
                                 controller?.close();
                               },
-                              child: const Text(
-                                '取消',
-                                style: TextStyle(color: Colors.white),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
                               ),
+                              child: const Text('取消'),
                             ),
                             ElevatedButton(
                               onPressed: () {
                                 MyDialog.toast('好的好的');
                               },
-                              child: const Text(
-                                '确认',
-                                style: TextStyle(color: Colors.white),
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
                               ),
+                              child: const Text('确认'),
                             ),
                           ],
                         ),
