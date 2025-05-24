@@ -43,11 +43,20 @@ Above 3.0.5 dialog will use default theme when not provide in ThemeData.extends
 
 ## Usage
 
+add localizations
+
+```
+dependencies:
+    #...
+  flutter_localizations:
+    sdk: flutter
+    #...
+```
 
 Recommanded usage
 ```
 
-// Or use Mydialog.navigatorKey with MaterialApp
+// Use Mydialog.navigatorKey with MaterialApp
 // and set theme for dialog
 MaterialApp(
     // ...
@@ -83,7 +92,7 @@ MyDialog.navigatorKey = Get.key;
 // call in anywhere
 MyDialog.confirm('aaa');
 MyDialog.alert('test');
-MyDialog.toase('test');
+MyDialog.toast('test');
 ```
 
 In [2.x](https://pub.dev/packages/shirne_dialog2) and earlier
