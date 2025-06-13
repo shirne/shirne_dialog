@@ -18,9 +18,15 @@ class _CustomPageState extends State<CustomPage> {
           ShirneDialogTheme(
             toastStyle: const ToastStyle(
               direction: Axis.vertical,
-              iconTheme: IconThemeData(size: 80),
+              iconTheme: IconThemeData(size: 60),
               textStyle: TextStyle(fontSize: 16),
-              iconPadding: EdgeInsets.all(16),
+              iconPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              padding: EdgeInsets.only(
+                top: 8,
+                left: 12,
+                right: 12,
+                bottom: 20,
+              ),
               enterAnimation: AnimationConfig(
                 startAlign: Alignment(0, -0.1),
                 endAlign: Alignment.center,

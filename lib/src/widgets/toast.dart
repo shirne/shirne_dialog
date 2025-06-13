@@ -171,7 +171,8 @@ class _ToastWidgetState extends State<ToastWidget> {
             borderRadius:
                 widget.style?.borderRadius ?? BorderRadius.circular(5),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          padding: style.padding ??
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Material(
             color: Colors.transparent,
             child: DefaultTextStyle(
