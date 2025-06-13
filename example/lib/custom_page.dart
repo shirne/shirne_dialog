@@ -20,9 +20,10 @@ class _CustomPageState extends State<CustomPage> {
               direction: Axis.vertical,
               iconTheme: IconThemeData(size: 60),
               textStyle: TextStyle(fontSize: 16),
-              iconPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              padding: EdgeInsets.only(
-                top: 8,
+              iconPadding:
+                  EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 8),
+              withIconPadding: EdgeInsets.only(
+                top: 16,
                 left: 12,
                 right: 12,
                 bottom: 20,
@@ -47,6 +48,9 @@ class _CustomPageState extends State<CustomPage> {
             // ),
             modalStyle: ModalStyle.separated(
               buttonPadding: const EdgeInsets.symmetric(vertical: 4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(8),
+              ),
             ),
           ),
         ],
@@ -140,37 +144,73 @@ class ToastInnerPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
+            SizedBox(
+              height: 160,
+              child: Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        MyDialog.of(context, false)
+                            .alert('确定确定', barrierColor: Colors.transparent);
+                      });
+                      return SizedBox();
+                    },
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 160,
+              child: Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        MyDialog.of(context, false)
+                            .confirm('确定确定', barrierColor: Colors.transparent);
+                      });
+                      return SizedBox();
+                    },
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
             GridView(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              children: const [
+                crossAxisCount: 2,
+                childAspectRatio: 1.5,
+              ),
+              children: [
                 Center(
                   child: ToastWidget(
                     '测试消息',
+                    inGroup: false,
                   ),
-                ),
-                Center(
-                  child: SnackWidget('testaa'),
                 ),
                 Center(
                   child: ToastWidget(
                     '测试消息',
                     icon: Icon(DialogIcons.checkmarkFill),
+                    inGroup: false,
                   ),
-                ),
-                Center(
-                  child: SnackWidget('testaa'),
                 ),
                 Center(
                   child: ToastWidget(
                     '测试消息',
                     style: ToastStyle(
                       direction: Axis.vertical,
-                      iconPadding: EdgeInsets.all(24),
+                      iconPadding: EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
                       iconTheme: IconThemeData(size: 42),
                     ),
                     icon: Icon(DialogIcons.checkmarkFill),
+                    inGroup: false,
                   ),
                 ),
                 Center(

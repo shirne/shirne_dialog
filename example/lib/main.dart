@@ -124,33 +124,36 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.toast('提示信息');
-                  },
-                  child: const Text('Toast'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.toast(
-                      '提示信息',
-                      style: MyDialog.theme.toastStyle?.top(),
-                    );
-                  },
-                  child: const Text('Toast Top'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    MyDialog.toast('操作成功', iconType: IconType.success);
-                  },
-                  child: const Text('Toast with Icon'),
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.toast('提示信息');
+                    },
+                    child: const Text('Toast'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.toast(
+                        '提示信息',
+                        style: MyDialog.theme.toastStyle?.top(),
+                      );
+                    },
+                    child: const Text('Toast Top'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      MyDialog.toast('操作成功', iconType: IconType.success);
+                    },
+                    child: const Text('Toast with Icon'),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 8),
             SingleChildScrollView(
@@ -256,7 +259,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       constraints: const BoxConstraints(
                         maxWidth: 100,
                       ),
-                      child: Image.network(images[index]),
+                      child: Image.network(
+                        images[index],
+                        errorBuilder: (context, error, stackTrace) {
+                          return Placeholder(
+                            child: Text('$index'),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
