@@ -1,3 +1,6 @@
+## [4.8.4]
+    * add padding for toast style
+    * improve dropdown
 ## [4.8.3]
     * add constraints for dropdown
 
