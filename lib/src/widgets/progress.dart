@@ -17,18 +17,17 @@ class ProgressWidget extends StatefulWidget {
   final VoidCallback? onDispose;
 
   const ProgressWidget({
-    Key? key,
+    super.key,
     this.showProgress = false,
     this.message,
     this.onListen,
     this.onDispose,
     this.builder,
     this.style,
-  })  : assert(
+  }) : assert(
           !showProgress || (showProgress && onListen != null),
           'Must provide a Listener when showProgress',
-        ),
-        super(key: key);
+        );
 
   @override
   State<StatefulWidget> createState() => _ProgressWidgetState();

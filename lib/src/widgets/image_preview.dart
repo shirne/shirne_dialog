@@ -18,10 +18,10 @@ final _placementImage = MemoryImage(
 class ImageAutoPreview extends StatefulWidget {
   const ImageAutoPreview({
     required this.src,
-    Key? key,
+    super.key,
     this.group,
     this.placeholder,
-  }) : super(key: key);
+  });
 
   final String src;
 
@@ -83,13 +83,13 @@ class _ImageAutoPreviewState extends State<ImageAutoPreview> {
 
 class ImagePreviewWidget extends StatefulWidget {
   const ImagePreviewWidget({
-    Key? key,
+    super.key,
     required this.imageUrls,
     this.currentImage,
     this.placement,
     this.backgroundColor,
     this.startRect,
-  }) : super(key: key);
+  });
   final List<String> imageUrls;
   final String? currentImage;
   final ImageProvider<Object>? placement;

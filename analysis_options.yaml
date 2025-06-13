@@ -43,7 +43,6 @@ linter:
     always_declare_return_types: true
     require_trailing_commas: true
 
-    package_api_docs: true
-
+    #package_api_docs: true
 # Additional information about this file can be found at
 # https://dart.cn/guides/language/analysis-options

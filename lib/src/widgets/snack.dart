@@ -10,13 +10,13 @@ import '../theme.dart';
 class SnackWidget extends StatefulWidget {
   const SnackWidget(
     this.message, {
-    Key? key,
+    super.key,
     this.icon,
     this.description,
     this.action,
     this.maxWidth,
     this.style,
-  }) : super(key: key);
+  });
 
   final String message;
   final Widget? icon;

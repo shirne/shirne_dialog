@@ -25,14 +25,14 @@ class PopupWidget extends StatefulWidget {
   final Widget? closeButton;
 
   const PopupWidget({
-    Key? key,
+    super.key,
     this.child,
     this.height,
     this.maxHeight,
     this.style,
     this.closeButton,
     this.closeSemanticsLabel,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _PopupWidgetState();

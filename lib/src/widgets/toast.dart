@@ -22,11 +22,11 @@ class ToastWidget extends StatefulWidget {
 
   const ToastWidget(
     this.message, {
-    Key? key,
+    super.key,
     this.duration = 3000,
     this.icon,
     this.style,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _ToastWidgetState();

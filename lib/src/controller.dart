@@ -53,30 +53,27 @@ abstract class DialogController<T> extends ChangeNotifier
 
 /// controller of any popup use [Overlay] exp. [MyDialog.snack]
 abstract class OverlayController<T> extends DialogController<T> {
-  Widget child;
-  OverlayEntry? entry;
-  final OverlayState overlay;
-  CombinedAnimationController controller = CombinedAnimationController();
-
-  WrapperBuilder? wrapperBuilder;
-
-  bool showOverlay;
-  Color? overlayColor;
-
   OverlayController(
-    T value, {
-    AnimationConfig? animate,
-    AnimationConfig? leaveAnimate,
+    super.value, {
+    super.animate,
+    super.leaveAnimate,
     required this.overlay,
     required this.child,
     this.showOverlay = false,
     this.wrapperBuilder,
     this.overlayColor,
-  }) : super(
-          value,
-          animate: animate,
-          leaveAnimate: leaveAnimate,
-        );
+  });
+
+  final Widget child;
+  final OverlayState overlay;
+  final controller = CombinedAnimationController();
+
+  final WrapperBuilder? wrapperBuilder;
+
+  final bool showOverlay;
+  final Color? overlayColor;
+
+  OverlayEntry? entry;
 
   @override
   void open() {
