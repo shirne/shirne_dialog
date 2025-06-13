@@ -36,8 +36,8 @@ class DropdownWidget extends StatefulWidget {
 }
 
 class _DropdownWidgetState extends State<DropdownWidget> {
-  late final layoutPositionNotifier = ValueNotifier<DropDownLayoutPosition>(
-    DropDownLayoutPosition.bottom,
+  late final layoutPositionNotifier = ValueNotifier<DropdownLayoutParam>(
+    DropdownLayoutParam(DropDownLayoutPosition.bottom, 0),
   );
 
   @override
@@ -52,12 +52,12 @@ class _DropdownWidgetState extends State<DropdownWidget> {
       ),
       child: GestureDetector(
         onTap: () {},
-        child: ValueListenableBuilder<DropDownLayoutPosition>(
+        child: ValueListenableBuilder<DropdownLayoutParam>(
           valueListenable: layoutPositionNotifier,
-          builder: (context, value, child) {
+          builder: (context, param, child) {
             return CombinedAnimation(
               config: widget.animate ??
-                  AnimationConfig.enter(align: value.startAlign),
+                  AnimationConfig.enter(align: param.position.startAlign),
               leaveConfig: widget.leaveAnimate,
               //controller: controller,
               child: Material(
@@ -67,7 +67,8 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                 shape: DropdownBorder(
                   color: Theme.of(context).colorScheme.surface,
                   corner: widget.triangle,
-                  cornerPosition: value,
+                  cornerPosition: param.position,
+                  cornerAlign: param.cornerAlign,
                 ),
                 child: child!,
               ),
@@ -121,12 +122,14 @@ class DropdownBorder extends ShapeBorder {
     this.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
     this.corner = const IsosTriangle(side: 10, bottom: 10),
     required this.cornerPosition,
+    this.cornerAlign = 0,
   });
 
   final Color color;
   final BorderRadius borderRadius;
   final IsosTriangle corner;
   final DropDownLayoutPosition cornerPosition;
+  final double cornerAlign;
 
   @override
   EdgeInsetsGeometry get dimensions {
@@ -177,21 +180,23 @@ class DropdownBorder extends ShapeBorder {
     Matrix4? transform;
     Offset position;
     final p = cornerPosition.flipped;
+    final talign = (cornerAlign + 1) / 2;
+
     switch (p) {
       case DropDownLayoutPosition.top:
-        position = Offset(rect.width / 2, 0);
+        position = Offset((rect.width - corner.bottom) * talign, 0);
         break;
       case DropDownLayoutPosition.left:
         transform = Matrix4.identity()..rotateZ(-math.pi / 2);
-        position = Offset(0, rect.height / 2);
+        position = Offset(0, (rect.height - corner.bottom) * talign);
         break;
       case DropDownLayoutPosition.right:
         transform = Matrix4.identity()..rotateZ(math.pi / 2);
-        position = Offset(rect.width, rect.height / 2);
+        position = Offset(rect.width, (rect.height - corner.bottom) * talign);
         break;
       case DropDownLayoutPosition.bottom:
         transform = Matrix4.identity()..rotateZ(math.pi);
-        position = Offset(rect.width / 2, rect.height);
+        position = Offset((rect.width - corner.bottom) * talign, rect.height);
         break;
     }
     if (transform != null) {
@@ -240,6 +245,13 @@ class DropdownBorder extends ShapeBorder {
   }
 }
 
+class DropdownLayoutParam {
+  DropdownLayoutParam(this.position, this.cornerAlign);
+
+  DropDownLayoutPosition position;
+  double cornerAlign;
+}
+
 enum DropDownLayoutPosition {
   top,
   left,
@@ -274,7 +286,7 @@ enum DropDownLayoutPosition {
 
   static const auto = {bottom, top, right, left};
   static const vertical = {bottom, top};
-  static const horizontal = {bottom, top};
+  static const horizontal = {right, left};
 }
 
 typedef _PCEntry = MapEntry<DropDownLayoutPosition, BoxConstraints>;
@@ -292,7 +304,7 @@ class _DropDownLayout extends SingleChildLayoutDelegate {
   final Rect origRect;
   final Set<DropDownLayoutPosition> position;
   final EdgeInsets padding;
-  final ValueNotifier<DropDownLayoutPosition> layoutPositionNotifier;
+  final ValueNotifier<DropdownLayoutParam> layoutPositionNotifier;
   final double cornerHeight;
 
   @override
@@ -349,9 +361,7 @@ class _DropDownLayout extends SingleChildLayoutDelegate {
       constraintsSets.entries.first,
       bigger,
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      layoutPositionNotifier.value = _resolved!.key;
-    });
+
     return _resolved!;
   }
 
@@ -385,6 +395,7 @@ class _DropDownLayout extends SingleChildLayoutDelegate {
     final pc = _resolvedConstraints(BoxConstraints.loose(size));
     double top = 0;
     double left = 0;
+
     switch (pc.key) {
       case DropDownLayoutPosition.top:
         top = origRect.top - childSize.height - cornerHeight;
@@ -410,6 +421,26 @@ class _DropDownLayout extends SingleChildLayoutDelegate {
       left = (size.width - childSize.width).clamp(0, double.infinity);
     }
 
+    double align = 0;
+    final center = origRect.center;
+    switch (pc.key) {
+      case DropDownLayoutPosition.top:
+      case DropDownLayoutPosition.bottom:
+        align = (center.dx - left) * 2 / childSize.width - 1;
+        break;
+
+      case DropDownLayoutPosition.left:
+      case DropDownLayoutPosition.right:
+        align = (center.dy - top) * 2 / childSize.height - 1;
+        break;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      layoutPositionNotifier.value = DropdownLayoutParam(
+        pc.key,
+        align,
+      );
+    });
     return Offset(left, top);
   }
 }

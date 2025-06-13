@@ -617,13 +617,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                   MyDialog.toast('Menu 1 clicked ');
                                   controller.close();
                                 },
-                                child: const Text('Menu 1'),
+                                child:
+                                    const Text('Menu 1 Menu 1 Menu 1 Menu 1'),
                               ),
-                              const Text('Text'),
+                              const Text('Text Text Text'),
                             ],
                             origRect: renderObject.paintBounds
                                 .translate(offset.dx, offset.dy),
-                            position: {DropDownLayoutPosition.left});
+                            position: {DropDownLayoutPosition.bottom});
                       },
                       focusNode: focusNode,
                       child: const Text('Dropdown'),
