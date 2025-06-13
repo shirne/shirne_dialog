@@ -39,7 +39,8 @@ Above 3.0.5 dialog will use default theme when not provide in ThemeData.extends
 |![toast](preview/toast.gif)|![dialog](preview/dialog.gif)|![imagePreview](preview/preview.gif)|
 |Loading|Popup|Snackbar|
 |![loading](preview/loading.gif)|![popup](preview/popup.gif)|![snack](preview/snack.gif)|
-
+|Dropdown|Dropdown|Customize|
+|![loading](preview/dropdown1.jpg)|![popup](preview/dropdown2.jpg)|![snack](preview/preview.jpg)|
 
 ## Usage
 
