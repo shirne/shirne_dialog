@@ -1,6 +1,6 @@
 name: shirne_dialog
 description: A flutter package to use alert, toast, popup, snack, imagePreview, loading etc. with customizable style in anywhere.
-version: 4.8.4
+version: 4.8.5
 homepage: https://shirne.github.io/dialog/
 repository: https://github.com/shirne/shirne_dialog
 screenshots:

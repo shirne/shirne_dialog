@@ -1,6 +1,12 @@
+## [4.8.5]
+    * add withIconPadding for toast when have icon
+    * add useRootNavigator for modal dialogs
+    * improve example
+
 ## [4.8.4]
     * add padding for toast style
     * improve dropdown
+
 ## [4.8.3]
     * add constraints for dropdown
 
