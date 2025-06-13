@@ -563,6 +563,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     this.iconTheme,
     this.iconPadding,
     this.padding,
+    this.withIconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : super(enterAnimation, leaveAnimation);
@@ -575,6 +576,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     IconThemeData? iconTheme,
     EdgeInsetsGeometry? iconPadding,
     EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? withIconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) : this(
@@ -585,6 +587,7 @@ class ToastStyle extends AnimatedOverlayStyle {
           iconTheme: iconTheme ?? const IconThemeData(size: 80),
           iconPadding: iconPadding,
           padding: padding,
+          withIconPadding: withIconPadding,
           direction: Axis.vertical,
           enterAnimation: enterAnimation,
           leaveAnimation: leaveAnimation,
@@ -598,6 +601,7 @@ class ToastStyle extends AnimatedOverlayStyle {
   final IconThemeData? iconTheme;
   final EdgeInsetsGeometry? iconPadding;
   final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? withIconPadding;
 
   /// Set align style for animation if do not contains align
   @override
@@ -647,6 +651,7 @@ class ToastStyle extends AnimatedOverlayStyle {
     IconThemeData? iconTheme,
     EdgeInsetsGeometry? iconPadding,
     EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? withIconPadding,
     AnimationConfig? enterAnimation,
     AnimationConfig? leaveAnimation,
   }) =>
@@ -659,6 +664,7 @@ class ToastStyle extends AnimatedOverlayStyle {
         iconTheme: iconTheme ?? this.iconTheme,
         iconPadding: iconPadding ?? this.iconPadding,
         padding: padding ?? this.padding,
+        withIconPadding: withIconPadding ?? this.withIconPadding,
         enterAnimation: enterAnimation ?? this.enterAnimation,
         leaveAnimation: leaveAnimation ?? this.leaveAnimation,
       );
@@ -674,6 +680,8 @@ class ToastStyle extends AnimatedOverlayStyle {
       iconTheme: IconThemeData.lerp(a?.iconTheme, b?.iconTheme, t),
       iconPadding: EdgeInsetsGeometry.lerp(a?.iconPadding, b?.iconPadding, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      withIconPadding:
+          EdgeInsetsGeometry.lerp(a?.withIconPadding, b?.withIconPadding, t),
       enterAnimation: t < 0.5 ? a?.enterAnimation : b?.enterAnimation,
       leaveAnimation: t < 0.5 ? a?.leaveAnimation : b?.leaveAnimation,
     );

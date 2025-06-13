@@ -20,12 +20,16 @@ class ToastWidget extends StatefulWidget {
   final Widget? icon;
   final ToastStyle? style;
 
+  /// for test
+  final bool inGroup;
+
   const ToastWidget(
     this.message, {
     super.key,
     this.duration = 3000,
     this.icon,
     this.style,
+    this.inGroup = true,
   });
 
   @override
@@ -75,28 +79,32 @@ class _ToastWidgetState extends State<ToastWidget> {
     super.initState();
     style = (widget.style ?? MyDialog.theme.toastStyle ?? const ToastStyle())
         .bottomIfNoAlign();
-    final group =
-        instances.putIfAbsent(style.enterAnimation!.endAlign!, _ToastGroup.new);
-    instanceId = group.addItem(onCreateInstance);
+    if (widget.inGroup) {
+      final group = instances.putIfAbsent(
+          style.enterAnimation!.endAlign!, _ToastGroup.new);
+      instanceId = group.addItem(onCreateInstance);
 
-    Future.delayed(
-        Duration(
-          milliseconds: widget.duration - _defaultDuration.inMilliseconds,
-        ), () {
-      if (!mounted) return;
-      setState(() {
-        willHide = true;
-        if (style.leaveAnimation?.startAlign !=
-            style.leaveAnimation?.startAlign) {
-          instanceIndex = 0;
-        }
+      Future.delayed(
+          Duration(
+            milliseconds: widget.duration - _defaultDuration.inMilliseconds,
+          ), () {
+        if (!mounted) return;
+        setState(() {
+          willHide = true;
+          if (style.leaveAnimation?.startAlign !=
+              style.leaveAnimation?.startAlign) {
+            instanceIndex = 0;
+          }
+        });
       });
-    });
+    }
   }
 
   @override
   void dispose() {
-    instances[style.enterAnimation!.endAlign!]?.removeItem(instanceId);
+    if (widget.inGroup) {
+      instances[style.enterAnimation!.endAlign!]?.removeItem(instanceId);
+    }
     super.dispose();
   }
 
@@ -130,7 +138,10 @@ class _ToastWidgetState extends State<ToastWidget> {
   Widget build(BuildContext context) {
     Widget child = Text(widget.message);
 
+    EdgeInsetsGeometry? padding = style.padding;
+
     if (widget.icon != null) {
+      if (style.withIconPadding != null) padding = style.withIconPadding;
       child = IconTheme(
         data: (widget.style?.iconTheme ?? const IconThemeData.fallback())
             .copyWith(
@@ -171,7 +182,7 @@ class _ToastWidgetState extends State<ToastWidget> {
             borderRadius:
                 widget.style?.borderRadius ?? BorderRadius.circular(5),
           ),
-          padding: style.padding ??
+          padding: padding ??
               const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Material(
             color: Colors.transparent,
