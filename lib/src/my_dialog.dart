@@ -58,9 +58,9 @@ class MyDialog {
   }
 
   /// return a [ShirneDialog] instance or construct new instance with [BuildContext]
-  static ShirneDialog of([BuildContext? context]) {
+  static ShirneDialog of([BuildContext? context, bool useRoot = true]) {
     if (context != null) {
-      return ShirneDialog._(context);
+      return ShirneDialog._(context, useRoot);
     } else if (_instance == null) {
       if (_navigatorKey != null && _navigatorKey!.currentContext != null) {
         initialize();
@@ -411,6 +411,7 @@ class MyDialog {
 /// Dialog instance for all method
 class ShirneDialog {
   final BuildContext context;
+  final bool useRootNavigator;
 
   ShirneDialogTheme get theme =>
       Theme.of(context).extension<ShirneDialogTheme>() ??
@@ -421,7 +422,7 @@ class ShirneDialog {
   OverlayState get overlay =>
       MyDialog.navigatorKey.currentState?.overlay ?? Overlay.of(context);
 
-  ShirneDialog._(this.context);
+  ShirneDialog._(this.context, [this.useRootNavigator = true]);
 
   /// Popup a dialog with input to collect user input
   Future<String?> prompt({
@@ -532,7 +533,7 @@ class ShirneDialog {
         (cancelButton ?? localStyle?.defaultBuilder ?? defaultButtonBuilder)
             .call(
           () {
-            Navigator.pop(context, false);
+            Navigator.of(context, rootNavigator: useRootNavigator).pop(false);
           },
           localStyle?.defaultButtonStyle ??
               theme.defaultButtonStyle ??
@@ -547,7 +548,8 @@ class ShirneDialog {
         ),
         (button ?? localStyle?.primaryBuilder ?? primaryButtonBuilder).call(
           () async {
-            final navigator = Navigator.of(context);
+            final navigator =
+                Navigator.of(context, rootNavigator: useRootNavigator);
             final result = await onConfirm?.call();
             if (result == false) return;
             navigator.pop(true);
@@ -607,7 +609,7 @@ class ShirneDialog {
           () async {
             final result = onConfirm?.call();
             if (result == false) return;
-            Navigator.pop(context, true);
+            Navigator.of(context, rootNavigator: useRootNavigator).pop(true);
           },
           localStyle?.primaryButtonStyle ??
               theme.primaryButtonStyle ??
@@ -742,6 +744,7 @@ class ShirneDialog {
       context: context,
       barrierDismissible: barrierDismissible ?? false,
       barrierColor: barrierColor ?? Colors.black54,
+      useRootNavigator: useRootNavigator,
       builder: (BuildContext context) {
         return modal;
       },
