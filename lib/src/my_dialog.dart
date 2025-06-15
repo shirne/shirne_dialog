@@ -173,7 +173,7 @@ class MyDialog {
 
   /// A wrapper of [ShirneDialog.alert]
   static Future<bool?> alert(
-    message, {
+    dynamic message, {
     String? buttonText,
     TextStyle? buttonStyle,
     bool Function()? onConfirm,

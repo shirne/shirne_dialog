@@ -26,7 +26,7 @@ class MyAppState extends State<MyApp> {
     extensions: [const ShirneDialogTheme()],
   );
 
-  setTheme(ThemeData newTheme) {
+  void setTheme(ThemeData newTheme) {
     setState(() {
       theme = newTheme.copyWith(
         visualDensity: VisualDensity.standard,

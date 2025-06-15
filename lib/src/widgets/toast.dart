@@ -81,7 +81,9 @@ class _ToastWidgetState extends State<ToastWidget> {
         .bottomIfNoAlign();
     if (widget.inGroup) {
       final group = instances.putIfAbsent(
-          style.enterAnimation!.endAlign!, _ToastGroup.new);
+        style.enterAnimation!.endAlign!,
+        _ToastGroup.new,
+      );
       instanceId = group.addItem(onCreateInstance);
 
       Future.delayed(

@@ -38,7 +38,7 @@ abstract class DialogController<T> extends ChangeNotifier
 
   void remove();
 
-  set value(v) {
+  set value(T v) {
     _value = v;
     if (_isClosed) return;
     notifyListeners();
@@ -143,7 +143,7 @@ class ProgressController extends OverlayController<double> {
           child: child,
         );
 
-  void bind(ac) {
+  void bind(AnimationController ac) {
     aController = ac;
   }
 
