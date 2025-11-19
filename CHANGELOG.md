@@ -1,3 +1,6 @@
+## [4.8.6]
+    * fix missing type
+
 ## [4.8.5]
     * add withIconPadding for toast when have icon
     * add useRootNavigator for modal dialogs
