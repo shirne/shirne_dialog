@@ -123,7 +123,6 @@ abstract class OverlayController<T> extends DialogController<T> {
 
 /// controller of [ProgressWidget]
 class ProgressController extends OverlayController<double> {
-  AnimationController? aController;
   ProgressController(
     Widget child, {
     required OverlayState overlay,
@@ -142,6 +141,8 @@ class ProgressController extends OverlayController<double> {
           leaveAnimate: leaveAnimate,
           child: child,
         );
+
+  AnimationController? aController;
 
   void bind(AnimationController ac) {
     aController = ac;
