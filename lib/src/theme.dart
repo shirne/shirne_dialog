@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'dialog_icons.dart';
 import 'my_dialog.dart';
+import 'widgets/dropdown.dart';
 
 const defaultContentPadding = EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
 const defaultInsetPadding =
@@ -69,6 +70,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     this.snackStyle = const SnackStyle(),
     this.popupStyle = const PopupStyle(),
     this.loadingStyle = const LoadingStyle(),
+    this.dropdownStyle = const DropdownStyle(),
   });
 
   /// detault top position for [MyDialog.toast]
@@ -101,6 +103,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final SnackStyle? snackStyle;
   final PopupStyle? popupStyle;
   final LoadingStyle? loadingStyle;
+  final DropdownStyle? dropdownStyle;
 
   /// Creates a copy of this theme
   /// but with the given fields replaced with the new values.
@@ -118,6 +121,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
     ModalStyle? alertStyle,
     ModalStyle? modalStyle,
     LoadingStyle? loadingStyle,
+    DropdownStyle? dropdownStyle,
   }) {
     return ShirneDialogTheme(
       alignTop: alignTop ?? this.alignTop,
@@ -132,6 +136,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       alertStyle: alertStyle ?? this.alertStyle,
       modalStyle: modalStyle ?? this.modalStyle,
       loadingStyle: loadingStyle ?? this.loadingStyle,
+      dropdownStyle: dropdownStyle ?? this.dropdownStyle,
     );
   }
 
@@ -162,6 +167,7 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
       toastStyle: ToastStyle.lerp(toastStyle, o?.toastStyle, t),
       snackStyle: SnackStyle.lerp(snackStyle, o?.snackStyle, t),
       loadingStyle: LoadingStyle.lerp(loadingStyle, other?.loadingStyle, t),
+      dropdownStyle: DropdownStyle.lerp(dropdownStyle, other?.dropdownStyle, t),
     );
   }
 }
@@ -921,6 +927,96 @@ class PopupStyle {
           t < 0.5 ? a?.dragHandlerBuilder : b?.dragHandlerBuilder,
       closeButtonBuilder:
           t < 0.5 ? a?.closeButtonBuilder : b?.closeButtonBuilder,
+    );
+  }
+}
+
+class DropdownStyle {
+  const DropdownStyle({
+    this.barrierColor,
+    this.elevation,
+    this.isDismissible,
+    this.decoration,
+    this.borderRadius,
+    this.margin,
+    this.padding,
+    this.backgroundColor,
+    this.actionAlignment,
+    this.triangle,
+    this.animate,
+    this.leaveAnimate,
+  });
+
+  final Color? barrierColor;
+  final double? elevation;
+  final bool? isDismissible;
+
+  final CrossAxisAlignment? actionAlignment;
+  final IsosTriangle? triangle;
+
+  /// Customize popup box decoration
+  final BoxDecoration? decoration;
+
+  /// Customize popup box's border radius when decoration is not specified
+  final double? borderRadius;
+
+  final EdgeInsets? margin;
+
+  /// 内容区的内边距
+  final EdgeInsetsGeometry? padding;
+
+  /// 组件背景
+  final Color? backgroundColor;
+
+  final AnimationConfig? animate;
+  final AnimationConfig? leaveAnimate;
+
+  /// Creates a copy of this style
+  /// but with the given fields replaced with the new values.
+  DropdownStyle copyWith({
+    Color? barrierColor,
+    double? elevation,
+    bool? isDismissible,
+    BoxDecoration? decoration,
+    double? borderRadius,
+    EdgeInsets? margin,
+    EdgeInsetsGeometry? padding,
+    Color? backgroundColor,
+    CrossAxisAlignment? actionAlignment,
+    IsosTriangle? triangle,
+    AnimationConfig? animate,
+    AnimationConfig? leaveAnimate,
+  }) =>
+      DropdownStyle(
+        barrierColor: barrierColor ?? this.barrierColor,
+        elevation: elevation ?? this.elevation,
+        isDismissible: isDismissible ?? this.isDismissible,
+        decoration: decoration ?? this.decoration,
+        borderRadius: borderRadius ?? this.borderRadius,
+        margin: margin ?? this.margin,
+        padding: padding ?? this.padding,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        actionAlignment: actionAlignment ?? this.actionAlignment,
+        triangle: triangle ?? this.triangle,
+        animate: animate ?? this.animate,
+        leaveAnimate: leaveAnimate ?? this.leaveAnimate,
+      );
+
+  /// lerp two SnackStyle
+  static DropdownStyle lerp(DropdownStyle? a, DropdownStyle? b, double t) {
+    return DropdownStyle(
+      barrierColor: Color.lerp(a?.barrierColor, b?.barrierColor, t),
+      elevation: ui.lerpDouble(a?.elevation, b?.elevation, t),
+      isDismissible: t < 0.5 ? a?.isDismissible : b?.isDismissible,
+      decoration: BoxDecoration.lerp(a?.decoration, b?.decoration, t),
+      borderRadius: ui.lerpDouble(a?.borderRadius, b?.borderRadius, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      margin: EdgeInsets.lerp(a?.margin, b?.margin, t),
+      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      actionAlignment: t < 0.5 ? a?.actionAlignment : b?.actionAlignment,
+      triangle: t < 0.5 ? a?.triangle : b?.triangle,
+      animate: t < 0.5 ? a?.animate : b?.animate,
+      leaveAnimate: t < 0.5 ? a?.leaveAnimate : b?.leaveAnimate,
     );
   }
 }

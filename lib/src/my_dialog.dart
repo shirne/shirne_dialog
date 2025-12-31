@@ -340,15 +340,9 @@ class MyDialog {
     Rect? origRect,
     BoxConstraints? constraints,
     BuildContext? context,
-    CrossAxisAlignment? actionAlignment,
     HitTestBehavior? backdropBehavior,
-    Color? backdropColor,
-    EdgeInsets? padding,
-    EdgeInsets? margin,
     Set<DropDownLayoutPosition>? position,
-    IsosTriangle? triangle,
-    AnimationConfig? animate,
-    AnimationConfig? leaveAnimate,
+    DropdownStyle? style,
   }) {
     _checkInstance();
     return _instance!.dropdown(
@@ -356,14 +350,9 @@ class MyDialog {
       origRect: origRect,
       constraints: constraints,
       context: context,
-      actionAlignment: actionAlignment,
       backdropBehavior: backdropBehavior,
-      backdropColor: backdropColor,
-      padding: padding,
       position: position,
-      triangle: triangle,
-      animate: animate,
-      leaveAnimate: leaveAnimate,
+      style: style,
     );
   }
 
@@ -900,16 +889,9 @@ class ShirneDialog {
     Rect? origRect,
     BoxConstraints? constraints,
     BuildContext? context,
-    CrossAxisAlignment? actionAlignment,
-    double? elevation,
     HitTestBehavior? backdropBehavior,
-    Color? backdropColor,
-    EdgeInsets? padding,
-    EdgeInsets? margin,
     Set<DropDownLayoutPosition>? position,
-    IsosTriangle? triangle,
-    AnimationConfig? animate,
-    AnimationConfig? leaveAnimate,
+    DropdownStyle? style,
   }) {
     assert(
       origRect != null || context != null,
@@ -932,18 +914,19 @@ class ShirneDialog {
         origRect = origRect.translate(-offset.dx, -offset.dy);
       }
     }
+    style ??= theme.dropdownStyle ?? DropdownStyle();
     late final EntryController controller;
     controller = overlayModal(
       DropdownWidget(
         actions: actions,
         origRect: origRect,
         constraints: constraints,
-        padding: padding ?? const EdgeInsets.all(8),
-        margin: margin ?? const EdgeInsets.all(8),
+        padding: style.padding ?? const EdgeInsets.all(8),
+        margin: style.margin ?? const EdgeInsets.all(8),
         position: position,
-        triangle: triangle ?? const IsosTriangle(side: 10, bottom: 10),
-        actionAlignment: actionAlignment,
-        elevation: elevation ?? 4.0,
+        triangle: style.triangle ?? const IsosTriangle(side: 10, bottom: 10),
+        actionAlignment: style.actionAlignment,
+        elevation: style.elevation ?? 4.0,
         animate: AnimationConfig.fadeIn,
         leaveAnimate: AnimationConfig.fadeOut,
       ),
@@ -951,7 +934,7 @@ class ShirneDialog {
         onTap: controller.close,
         behavior: backdropBehavior ?? HitTestBehavior.translucent,
         child: Container(
-          color: backdropColor,
+          color: style!.barrierColor,
           child: child,
         ),
       ),

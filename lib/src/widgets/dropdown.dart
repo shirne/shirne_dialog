@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../shirne_dialog.dart';
@@ -24,7 +25,7 @@ class DropdownWidget extends StatefulWidget {
   final BoxConstraints? constraints;
   final List<Widget> actions;
   final CrossAxisAlignment? actionAlignment;
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
   final EdgeInsets margin;
   final Set<DropDownLayoutPosition>? position;
   final IsosTriangle triangle;
@@ -112,6 +113,17 @@ class IsosTriangle {
       side: side * t,
       bottom: bottom * t,
       radius: Radius.elliptical(radius.x * t, radius.y * t),
+    );
+  }
+
+  static IsosTriangle? lerp(IsosTriangle? a, IsosTriangle? b, double t) {
+    if (a == null || b == null) {
+      return t > 0.5 ? b : a;
+    }
+    return IsosTriangle(
+      side: lerpDouble(a.side, b.side, t)!,
+      bottom: lerpDouble(a.bottom, b.bottom, t)!,
+      radius: Radius.lerp(a.radius, b.radius, t) ?? Radius.zero,
     );
   }
 }
