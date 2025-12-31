@@ -67,6 +67,7 @@ class _PopupWidgetState extends State<PopupWidget> {
             mediaData.size.height - kToolbarHeight - mediaData.padding.top,
       ),
       child: Container(
+        width: double.infinity,
         height: height,
         margin: widget.style?.margin,
         decoration: widget.style?.decoration ??
