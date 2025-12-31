@@ -105,6 +105,9 @@ class ShirneDialogTheme extends ThemeExtension<ShirneDialogTheme> {
   final LoadingStyle? loadingStyle;
   final DropdownStyle? dropdownStyle;
 
+  static ShirneDialogTheme? of(BuildContext context) =>
+      Theme.of(context).extension<ShirneDialogTheme>();
+
   /// Creates a copy of this theme
   /// but with the given fields replaced with the new values.
   @override
