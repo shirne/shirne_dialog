@@ -924,6 +924,8 @@ class ShirneDialog {
         padding: style.padding ?? const EdgeInsets.all(8),
         margin: style.margin ?? const EdgeInsets.all(8),
         position: position,
+        backgroundColor: style.backgroundColor,
+        gradient: style.gradient,
         triangle: style.triangle ?? const IsosTriangle(side: 10, bottom: 10),
         actionAlignment: style.actionAlignment,
         elevation: style.elevation ?? 4.0,

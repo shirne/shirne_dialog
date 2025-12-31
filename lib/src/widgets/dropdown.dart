@@ -9,6 +9,8 @@ class DropdownWidget extends StatefulWidget {
     super.key,
     required this.origRect,
     required this.actions,
+    this.backgroundColor,
+    this.gradient,
     this.constraints,
     this.actionAlignment,
     this.padding = const EdgeInsets.all(8),
@@ -21,6 +23,8 @@ class DropdownWidget extends StatefulWidget {
   });
 
   final double elevation;
+  final Color? backgroundColor;
+  final Gradient? gradient;
   final Rect origRect;
   final BoxConstraints? constraints;
   final List<Widget> actions;
@@ -66,7 +70,9 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                 borderOnForeground: false,
                 elevation: widget.elevation,
                 shape: DropdownBorder(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: widget.backgroundColor ??
+                      Theme.of(context).colorScheme.surface,
+                  gradient: widget.gradient,
                   corner: widget.triangle,
                   cornerPosition: param.position,
                   cornerAlign: param.cornerAlign,
@@ -131,6 +137,7 @@ class IsosTriangle {
 class DropdownBorder extends ShapeBorder {
   const DropdownBorder({
     this.color = const Color(0xFFffffff),
+    this.gradient,
     this.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
     this.corner = const IsosTriangle(side: 10, bottom: 10),
     required this.cornerPosition,
@@ -138,6 +145,7 @@ class DropdownBorder extends ShapeBorder {
   });
 
   final Color color;
+  final Gradient? gradient;
   final BorderRadius borderRadius;
   final IsosTriangle corner;
   final DropDownLayoutPosition cornerPosition;
@@ -237,6 +245,9 @@ class DropdownBorder extends ShapeBorder {
   void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     final Paint paint = Paint()..color = color;
     final path = _getPath(rect);
+    if (gradient != null) {
+      paint.shader = gradient!.createShader(path.getBounds());
+    }
 
     canvas.drawPath(path, paint);
   }
@@ -245,6 +256,7 @@ class DropdownBorder extends ShapeBorder {
   ShapeBorder scale(double t) {
     return DropdownBorder(
       color: color,
+      gradient: gradient,
       corner: corner * t,
       borderRadius: BorderRadius.only(
         topLeft: borderRadius.topLeft * t,

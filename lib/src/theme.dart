@@ -941,6 +941,7 @@ class DropdownStyle {
     this.margin,
     this.padding,
     this.backgroundColor,
+    this.gradient,
     this.actionAlignment,
     this.triangle,
     this.animate,
@@ -967,6 +968,7 @@ class DropdownStyle {
 
   /// 组件背景
   final Color? backgroundColor;
+  final Gradient? gradient;
 
   final AnimationConfig? animate;
   final AnimationConfig? leaveAnimate;
@@ -982,6 +984,7 @@ class DropdownStyle {
     EdgeInsets? margin,
     EdgeInsetsGeometry? padding,
     Color? backgroundColor,
+    Gradient? gradient,
     CrossAxisAlignment? actionAlignment,
     IsosTriangle? triangle,
     AnimationConfig? animate,
@@ -996,6 +999,7 @@ class DropdownStyle {
         margin: margin ?? this.margin,
         padding: padding ?? this.padding,
         backgroundColor: backgroundColor ?? this.backgroundColor,
+        gradient: gradient ?? this.gradient,
         actionAlignment: actionAlignment ?? this.actionAlignment,
         triangle: triangle ?? this.triangle,
         animate: animate ?? this.animate,
@@ -1011,6 +1015,7 @@ class DropdownStyle {
       decoration: BoxDecoration.lerp(a?.decoration, b?.decoration, t),
       borderRadius: ui.lerpDouble(a?.borderRadius, b?.borderRadius, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      gradient: t < 0.5 ? a?.gradient : b?.gradient,
       margin: EdgeInsets.lerp(a?.margin, b?.margin, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       actionAlignment: t < 0.5 ? a?.actionAlignment : b?.actionAlignment,
