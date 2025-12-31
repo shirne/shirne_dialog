@@ -602,6 +602,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               const Text('Text'),
                             ],
+                            style: ShirneDialogTheme.of(context)
+                                ?.dropdownStyle
+                                ?.copyWith(
+                                    gradient: LinearGradient(colors: [
+                                  Colors.blue[100]!,
+                                  Colors.blue[300]!
+                                ])),
                             origRect: renderObject.paintBounds
                                 .translate(offset.dx, offset.dy),
                             position: {DropDownLayoutPosition.bottom});

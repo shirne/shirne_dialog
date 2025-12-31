@@ -1,3 +1,7 @@
+## [4.9.0]
+    * fix popup dialog width
+    * add theme style for dropdown
+
 ## [4.8.6]
     * fix missing type
 
